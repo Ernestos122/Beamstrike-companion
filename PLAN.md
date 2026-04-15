@@ -93,6 +93,8 @@ src/data/
 
 ## Implementation Phases
 
+> **Progress tracking**: see [PROGRESS.md](PROGRESS.md) for current status of each phase and task.
+
 Each phase ends with a **source-material review** before proceeding.
 
 | Phase | Work | Review |

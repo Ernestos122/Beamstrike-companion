@@ -1,0 +1,57 @@
+[
+  {
+    "id": "UA",
+    "name": "Unarmoured",
+    "abbreviation": "UA",
+    "pointsCost": 2,
+    "description": "No armour, only regular clothing. Often civilians, low-tech troops, freedom-fighters, or terrorists.",
+    "movementClass": "UA",
+    "damageTableColumn": "UA",
+    "maxWeaponSlots": { "hand": 1, "pistol": 1, "main": 1, "equipment": 1 },
+    "special": ""
+  },
+  {
+    "id": "FI",
+    "name": "Fast Infantry",
+    "abbreviation": "FI",
+    "pointsCost": 5,
+    "description": "Infantry able to move and react quickly, wearing only light ballistic armour. Scout troops and local law enforcement.",
+    "movementClass": "FI_LA",
+    "damageTableColumn": "FI",
+    "maxWeaponSlots": { "hand": 1, "pistol": 2, "main": 1, "equipment": 3 },
+    "special": ""
+  },
+  {
+    "id": "LA",
+    "name": "Light Armoured",
+    "abbreviation": "LA",
+    "pointsCost": 8,
+    "description": "Troops wearing full suits of metallic or ballistic, reactive, composite armour with full helmets and integrated breathing apparatus.",
+    "movementClass": "FI_LA",
+    "damageTableColumn": "LA",
+    "maxWeaponSlots": { "hand": 1, "pistol": 2, "main": 1, "equipment": 3 },
+    "special": ""
+  },
+  {
+    "id": "PA",
+    "name": "Power Armoured",
+    "abbreviation": "PA",
+    "pointsCost": 18,
+    "description": "Heavy armour with a powered exo-skeletal structure, allowing heightened close combat ability and increased heavy weapon carrying allowance.",
+    "movementClass": "PA",
+    "damageTableColumn": "PA",
+    "maxWeaponSlots": { "hand": 1, "pistol": 2, "main": 3, "equipment": 3 },
+    "special": "May mount weapon packs (up to 3 infantry weapons or 2 squad support weapons per arm). H2H +5 bonus."
+  },
+  {
+    "id": "AD",
+    "name": "Assault Dreadnought",
+    "abbreviation": "AD",
+    "pointsCost": 27,
+    "description": "The heaviest armour level, a thick armour plated powered suit. Immune to attacks from Low and standard power weapons.",
+    "movementClass": "AD",
+    "damageTableColumn": "DA",
+    "maxWeaponSlots": { "hand": 1, "pistol": 0, "main": 4, "equipment": 4 },
+    "special": "Immune to LOW and STANDARD impact weapons. H2H +6 bonus. Target AD trooper gives firer +1 to hit."
+  }
+]

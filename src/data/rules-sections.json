@@ -1,0 +1,120 @@
+[
+  {
+    "id": "introduction",
+    "title": "Introduction",
+    "order": 1,
+    "pageRef": "p.3",
+    "subsections": [
+      { "id": "introduction-overview", "title": "What is Beamstrike?", "order": 1, "pageRef": "p.3" },
+      { "id": "introduction-materials", "title": "Materials Required", "order": 2, "pageRef": "p.3" },
+      { "id": "introduction-points", "title": "Points Values and Army Lists", "order": 3, "pageRef": "p.3" }
+    ]
+  },
+  {
+    "id": "deployment",
+    "title": "Troops in Beamstrike",
+    "order": 2,
+    "pageRef": "p.4",
+    "subsections": [
+      { "id": "deployment-armour", "title": "Armour Types", "order": 1, "pageRef": "p.4" },
+      { "id": "deployment-training", "title": "Training Levels", "order": 2, "pageRef": "p.4" },
+      { "id": "deployment-heroes", "title": "Heroes", "order": 3, "pageRef": "p.4" },
+      { "id": "deployment-skills", "title": "Troop Skills", "order": 4, "pageRef": "p.5" },
+      { "id": "deployment-equipping", "title": "Equipping Troops", "order": 5, "pageRef": "p.6" }
+    ]
+  },
+  {
+    "id": "sequence-of-play",
+    "title": "Sequence of Play",
+    "order": 3,
+    "pageRef": "p.7",
+    "subsections": [
+      { "id": "sequence-of-play-overview", "title": "Game Turn Structure", "order": 1, "pageRef": "p.7" },
+      { "id": "sequence-of-play-phases", "title": "Play Sequence Chart", "order": 2, "pageRef": "p.7" }
+    ]
+  },
+  {
+    "id": "movement",
+    "title": "Movement",
+    "order": 4,
+    "pageRef": "p.7",
+    "subsections": [
+      { "id": "movement-rates", "title": "Movement Rates", "order": 1, "pageRef": "p.7" },
+      { "id": "movement-actions", "title": "Actions Table", "order": 2, "pageRef": "p.8" },
+      { "id": "movement-squads", "title": "Squads and Coherency", "order": 3, "pageRef": "p.8" },
+      { "id": "movement-vehicles", "title": "Ground Vehicle Manoeuvres", "order": 4, "pageRef": "p.8" },
+      { "id": "movement-aircraft", "title": "Aircraft", "order": 5, "pageRef": "p.8" },
+      { "id": "movement-jetpacks", "title": "Jet Packs", "order": 6, "pageRef": "p.9" },
+      { "id": "movement-qtravelpods", "title": "Q-Travel Pods", "order": 7, "pageRef": "p.10" }
+    ]
+  },
+  {
+    "id": "ranged-combat",
+    "title": "Ranged Combat",
+    "order": 5,
+    "pageRef": "p.10",
+    "subsections": [
+      { "id": "ranged-combat-eligibility", "title": "Can You Fire?", "order": 1, "pageRef": "p.10" },
+      { "id": "ranged-combat-arcs", "title": "Arcs of Fire", "order": 2, "pageRef": "p.10" },
+      { "id": "ranged-combat-targets", "title": "Target Selection", "order": 3, "pageRef": "p.11" },
+      { "id": "ranged-combat-hit-modifiers", "title": "Hit Modifiers", "order": 4, "pageRef": "p.12" },
+      { "id": "ranged-combat-weapons", "title": "Weapon Use", "order": 5, "pageRef": "p.13" },
+      { "id": "infantry-damage-table", "title": "Infantry Damage Table", "order": 6, "pageRef": "p.13" },
+      { "id": "damage-modifiers", "title": "Damage Modifiers", "order": 7, "pageRef": "p.13" },
+      { "id": "medical-aid", "title": "Medical Aid and Digimedic", "order": 8, "pageRef": "p.13" },
+      { "id": "template-weapons", "title": "Template Weapons", "order": 9, "pageRef": "p.14" },
+      { "id": "grenades-rules", "title": "Grenades and Indirect Fire", "order": 10, "pageRef": "p.14" },
+      { "id": "off-table-fire-support", "title": "Off-Table Fire Support", "order": 11, "pageRef": "p.14" }
+    ]
+  },
+  {
+    "id": "morale",
+    "title": "Morale",
+    "order": 6,
+    "pageRef": "p.15",
+    "subsections": [
+      { "id": "morale-leadership-points", "title": "Morale and Leadership Points", "order": 1, "pageRef": "p.15" },
+      { "id": "shaken-broken", "title": "Shaken and Broken Army", "order": 2, "pageRef": "p.15" },
+      { "id": "morale-suppression", "title": "Squad Suppression", "order": 3, "pageRef": "p.15" }
+    ]
+  },
+  {
+    "id": "close-combat",
+    "title": "Close Combat",
+    "order": 7,
+    "pageRef": "p.16",
+    "subsections": [
+      { "id": "close-combat-overview", "title": "Close Combat Overview", "order": 1, "pageRef": "p.16" },
+      { "id": "close-combat-actions", "title": "CC Actions Table", "order": 2, "pageRef": "p.16" },
+      { "id": "close-combat-h2h", "title": "Hand to Hand Combat", "order": 3, "pageRef": "p.16" },
+      { "id": "cover-concealment", "title": "Cover and Concealment", "order": 4, "pageRef": "p.16" }
+    ]
+  },
+  {
+    "id": "vehicles",
+    "title": "Vehicles",
+    "order": 8,
+    "pageRef": "p.30",
+    "subsections": [
+      { "id": "vehicle-types", "title": "Vehicle Types and Classes", "order": 1, "pageRef": "p.30" },
+      { "id": "vehicle-combat", "title": "Vehicle Combat", "order": 2, "pageRef": "p.31" },
+      { "id": "vehicle-hit-sequence", "title": "Vehicle Hit Sequence", "order": 3, "pageRef": "p.31" },
+      { "id": "armour-penetration", "title": "Armour Penetration", "order": 4, "pageRef": "p.32" },
+      { "id": "vehicle-hit-effects", "title": "Vehicle Hit Effects", "order": 5, "pageRef": "p.32" },
+      { "id": "non-penetrating-hits", "title": "Non-Penetrating Hits", "order": 6, "pageRef": "p.33" },
+      { "id": "vehicle-to-hit", "title": "Vehicle To-Hit Modifiers", "order": 7, "pageRef": "p.33" },
+      { "id": "shields", "title": "Shields", "order": 8, "pageRef": "p.34" }
+    ]
+  },
+  {
+    "id": "aliens",
+    "title": "Aliens",
+    "order": 9,
+    "pageRef": "p.18",
+    "subsections": [
+      { "id": "alien-background", "title": "Alien Races Overview", "order": 1, "pageRef": "p.18" },
+      { "id": "alien-weapons", "title": "Alien Weapons", "order": 2, "pageRef": "p.18" },
+      { "id": "alien-movement", "title": "Alien Figure Movement", "order": 3, "pageRef": "p.18" }
+    ]
+  }
+]

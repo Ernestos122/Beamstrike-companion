@@ -1,0 +1,798 @@
+[
+  {
+    "id": "turn-sequence",
+    "name": "Turn Sequence",
+    "category": "TURN_SEQUENCE",
+    "description": "The ordered sequence of phases each game turn, split between Player A's turn and Player B's turn.",
+    "headers": ["Player", "Game Phase", "Description / Notes"],
+    "rows": [
+      { "cells": ["A", "First MOVE", "Player A may move any or all of his figures and vehicles as outlined in the movement rules."] },
+      { "cells": ["A and B", "FIRE", "Both players may use ranged fire with all eligible figures and vehicles. Firing is treated as simultaneous — casualties are not removed until the end of the fire phase. Concealed units get the special FIRST SHOT."] },
+      { "cells": ["A and B", "Morale checks", "Both players check morale strengths of their armies."] },
+      { "cells": ["A", "Second MOVE", "Player A may again move any or all of his figures and vehicles, even if they moved during the first movement phase."] },
+      { "cells": ["A", "Close Combat", "Player A makes troop rolls for all squads within 5cm of an enemy. Successful troops may make a close combat action as detailed in the close combat rules."] },
+      { "cells": ["B", "First MOVE", "As per Player A descriptions, Player B's turn follows the same sequence of events but with Player B moving and making close combat troop rolls."], "highlight": true },
+      { "cells": ["A and B", "FIRE", "As Player A fire phase."] },
+      { "cells": ["A and B", "Morale checks", "As Player A morale checks."] },
+      { "cells": ["B", "Second MOVE", "As Player A second move."] },
+      { "cells": ["B", "Close Combat", "As Player A close combat."] },
+      { "cells": ["BOTH", "END OF TURN", "Any turn related events are rolled for (such as weather conditions), and the turn comes to an end. Another turn starting with Player A is then commenced."], "highlight": true }
+    ],
+    "footnotes": [
+      "Player A is decided by a 1d10 roll — highest scorer chooses to be Player A or B.",
+      "If more than 2 players are present, player C, D etc. follow on after Player B with the same sequence of game phases."
+    ],
+    "rulesRefs": ["sequence-of-play"]
+  },
+  {
+    "id": "jetpack-table",
+    "name": "Jet Pack Table",
+    "category": "TURN_SEQUENCE",
+    "description": "Jump distances for jet pack equipped troops, and accident scores for jet pack mishaps (roll 2D6).",
+    "headers": ["Troop Type", "Jump Distance (inches)", "Jet Pack Accident Score (2D6)"],
+    "rows": [
+      { "cells": ["Fast Infantry (FI)", "16", "12"] },
+      { "cells": ["Light Armoured Infantry (LA)", "10", "11"] },
+      { "cells": ["Power Armoured Infantry (PA)", "8", "10"] },
+      { "cells": ["Assault Dreadnought (AD)", "6", "9"] },
+      { "cells": ["Light Mecha", "20", "—"] },
+      { "cells": ["Medium Mecha", "14", "—"] },
+      { "cells": ["Heavy Mecha", "8", "—"] }
+    ],
+    "footnotes": [
+      "Unarmoured troops and civilians may NOT use jet packs.",
+      "Trooper with 'Scout' skill: +3 inches to jump distance and deduct 1 from the 2D6 accident roll.",
+      "For each 1 inch of extra height jumped, 2 inches are lost from the jump length.",
+      "If the 2D6 roll equals or exceeds the accident score, the figure has had a jump injury/mishap and is removed from play."
+    ],
+    "rulesRefs": ["movement-jetpacks"]
+  },
+  {
+    "id": "movement-table",
+    "name": "Movement Table",
+    "category": "MOVEMENT",
+    "description": "Movement rates in inches per movement phase for all troop and vehicle types across 5 terrain types.",
+    "headers": ["Troop / Vehicle Type", "Road", "Open Ground / Grassland / Scrub", "Light Woods / Boggy / Bush / Slopes / Desert / Sand", "Difficult / Medium Woods / Boulders / Light Ruins / Steep Slopes", "Very Difficult / Heavy Woods / Jungle / Rubble Ruins"],
+    "rows": [
+      { "cells": ["UA (Unarmoured)", "5", "4", "3", "2", "1"] },
+      { "cells": ["FI / LA (Fast / Light Armoured)", "5", "4", "3", "3", "2"] },
+      { "cells": ["PA (Power Armoured)", "4", "3", "2", "2", "1"] },
+      { "cells": ["AD (Assault Dreadnought)", "3", "2", "2", "1", "1"], "highlight": false },
+      { "cells": ["Fast Wheeled (FW)", "14", "10", "6", "6", "2"], "sectionHeader": "Vehicles" },
+      { "cells": ["Wheeled (W)", "12", "8", "6", "4", "Not allowed"] },
+      { "cells": ["Fast Tracked (FT)", "10", "9", "8", "6", "2"] },
+      { "cells": ["Tracked (T)", "8", "8", "8", "6", "2"] },
+      { "cells": ["Heavy Tracked (HT)", "6", "6", "6", "4", "1"] },
+      { "cells": ["Anti-Grav (G)", "12", "10", "8", "8", "8"] },
+      { "cells": ["Hover (H)", "10", "10", "8", "8", "Not allowed"] },
+      { "cells": ["Fast Grav / Jetcycle (FG)", "14", "14", "12", "10", "4"] },
+      { "cells": ["Legged (L)", "10", "10", "8", "6", "4"] },
+      { "cells": ["Heavy Legged (HL)", "5", "5", "4", "3", "2"] },
+      { "cells": ["Limbs (L)", "12", "11", "8", "6", "4"] },
+      { "cells": ["Heavy Limbs (HL)", "8", "6", "5", "4", "3"] }
+    ],
+    "footnotes": [
+      "Where troops/vehicles cross more than one terrain type in a single move, move at the rate of: Terrain type 1 + terrain type 2 divided by 2.",
+      "Hover-powered vehicles may pass over scenery up to 1 inch high and treat this as 'Road'.",
+      "Anti-grav vehicles may cruise up to 3 inches in height to clear obstacles.",
+      "Walls over 1 inch will prevent movement across them unless a section is destroyed first."
+    ],
+    "rulesRefs": ["movement-rates"]
+  },
+  {
+    "id": "actions-table",
+    "name": "Actions Table",
+    "category": "MOVEMENT",
+    "description": "A figure may perform ANY ONE of the following actions per movement phase INSTEAD of moving.",
+    "headers": ["Action", "Description"],
+    "rows": [
+      { "cells": ["Enter or leave a vehicle", "May leave a stationary vehicle; figure must be placed within 1 inch of the vehicle. Entering is the reverse. The vehicle itself may not move at all during this movement phase."] },
+      { "cells": ["Enter or leave a building", "Trooper may move from any point inside a building to outside within 1 inch of any exit. Entering (assuming building is not locked) is the reverse process."] },
+      { "cells": ["Call off-table fire support", "See off-table fire support for details. Note: call may also be made in firing phase."] },
+      { "cells": ["Beam up or down", "Be beamed to or from a teleport bay to/from anywhere on the table."] },
+      { "cells": ["Set explosive (sapper)", "Set a demolition pack (see demolition rules)."] },
+      { "cells": ["Deploy a support weapon", "Deploy a support or heavy weapon for effective use. (See deployment rules.) Where these actions are performed in a move phase, the effect is delayed until the next fire phase."] }
+    ],
+    "footnotes": [],
+    "rulesRefs": ["movement-actions"]
+  },
+  {
+    "id": "hit-modifiers",
+    "name": "Hit Modifiers",
+    "category": "COMBAT_INFANTRY",
+    "description": "All modifiers applied to the 2D6 to-hit roll in ranged combat. Roll 2D6 and meet or beat the weapon's base to-hit number after applying all applicable modifiers.",
+    "headers": ["Condition", "Modifier"],
+    "rows": [
+      { "cells": ["FIRER'S TROOP RATING", ""], "sectionHeader": "Firer Modifiers" },
+      { "cells": ["Elite firer", "+3"] },
+      { "cells": ["Veteran firer", "+2"] },
+      { "cells": ["Regular firer", "+0"] },
+      { "cells": ["Civilian firer", "-2"] },
+      { "cells": ["Hero firer", "+3 (base)"] },
+      { "cells": ["SUPPRESSION / MORALE", ""], "sectionHeader": "Suppression" },
+      { "cells": ["Firer is suppressed/shaken", "-2"] },
+      { "cells": ["Firing at suppressed troops", "-1"] },
+      { "cells": ["RANGE & POSITION", ""], "sectionHeader": "Range & Position" },
+      { "cells": ["Elevation advantage (0–8 inches height)", "+1"] },
+      { "cells": ["Ground vehicle moved last phase", "-2"] },
+      { "cells": ["Support weapon deployed", "+2"] },
+      { "cells": ["Support weapon NOT deployed", "-2"] },
+      { "cells": ["Sniper deployed (concealed)", "+2"] },
+      { "cells": ["TARGET CONDITIONS", ""], "sectionHeader": "Target Conditions" },
+      { "cells": ["Target in soft cover", "-1"] },
+      { "cells": ["Target in hard cover", "-2"] },
+      { "cells": ["Target in reinforced cover", "-3"] },
+      { "cells": ["Target has smoke concealment", "-1"] },
+      { "cells": ["Target is stealth / cloaked", "-3"] },
+      { "cells": ["SKILLS / EQUIPMENT", ""], "sectionHeader": "Skills" },
+      { "cells": ["Firer has Targeter (on main weapon)", "+2"] },
+      { "cells": ["Grenadier throwing grenades", "+2"] },
+      { "cells": ["Firer has Sniper skill (at range)", "+1"] },
+      { "cells": ["ECM Suite (negates Targeter bonus)", "Negates +2"] },
+      { "cells": ["Natural 12 — critical hit", "+2 to damage roll"] }
+    ],
+    "footnotes": [
+      "All modifiers are cumulative.",
+      "A natural roll of 12 on 2D6 is always a critical hit regardless of modifiers, adding +2 to the damage roll.",
+      "Heroes may fire a pistol in each hand (one as main weapon, one as pistol slot)."
+    ],
+    "rulesRefs": ["ranged-combat-hit-modifiers"]
+  },
+  {
+    "id": "troop-qr",
+    "name": "Troop QR",
+    "category": "COMBAT_INFANTRY",
+    "description": "Quick reference for troop training class dice rolls and eligible targets in ranged fire.",
+    "headers": ["Training Class", "Troop Roll (1D6)", "Eligible Targets in Ranged Fire"],
+    "rows": [
+      { "cells": ["CIVILIAN", "6", "The closest enemy target only."] },
+      { "cells": ["REGULAR", "5+", "The closest enemy troops OR any vehicle/building visible."] },
+      { "cells": ["VETERAN", "4+", "Choice of any of the 2 closest targets, or any vehicles/buildings."] },
+      { "cells": ["ELITE", "3+", "Choice of any of the 3 closest targets, or any vehicles/buildings."] },
+      { "cells": ["HERO", "2+", "Choice of any of the 3 closest targets, or any vehicles/buildings."] }
+    ],
+    "footnotes": [
+      "Troop Roll: used for suppression tests, morale tests, and other dice rolls requiring a training check.",
+      "If a leader/hero with Leadership skill is present, troops may engage targets other than the nearest.",
+      "Vehicles roll separately: vehicles use 4+ as their troop roll."
+    ],
+    "rulesRefs": ["troop-training", "ranged-combat-targets"]
+  },
+  {
+    "id": "infantry-damage-table",
+    "name": "Infantry Damage Table",
+    "category": "COMBAT_INFANTRY",
+    "description": "Roll 1D6 and cross-reference the impact type (row section) with the target's armour column for the damage result. Apply all Damage Modifiers before reading the result.",
+    "headers": ["Roll 1D6", "UA", "FI", "LA", "PA", "PA Shielded*", "DA", "DA Shielded*"],
+    "rows": [
+      { "cells": ["STUN", "", "", "", "", "", "", ""], "sectionHeader": "STUN" },
+      { "cells": ["1", "GH", "NE", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["2", "Stun", "GH", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["3", "Stun", "Stun", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["4", "Stun", "Stun", "GH", "NE", "NE", "NE", "NE"] },
+      { "cells": ["5", "Stun", "Stun", "Stun", "NE", "NE", "NE", "NE"] },
+      { "cells": ["6", "Stun", "Stun", "Stun", "GH", "NE", "NE", "NE"] },
+      { "cells": ["LOW", "", "", "", "", "", "", ""], "sectionHeader": "LOW" },
+      { "cells": ["1", "GH", "NE", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["2", "Kill", "GH", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["3", "Kill", "Kill", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["4", "Kill", "Kill", "GH", "NE", "NE", "NE", "NE"] },
+      { "cells": ["5", "Kill", "Kill", "Kill", "NE", "NE", "NE", "NE"] },
+      { "cells": ["6", "Kill", "Kill", "Kill", "GH", "NE", "NE", "NE"] },
+      { "cells": ["STANDARD", "", "", "", "", "", "", ""], "sectionHeader": "STANDARD" },
+      { "cells": ["1", "Kill", "GH", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["2", "Kill", "Kill", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["3", "Kill", "Kill", "GH", "NE", "NE", "NE", "NE"] },
+      { "cells": ["4", "Kill", "Kill", "Kill", "NE", "NE", "NE", "NE"] },
+      { "cells": ["5", "Kill", "Kill", "Kill", "GH", "NE", "NE", "NE"] },
+      { "cells": ["6", "Kill", "Kill", "Kill", "Kill", "NE", "GH", "NE"] },
+      { "cells": ["HIGH", "", "", "", "", "", "", ""], "sectionHeader": "HIGH" },
+      { "cells": ["1", "Kill", "Kill", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["2", "Kill", "Kill", "GH", "NE", "NE", "NE", "NE"] },
+      { "cells": ["3", "Kill", "Kill", "Kill", "NE", "NE", "NE", "NE"] },
+      { "cells": ["4", "Kill", "Kill", "Kill", "GH", "NE", "NE", "NE"] },
+      { "cells": ["5", "Kill", "Kill", "Kill", "Kill", "NE", "GH", "NE"] },
+      { "cells": ["6", "Kill", "Kill", "Kill", "Kill", "NE", "Kill", "NE"] },
+      { "cells": ["POWER", "", "", "", "", "", "", ""], "sectionHeader": "POWER" },
+      { "cells": ["1", "Kill", "Kill", "GH", "NE", "NE", "NE", "NE"] },
+      { "cells": ["2", "Kill", "Kill", "Kill", "NE", "NE", "NE", "NE"] },
+      { "cells": ["3", "Kill", "Kill", "Kill", "GH", "NE", "NE", "NE"] },
+      { "cells": ["4", "Kill", "Kill", "Kill", "Kill", "NE", "GH", "NE"] },
+      { "cells": ["5", "Kill", "Kill", "Kill", "Kill", "NE", "Kill", "NE"] },
+      { "cells": ["6", "Kill", "Kill", "Kill", "Kill", "GH", "Kill", "NE"] },
+      { "cells": ["TOTAL 1", "", "", "", "", "", "", ""], "sectionHeader": "TOTAL 1" },
+      { "cells": ["1", "Kill", "Kill", "Kill", "GH", "NE", "NE", "NE"] },
+      { "cells": ["2", "Kill", "Kill", "Kill", "Kill", "GH", "GH", "NE"] },
+      { "cells": ["3", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "GH"] },
+      { "cells": ["4", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["5", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["6", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["TOTAL 2", "", "", "", "", "", "", ""], "sectionHeader": "TOTAL 2" },
+      { "cells": ["1", "Kill", "Kill", "Kill", "Kill", "GH", "GH", "NE"] },
+      { "cells": ["2", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "GH"] },
+      { "cells": ["3", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["4", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["5", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["6", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["TOTAL 3", "", "", "", "", "", "", ""], "sectionHeader": "TOTAL 3" },
+      { "cells": ["1", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "GH"] },
+      { "cells": ["2", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["3", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["4", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["5", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] },
+      { "cells": ["6", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill", "Kill"] }
+    ],
+    "footnotes": [
+      "NE = No Effect.",
+      "GH = Glancing Hit — figure is wounded, cannot move or fire until after next phase.",
+      "Stun = No move or attack for 3 turns unless a 6 is rolled.",
+      "Kill = Removed from play unless medical aid / digimedic in play.",
+      "* PA Shielded and DA Shielded columns assume the shield is active. See Shield Rules.",
+      "Null shielded figures cannot be harmed.",
+      "Figures who have not fired yet, but are killed, are placed on their sides as a reminder that they still can fire.",
+      "Count Hibevor PA as AD class for damage purposes.",
+      "Any Growwlan firearm: +1 to hit. Advanced laser pistol/rifle: +1. Firing heavy bolt pistol: +1."
+    ],
+    "rulesRefs": ["infantry-damage-table", "damage-modifiers"]
+  },
+  {
+    "id": "damage-modifiers",
+    "name": "Damage Table Modifiers",
+    "category": "COMBAT_INFANTRY",
+    "description": "Add or subtract the following modifiers to the 1D6 Damage Table roll before consulting the Infantry Damage Table.",
+    "headers": ["Condition", "Modifier"],
+    "rows": [
+      { "cells": ["TARGET CONDITIONS", ""], "sectionHeader": "Target" },
+      { "cells": ["Fast infantry in Segregation Era", "-1"] },
+      { "cells": ["Critical hit scored (natural 12 to hit)", "+2"] },
+      { "cells": ["Hero with constitution skill", "-2"] },
+      { "cells": ["Suitably shielded (active shield)", "-3"] },
+      { "cells": ["Suitably shielded (Tank gun)*", "-1"] },
+      { "cells": ["Null shielded figure", "Cannot be harmed"] },
+      { "cells": ["RACE MODIFIERS", ""], "sectionHeader": "Race" },
+      { "cells": ["Any Growwlan firearm", "+1"] },
+      { "cells": ["Advanced laser pistol/rifle", "+1"] },
+      { "cells": ["Firing heavy bolt pistol", "+1"] },
+      { "cells": ["Target is Hibevor/Grey", "+1"] },
+      { "cells": ["Target is Thuntra/Orcoid", "-1"] },
+      { "cells": ["Kra'vak 'enraged'", "-1"] },
+      { "cells": ["Kra'vak 'battle rage'", "-2"] }
+    ],
+    "footnotes": [
+      "* Shield modifier vs vehicle guns and AT weapons is -1 instead of -3.",
+      "Count Hibevor PA as AD class for damage table column.",
+      "Figures with an active shield — the shield will go down on a 6 on 1D6 if a NE hit is received, or 3–6 if a GH hit is received."
+    ],
+    "rulesRefs": ["damage-modifiers", "shields"]
+  },
+  {
+    "id": "grenades-indirect-fire",
+    "name": "Grenades and Indirect Fire",
+    "category": "COMBAT_INFANTRY",
+    "description": "Roll 1D6 to determine if a thrown grenade or indirect fire weapon hits the target based on the target's cover.",
+    "headers": ["Target Cover", "1D6 to Hit"],
+    "rows": [
+      { "cells": ["No cover, in open", "Automatically hit"] },
+      { "cells": ["Soft cover", "1–2 miss, 3–6 hit"] },
+      { "cells": ["Hard cover", "1–4 miss, 5–6 hit"] },
+      { "cells": ["Reinforced cover", "1–5 miss, 6 hit"] },
+      { "cells": ["High wall / building / large vehicle in way", "Cannot be hit"] }
+    ],
+    "footnotes": [
+      "If a grenade was thrown by a figure with 'Grenadier' skill, add 1 to the 1D6 roll above.",
+      "Missile launchers/salvos may alternatively fire any type of specialised grenade (blast radius identical to grenade being used).",
+      "Indirect fire means the firer does not need line of sight to the target."
+    ],
+    "rulesRefs": ["grenades-rules", "indirect-fire"]
+  },
+  {
+    "id": "grenade-types",
+    "name": "Grenade Types",
+    "category": "COMBAT_INFANTRY",
+    "description": "All grenade and missile types available for infantry, with their blast templates, impact types, and special effects.",
+    "headers": ["Grenade Type", "Code", "Effect / Impact", "Blast Template"],
+    "rows": [
+      { "cells": ["INFANTRY GRENADES", "", "", ""], "sectionHeader": "Infantry Grenades" },
+      { "cells": ["High Explosive", "HE", "Standard damage. Effective vs lightly armoured troops.", "2"] },
+      { "cells": ["SUPPORT GRENADES", "", "", ""], "sectionHeader": "Support Grenades" },
+      { "cells": ["Armour Piercing", "AP", "High damage. Small blast, better vs PA/AD troops.", "1"] },
+      { "cells": ["Anti-Vehicular", "AV", "Power damage vs vehicles, low damage vs figures. -1 vs PS shields only.", "1"] },
+      { "cells": ["SPECIAL GRENADES", "", "", ""], "sectionHeader": "Special Grenades" },
+      { "cells": ["Frag Hyper-Hit", "FH", "High damage, large blast. Effective vs lightly armoured.", "3"] },
+      { "cells": ["Smoke", "SM", "Blocking only — see concealment rules.", "2"] },
+      { "cells": ["Limpet", "LP", "Self-tracking. +2 hit bonus. Power damage. 1 figure only.", "—"] },
+      { "cells": ["Armour Piercing (grenade)", "AP", "High damage, small blast, better vs PA/AD.", "2"] },
+      { "cells": ["Stun", "STU", "Stun damage type.", "2"] },
+      { "cells": ["Anti-Vehicular (grenade)", "AV", "Power damage vs vehicles. -1 vs PS shields only.", "1"] },
+      { "cells": ["MISSILES", "", "", ""], "sectionHeader": "Missiles" },
+      { "cells": ["Anti-Personnel", "AP-M", "Large blast anti-personnel. Standard damage.", "4"] },
+      { "cells": ["Anti-Tank", "AT-M", "Total 2 damage vs vehicles. Standard damage vs figures. -1 vs PS shields.", "1"] }
+    ],
+    "footnotes": [
+      "Blast templates are circular templates.",
+      "Fire templates (cone-shaped) are separate from blast templates."
+    ],
+    "rulesRefs": ["grenades-rules"]
+  },
+  {
+    "id": "off-table-fire-support",
+    "name": "Off-Table Fire Support",
+    "category": "FIRE_SUPPORT",
+    "description": "Rules for calling in off-table artillery and fire support. Target is first pointed — counts as firing, range up to 40 inches, does not expose the trooper.",
+    "headers": ["Designator Condition", "Roll Required (1D6)"],
+    "rows": [
+      { "cells": ["Designating trooper with no leader", "6 needed for strike"] },
+      { "cells": ["Trooper has leader in squad", "5–6 needed"] },
+      { "cells": ["Designator IS leader/hero", "4–6 needed"] },
+      { "cells": ["Command vehicle in play", "3–6 needed"] }
+    ],
+    "footnotes": [
+      "Success means placing the grenade/missile template of choice over the target immediately.",
+      "The call may be made in either the movement phase or firing phase.",
+      "Range up to 40 inches from the designating trooper."
+    ],
+    "rulesRefs": ["off-table-fire-support"]
+  },
+  {
+    "id": "cc-actions-table",
+    "name": "Close Combat Actions Table",
+    "category": "CLOSE_COMBAT",
+    "description": "When a figure is in close combat range, roll 1D6 (if needed) to determine which close combat action it takes.",
+    "headers": ["1D6 Roll", "C.C. Action", "Notes"],
+    "rows": [
+      { "cells": ["1–2", "Fire close assault weapon*", "*Any pistol, auto laser, shotgun, SMG, palm flamer."] },
+      { "cells": ["3–4", "Move up to 2 inches", "This may include moving over obstacles, through an unlocked door, engaging into hand to hand combat. Squad formation/coherency must be maintained."] },
+      { "cells": ["5–6", "Throw a grenade", "Bear in mind blast radius!"] }
+    ],
+    "footnotes": [
+      "Close combat actions occur during the Close Combat phase.",
+      "All figures within 5cm of an enemy may make a close combat action after passing their troop roll."
+    ],
+    "rulesRefs": ["close-combat"]
+  },
+  {
+    "id": "h2h-throw-modifiers",
+    "name": "Hand to Hand Combat Throw Modifiers",
+    "category": "CLOSE_COMBAT",
+    "description": "Each combatant in H2H throws 1D10 and adds all applicable modifiers. Highest total wins. Apply modifiers from both the figure's training/type and its equipment/weapons.",
+    "headers": ["Modifier", "Value", "Modifier", "Value"],
+    "rows": [
+      { "cells": ["TRAINING / TYPE", "", "", ""], "sectionHeader": "Training & Type" },
+      { "cells": ["Hero", "+3", "No melee weapon / unarmed", "0"] },
+      { "cells": ["Elite", "+2", "Gun butt used", "-1"] },
+      { "cells": ["Veteran", "+1", "Steel sword / axe / vibro knife / club", "0"] },
+      { "cells": ["Regular", "+0", "Mecha blades fitted", "+2"] },
+      { "cells": ["Civilian", "-2", "Force sword / power sword / power glove", "+3"] },
+      { "cells": ["Robot or android", "-2", "Paralysis rod / riot stick / hook", "+3"] },
+      { "cells": ["Swordsman skill", "+4", "Imp. Warhammer / warsword", "+4"] },
+      { "cells": ["Each extra opponent (max +4 bonus)", "+2", "Power axe / mono scimitar / Mech claws", "+5"] },
+      { "cells": ["Just had a glancing hit", "-2", "Colossus claws / power axe glove", "+5"] },
+      { "cells": ["On higher ground", "+2", "Orcoid Warhammer", "+6"] },
+      { "cells": ["Small Mecha / Battlesuit", "+12", "Lightsword", "+8"] },
+      { "cells": ["Medium Mecha / Suit", "+15", "", ""] },
+      { "cells": ["Heavy Mecha / Suit", "+19", "", ""] },
+      { "cells": ["RACE MODIFIERS", "", "", ""], "sectionHeader": "Race Modifiers" },
+      { "cells": ["Doper (drug user)", "No close combat", "Pirate multiblades", "+3"] },
+      { "cells": ["Fast infantry", "-0", "Advanced force sword / vibro-club", "+4"] },
+      { "cells": ["Light armour infantry", "0", "", ""] },
+      { "cells": ["Power armour infantry", "+5", "Hibevor / Grey", "-2"] },
+      { "cells": ["Assault Dreadnought infantry", "+6", "Growwlan / Spug / K'Kree", "-3"] },
+      { "cells": ["Kra'vak 'normal'", "+1", "Ferrapur / Orcoid", "+2"] },
+      { "cells": ["Kra'vak 'enraged'", "+2", "Centaling", "+3"] },
+      { "cells": ["Kra'vak 'battle rage'", "+3", "Warbird / Thuntra", "+5"] },
+      { "cells": ["Hunter / Terror claws", "+3", "Colossus claws", "+5"] }
+    ],
+    "footnotes": [
+      "Both sides roll 1D10 simultaneously and add all applicable modifiers.",
+      "Highest total wins the H2H combat.",
+      "In a tie, neither side wins — both may still attack in the next phase."
+    ],
+    "rulesRefs": ["close-combat-h2h"]
+  },
+  {
+    "id": "cover-concealment",
+    "name": "Cover and Concealment Chart",
+    "category": "COVER",
+    "description": "Types of cover and their concealment ranges for infantry figures and vehicles. Concealment prevents targeting beyond the listed range.",
+    "headers": ["Type of Cover", "Examples", "Concealment Range — Figures", "Concealment Range — Vehicles"],
+    "rows": [
+      { "cells": ["NONE", "Desert, road, large flat featureless terrain", "As far as any line of sight exists", "As far as any line of sight exists"] },
+      { "cells": ["SOFT", "Scrub, bush land, light woods, crops, foliage", "10 inches (7)", "18 inches"] },
+      { "cells": ["HARD", "Buildings, heavy jungle, low walls, in crater, in trench", "6 inches (4)", "12 inches"] },
+      { "cells": ["REINFORCED", "Bunkers, in armoured vehicles", "4 inches (4)", "8 inches"] },
+      { "cells": ["ABSOLUTE", "No line of sight, behind high wall etc.", "2 inches", "4 inches"] }
+    ],
+    "footnotes": [
+      "Numbers in parentheses indicate the modified range when the figure is actively concealed (using camouflage/scout skill).",
+      "Soft cover: -1 to hit penalty on attacker's to-hit roll.",
+      "Hard cover: -2 to hit penalty.",
+      "Reinforced cover: -3 to hit penalty."
+    ],
+    "rulesRefs": ["cover-concealment"]
+  },
+  {
+    "id": "morale-leadership",
+    "name": "Morale and Leadership Points",
+    "category": "MORALE",
+    "description": "How morale points are calculated for each army. At ½ morale the army is SHAKEN. If a shaken army rolls 7+ on 2D6, it becomes BROKEN.",
+    "headers": ["Element", "Morale Points"],
+    "rows": [
+      { "cells": ["Each trooper (all types)", "1"] },
+      { "cells": ["Each armoured vehicle or hero", "3"] },
+      { "cells": ["Each nominated building / key defence position / VIP civilian / unmanned vehicle", "5–20 (agreed before battle)"] }
+    ],
+    "footnotes": [
+      "Medics never count as lost if killed, but do add to an army's morale strength at the beginning of the game.",
+      "An armoured vehicle is counted as 'lost' for morale only if it is 'knocked out' — not if only immobilised or with weapons KO'd.",
+      "½ Morale = SHAKEN: army is placed with a shaken counter. May fire but cannot advance.",
+      "BROKEN test: throw 2D6 — if score is 7 or more, army is 'broken' (must retreat at max speed).",
+      "BROKEN army must retreat all troops and vehicles at maximum movement. Cannot engage new targets."
+    ],
+    "rulesRefs": ["morale", "shaken-broken"]
+  },
+  {
+    "id": "shaken-broken-rules",
+    "name": "Shaken / Broken Army Rules",
+    "category": "MORALE",
+    "description": "What happens when an army reaches ½ morale value (SHAKEN) or fails its broken test.",
+    "headers": ["State", "Condition", "Effect"],
+    "rows": [
+      { "cells": ["SHAKEN", "Army reaches ½ morale value", "Place shaken counter next to army. Army may fire at eligible targets but cannot advance. Must test each own player turn."] },
+      { "cells": ["BROKEN TEST", "Shaken army at end of own turn", "Throw 2D6. Score 7 or more = BROKEN."] },
+      { "cells": ["BROKEN", "Failed broken test", "All troops and vehicles must retreat at maximum movement distance in at least 1 move phase per turn. Cannot engage new targets. Cannot engage those who have fired upon them in same turn."] }
+    ],
+    "footnotes": [
+      "A shaken army it may stand its ground or start to retreat but cannot advance.",
+      "Broken army may not be rallied by leaders or heroes."
+    ],
+    "rulesRefs": ["morale", "shaken-broken"]
+  },
+  {
+    "id": "squad-suppression",
+    "name": "Squad Suppression",
+    "category": "MORALE",
+    "description": "Roll 1D6 per squad against their troop roll when fired upon by a deployed support/heavy weapon or sniper. Modifiers apply to the suppression roll.",
+    "headers": ["Modifier", "Value"],
+    "rows": [
+      { "cells": ["Leader in squad", "+2"] },
+      { "cells": ["Leader within 12 inches", "+1"] },
+      { "cells": ["Squad less than ½ strength", "-1"] },
+      { "cells": ["PA troops", "+1"] },
+      { "cells": ["AD troops", "+2"] },
+      { "cells": ["Beam of flame / sun weapon used", "-1"] },
+      { "cells": ["Target squad in heavy cover", "+1"] },
+      { "cells": ["Target squad in reinforced cover", "+2"] }
+    ],
+    "footnotes": [
+      "Suppression is caused by: deployed support or heavy weapon, deployed sniper, or vehicle tank gun firing at the squad.",
+      "If squad fails suppression roll: the whole squad is SUPPRESSED.",
+      "EFFECT OF SUPPRESSION: A suppressed squad MUST move to the NEAREST cover at least 1 level higher than it currently has (unless already in hard/reinforced cover). May not move toward the enemy. May not advance while suppressed.",
+      "Suppression is removed when the squad passes a fresh troop roll."
+    ],
+    "rulesRefs": ["morale-suppression"]
+  },
+  {
+    "id": "vehicle-hit-sequence",
+    "name": "Vehicle Hit Sequence",
+    "category": "COMBAT_VEHICLE",
+    "description": "Step-by-step flowchart for resolving a ranged attack on a vehicle. Follow YES/NO branches.",
+    "headers": ["Step", "Question / Action", "YES", "NO"],
+    "rows": [
+      { "cells": ["1", "Can the target be seen? Is it in range/field of fire?", "Continue to step 2", "No line of sight/out of range/out of field → End sequence"] },
+      { "cells": ["2", "Work out base 'to hit' figure (measure range)", "—", "—"] },
+      { "cells": ["3", "Apply all hit modifiers", "—", "—"] },
+      { "cells": ["4", "Roll to hit 2D6 (Natural 12 = critical hit)", "Hit! Continue", "Missed → End sequence"] },
+      { "cells": ["5*", "Firing a missile/rocket/mortar — does target have ADS?", "Roll to disrupt incoming attack", "No ADS — skip to step 6"] },
+      { "cells": ["5a", "Roll to disrupt incoming attack (ADS roll)", "Incoming round disrupted → End sequence", "Not disrupted — continue"] },
+      { "cells": ["6", "Roll to penetrate target — Penetrated?", "Roll for hit effect on Vehicle Effect chart + non-penetrating damage if not destroyed/KO'd", "Roll on Non-Penetrating Damage chart if weapon powerful enough"] }
+    ],
+    "footnotes": [
+      "* Missiles, rockets, and mortars only — ADS (Automatic Defence System) may intercept. Maximum 2 rounds intercepted per turn.",
+      "Critical hit (natural 12): adds +2 to penetration roll.",
+      "If penetrating: Roll on Vehicle Effect of Penetration Chart (1D10 + TOTAL bonus if applicable).",
+      "If non-penetrating: Roll on Non-Penetrating Damage chart — only if weapon has sufficient power."
+    ],
+    "rulesRefs": ["vehicle-combat", "vehicle-hit-sequence"]
+  },
+  {
+    "id": "vehicle-to-hit-modifiers",
+    "name": "Vehicle Specific To-Hit Modifiers",
+    "category": "COMBAT_VEHICLE",
+    "description": "Additional to-hit modifiers that apply specifically to vehicle-mounted weapon attacks (on top of standard hit modifiers).",
+    "headers": ["Condition", "Modifier"],
+    "rows": [
+      { "cells": ["CREW TROOP RATING", ""], "sectionHeader": "Crew Rating" },
+      { "cells": ["Elite crew", "+3"] },
+      { "cells": ["Veteran crew", "+2"] },
+      { "cells": ["Regular crew", "+0"] },
+      { "cells": ["Civilian crew", "Varies"] },
+      { "cells": ["Hero crew", "-1 (from own dice)"] },
+      { "cells": ["Shaken crew", "-1"] },
+      { "cells": ["COVER + OTHER", ""], "sectionHeader": "Cover & Other" },
+      { "cells": ["Hard cover", "-2"] },
+      { "cells": ["Through smoke", "-1"] },
+      { "cells": ["Robo Turret target", "+1"] },
+      { "cells": ["ECM Suite (negates Targeter Bonus)", "Negates bonus; -2 penalty for vehicle-mounted weapons"] },
+      { "cells": ["TARGET SIZE", ""], "sectionHeader": "Target Size" },
+      { "cells": ["Vehicle target (generic)", "+1"] },
+      { "cells": ["Trike / skimmer", "+2"] },
+      { "cells": ["Vehicle APC / Tank", "+3"] },
+      { "cells": ["Vehicle is Walker", "+4"] },
+      { "cells": ["Tank is 'hull down'", "No vehicle hit bonus"] },
+      { "cells": ["Air target", "-3"] }
+    ],
+    "footnotes": [
+      "These modifiers are in addition to standard infantry hit modifiers.",
+      "Automatic Defence System (ADS): Detects when missiles/grenades/mortar rounds are fired at the vehicle. Maximum 2 rounds can be intercepted per turn."
+    ],
+    "rulesRefs": ["vehicle-combat", "vehicle-to-hit"]
+  },
+  {
+    "id": "armour-penetration",
+    "name": "Armour Penetration Chart",
+    "category": "COMBAT_VEHICLE",
+    "description": "Roll 1D10 to determine if the weapon penetrates the vehicle's armour class. Cross-reference weapon impact type (row) with vehicle armour class (column). 'Auto' = automatic penetration. Numbers = minimum D10 roll needed. NE = no penetration possible.",
+    "headers": ["Weapon Power (D10)", "Class 0–1 Soft Skin (SS)", "Class 2 Light (VL-VA)", "Class 3 Light Tank (L-VA)", "Class 4 Medium Tank (M-VA)", "Class 5 Heavy Tank (H-VA)", "Class 6 Super Heavy (VH-VA)"],
+    "rows": [
+      { "cells": ["Low", "Auto", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["Standard", "Auto", "NE", "NE", "NE", "NE", "NE"] },
+      { "cells": ["High", "Auto", "6", "7", "8", "9", "NE"] },
+      { "cells": ["Power", "Auto", "Auto", "4", "6", "8", "9"] },
+      { "cells": ["Total 1", "Auto", "Auto", "Auto", "Auto", "7", "8"] },
+      { "cells": ["Total 2", "Auto", "Auto", "Auto", "Auto", "6", "7"] },
+      { "cells": ["Total 3", "Auto", "Auto", "Auto", "Auto", "Auto", "6"] }
+    ],
+    "footnotes": [
+      "NE = No Effect — weapon cannot penetrate this armour class.",
+      "Auto = Automatic penetration — no roll required.",
+      "Add 2 to the D10 roll if a critical hit (natural 12 to-hit) was scored.",
+      "Beam guns and Lasers of any kind have a -1 penalty to penetration roll (not to the D10).",
+      "If a vehicle suffers a penetrating hit, its occupants are considered 'Shaken' for the rest of the game (-1 from the die roll).",
+      "If the vehicle has an active shield, -1 from the die roll. (Except against Flamethrowers and Sun Cannons.)"
+    ],
+    "rulesRefs": ["vehicle-combat", "armour-penetration"]
+  },
+  {
+    "id": "effect-of-penetration",
+    "name": "Vehicle Effect of Penetration Chart",
+    "category": "COMBAT_VEHICLE",
+    "description": "Roll 1D10 after a successful penetrating hit. If hit by a TOTAL impact type, add the Total Number to the D10 roll (e.g. Total 2 adds +2). Cross-reference the roll with vehicle type for the effect.",
+    "headers": ["D10 Roll", "Bike or Trike", "Car / Truck / APC / ...", "Aircraft", "Any Tank", "Any Walker", "Any Mecha / Battlesuit"],
+    "rows": [
+      { "cells": ["1", "Rider", "Passenger", "Passenger", "Stun", "Stun", "Stun"] },
+      { "cells": ["2", "Rider", "Driver", "—", "—", "Imob", "Imob"] },
+      { "cells": ["3", "—", "Weapon", "—", "—", "—", "Weapon"] },
+      { "cells": ["4", "—", "Imob", "Rider", "Stun", "—", "Stun"] },
+      { "cells": ["5", "—", "—", "—", "—", "—", "Imob"] },
+      { "cells": ["6", "—", "Weapon", "Weapon", "Imob", "Stun", "Weapon"] },
+      { "cells": ["7", "Imob", "—", "Imob", "—", "Weapon", "—"] },
+      { "cells": ["8", "Weapon", "KO1", "—", "Weapon", "—", "KO1"] },
+      { "cells": ["9", "KO2", "KO2", "KO2", "KO1", "KO1", "KO1"] },
+      { "cells": ["10", "—", "DESTROY", "DESTROY", "KO2", "KO2", "KO2"] },
+      { "cells": ["11", "—", "—", "—", "—", "DESTROY", "DESTROY"] },
+      { "cells": ["12", "—", "—", "—", "—", "—", "—"] },
+      { "cells": ["13", "DESTROY", "—", "—", "DESTROY", "—", "—"] }
+    ],
+    "footnotes": [
+      "If hit by a TOTAL Hit, add the Total Number (e.g. Total 2 gives +2) to the Dice Roll.",
+      "Blank cells (—) = re-roll or treat as next result down.",
+      "See Hit Effect Explanations chart for what each result means."
+    ],
+    "rulesRefs": ["vehicle-combat", "vehicle-hit-effects"]
+  },
+  {
+    "id": "hit-effect-explanations",
+    "name": "Hit Effect Explanations",
+    "category": "COMBAT_VEHICLE",
+    "description": "What each penetration result code means for the vehicle and its crew/occupants.",
+    "headers": ["Result", "Explanation"],
+    "rows": [
+      { "cells": ["Hit", "The cyclist/gunner is hit. If both are present, roll 1D6: 1–3 cyclist hit, 4–6 gunner hit."] },
+      { "cells": ["Rider", "(Cyclist only) The cyclist/rider is hit — roll for damage at Standard impact."] },
+      { "cells": ["Passenger", "The cyclists/driver may fire or embark/disembark troops (1D6: 1–3 cyclist hit, 4–6 gunner hit), until the move phase a 5 or 6 is thrown."] },
+      { "cells": ["Stun", "A stunned vehicle may do nothing (move or fire) until the move phase a 5 or 6 is thrown. The vehicle may not move for the remainder of the game, but may fire weapons."] },
+      { "cells": ["Imob", "Vehicle is immobilised; no effect on passengers or crew who may disembark if they so wish. The vehicle may not move for the remainder of the game, but may fire weapons."] },
+      { "cells": ["Weapon", "All vehicle weapon systems have been knocked out, no effect on occupants or vehicles movement capabilities. No vehicle weapons may be fired for the remainder of the game."] },
+      { "cells": ["KO 1", "Vehicle knocked out, may not fire or move for the rest of the game, but provides hard cover for troops behind. Any occupants take one 'Low' damage level hit. (1D6 for each occupant)"] },
+      { "cells": ["KO 2", "Vehicle knocked out, in addition exploding as per high damage level hit. (Dice for each occupant). Any vehicle is removed and replaced by a crater marker, and any vehicle being destroyed do not leave a crater."] },
+      { "cells": ["Destroy", "Vehicle is placed on the ground immediately underneath its current flying/landed location. Any vehicle occupants are automatically killed. Any troops riding on it are automatically killed."] },
+      { "cells": ["Crash", "(Aircraft only). Vehicle is placed on the ground immediately underneath its current position. Rolls 1D6: 1–2 it is stunned, 3 as KO1, 4 as KO2, 5–6 as Destroyed."] }
+    ],
+    "footnotes": [],
+    "rulesRefs": ["vehicle-combat", "vehicle-hit-effects"]
+  },
+  {
+    "id": "non-penetrating-damage",
+    "name": "Non-Penetrating Damage Chart",
+    "category": "COMBAT_VEHICLE",
+    "description": "Roll 1D20 when a non-penetrating hit occurs on a vehicle (if the weapon is powerful enough). Modifiers apply based on target vehicle facing and weapon type.",
+    "headers": ["1D20 Roll", "Effect on Vehicle"],
+    "rows": [
+      { "cells": ["1–5", "No effect"] },
+      { "cells": ["6–8", "Vehicle is stunned (cannot move or fire next phase — roll 5+ on 1D6 to recover)"] },
+      { "cells": ["9–12", "Weapon mount damaged — one weapon system is inoperable for the rest of the game"] },
+      { "cells": ["13–15", "Crew shaken — all vehicle crew rolls at -1 for the rest of the game"] },
+      { "cells": ["16–18", "Tracks / wheels / drive damaged — vehicle moves at half speed for the rest of the game"] },
+      { "cells": ["19–20", "Catastrophic secondary explosion — treat as KO1 result"] }
+    ],
+    "footnotes": [
+      "Non-penetrating hits can only affect vehicles of Class 0–2 (VL-VA) for weapons with Standard or lower impact.",
+      "High impact or above: can affect all armour classes on a non-penetrating hit.",
+      "Flamethrowers and Sun Cannons cause non-penetrating damage on all armour classes regardless of penetration.",
+      "See separate Non-Penetrating Result Explanations chart."
+    ],
+    "rulesRefs": ["vehicle-combat", "non-penetrating-hits"]
+  },
+  {
+    "id": "non-penetrating-result-explanations",
+    "name": "Non-Penetrating Result Explanations",
+    "category": "COMBAT_VEHICLE",
+    "description": "Explanation of what each Non-Penetrating Damage result means in play.",
+    "headers": ["Result", "Explanation"],
+    "rows": [
+      { "cells": ["No Effect", "The hit has no game effect. The vehicle and crew continue normally."] },
+      { "cells": ["Stunned", "The vehicle may not move or fire in the next movement/fire phase. Roll 5+ on 1D6 at start of each player turn to recover."] },
+      { "cells": ["Weapon Damaged", "One weapon system chosen by the firer is permanently inoperable. Mark on the army record sheet."] },
+      { "cells": ["Crew Shaken", "All vehicle crew rolls are made at -1 for the rest of the game. Penalty is cumulative if hit again."] },
+      { "cells": ["Drive Damaged", "Vehicle moves at half normal speed for the rest of the game. Tracked vehicles may not turn sharply."] },
+      { "cells": ["Secondary Explosion", "Treat as a KO1 penetrating hit result — vehicle knocked out, may not move or fire, provides hard cover."] }
+    ],
+    "footnotes": [],
+    "rulesRefs": ["vehicle-combat", "non-penetrating-hits"]
+  },
+  {
+    "id": "shield-rules",
+    "name": "Shield Rules",
+    "category": "SHIELDS",
+    "description": "Energy and Projectile shields provide damage roll modifiers. They can be knocked down by hits.",
+    "headers": ["Type", "Protects Against", "Modifier vs Inf. Weapons", "Modifier vs Vehicle Guns & AT"],
+    "rows": [
+      { "cells": ["Energy (ES)", "Lasers, beam guns, conversion burners, auto blasters", "-3", "-1"] },
+      { "cells": ["Projectile (PS)", "Bolters, automatics, pistols, ramjet shots, 40–150mm CPP guns, rail gun, vulcan, missile, grenades", "-3", "-1"] },
+      { "cells": ["Multi", "As either PS or ES — vehicle use only", "-2", "-1"] }
+    ],
+    "footnotes": [
+      "Shields modify the 1D6 damage roll by the listed value before consulting the Infantry Damage Table.",
+      "DOWNED SHIELDS: Non-penetrating hits received: shield goes down on a 6 (roll 1D6). Penetrating hits: shield goes down on 3–6 (roll 1D6).",
+      "Once a shield is down it is destroyed — it cannot be recharged during the battle.",
+      "Null-shielded figures cannot be harmed by weapons that the shield protects against.",
+      "Multi shields may only be fitted to vehicles."
+    ],
+    "rulesRefs": ["shields"]
+  },
+  {
+    "id": "alien-ranged-weapons",
+    "name": "Alien Ranged Weapons",
+    "category": "ALIENS",
+    "description": "Race-specific alien weapons available only to the listed alien races. All stats use the same 2D6 to-hit system as standard weapons.",
+    "headers": ["Weapon", "Code", "Race", "0–4\"", "5–20\"", "21–40\"", "41–80\"", "Max Range", "Impact", "Pts"],
+    "rows": [
+      { "cells": ["Advanced Laser Pistol", "ALP", "Grey/Ferrapur/Centaling", "5", "8", "—", "—", "40", "Standard", "6"] },
+      { "cells": ["Advanced Laser Rifle", "ALR", "Grey/Ferrapur/Centaling", "5", "7", "8", "10", "80", "Standard", "8"] },
+      { "cells": ["Advanced Sniper Cannon", "ASC", "Grey/Ferrapur", "8", "7", "7", "8", "120", "High", "12"] },
+      { "cells": ["Advanced Grenade Launcher", "AGL", "Grey/Ferrapur/Centaling", "6", "7", "8", "9", "40", "Varies", "10"] },
+      { "cells": ["Power Sphere Projector", "PSP", "Ferrapur", "5", "6", "8", "—", "30", "High", "12"] },
+      { "cells": ["SPUG Heavy Support Weapon", "SHW", "SPUG", "6", "7", "9", "11", "80*", "High", "10"] },
+      { "cells": ["Double-Barrel Support Bolter", "DSB", "SPUG", "5", "7", "9", "11", "60*", "Standard", "8"] },
+      { "cells": ["Ork/Growwlan Minigun", "OMG", "Growwlan", "5", "6", "8", "11", "60*", "Standard", "14"] },
+      { "cells": ["Shock Pistol", "SKP", "Replican", "5", "8", "—", "—", "20", "Stun", "3"] },
+      { "cells": ["Shock Rifle", "SKR", "Replican", "5", "7", "8", "—", "40", "Stun", "5"] },
+      { "cells": ["Shock Grenade Pack", "SGP", "Replican", "5", "7", "—", "—", "20", "Stun", "4"] },
+      { "cells": ["P-Beam Autogun", "PBA", "Replican", "5", "6", "8", "10", "60*", "High", "10"] },
+      { "cells": ["Kra'vak Gauss Rifle", "KGR", "Kra'vak", "5", "7", "8", "10", "100", "High", "10"] },
+      { "cells": ["Head-Mounted Missile Pod", "HMP", "Kra'vak", "CNF", "7", "8", "10", "60", "Total 1", "12"] },
+      { "cells": ["Anti-Armour Rifle", "AAR", "Orcoid", "8", "7", "8", "10", "80", "Power", "14"] },
+      { "cells": ["Carver Revolver", "CVR", "Orcoid", "5", "7", "—", "—", "15", "High", "5"] },
+      { "cells": ["Carver Blunderbuss", "CBB", "Orcoid", "5", "7", "—", "—", "15", "High", "6"] },
+      { "cells": ["Sun Cannon (Support)", "SCS", "Thuntra", "2", "5", "8", "—", "40*", "High", "16"] },
+      { "cells": ["9-Shot Missile Pod", "9MP", "Thuntra", "CNF", "6", "7", "9", "60*", "Total 1", "18"] },
+      { "cells": ["Shard Carbine", "SHC", "Warbird", "5", "7", "8", "—", "40", "Standard", "4"] },
+      { "cells": ["Shard Rifle", "SHR", "Warbird", "5", "7", "9", "11", "80", "High", "7"] },
+      { "cells": ["Shard Cannon", "SCN", "Warbird", "6", "7", "8", "10", "80*", "High", "12"] },
+      { "cells": ["Tox-Cannon", "TOX", "Warbird", "5", "6", "8", "—", "30", "Special", "10"] }
+    ],
+    "footnotes": [
+      "* Max range marked with * causes suppression.",
+      "CNF = Cannot fire from that range band.",
+      "Alien weapons may only be used by the listed races.",
+      "Any Growwlan firearm adds +1 to hit against the target."
+    ],
+    "rulesRefs": ["alien-weapons"]
+  },
+  {
+    "id": "alien-figure-movement",
+    "name": "Alien Figure Movement",
+    "category": "ALIENS",
+    "description": "Special movement rates and rules for alien races with non-standard movement.",
+    "headers": ["Race", "Movement Notes", "Special Rules"],
+    "rows": [
+      { "cells": ["GREY", "Standard movement as FI/LA", "See alien figure movement chart in source material."] },
+      { "cells": ["BUG — Runner", "Fast movement", "Runner and Terror: firer gets -1 to hit."] },
+      { "cells": ["BUG — Hunter", "Fast movement with jump ability", "Hunter and Flyer: firer gets -2 to hit."] },
+      { "cells": ["BUG — Terror", "Large creature, medium movement", "Terror claws: +3 H2H modifier."] },
+      { "cells": ["BUG — Flyer", "Flying movement", "Flyer: firer gets -2 to hit."] },
+      { "cells": ["BUG — Cerebral/Queen", "Slow movement", "Cerebral/Colossus: firer gets +2 to hit."] },
+      { "cells": ["BUG — Colossus", "Very slow, heavily armoured", "Colossus claws: +5 H2H modifier."] },
+      { "cells": ["CENTALING", "Standard movement", "Firer targeting Centaling: -1 to hit."] },
+      { "cells": ["HIBEVOR", "Standard movement (count PA as AD for damage)", "Hibevor firing: +1 bonus to hit. Damage modifier vs Hibevor/Grey: +1."] },
+      { "cells": ["THUNTRA", "Standard movement (massive figures)", "Firer vs Thuntra/Warbird: +2 to hit."] },
+      { "cells": ["WARBIRD", "Flying movement available", "Firer vs Thuntra/Warbird: +2 to hit."] }
+    ],
+    "footnotes": [
+      "Non-standard movement rates are detailed in the Beamstrike Era supplements and army lists.",
+      "BUG figures do not use standard jet packs.",
+      "Flying figures use aircraft altitude rules where applicable."
+    ],
+    "rulesRefs": ["alien-background", "alien-movement"]
+  },
+  {
+    "id": "trooper-hit-sequence",
+    "name": "Trooper Hit Sequence",
+    "category": "REFERENCE",
+    "description": "Step-by-step flowchart for resolving a ranged attack on an infantry figure. Follow YES/NO branches in order.",
+    "headers": ["Step", "Check", "YES → Continue", "NO → Result"],
+    "rows": [
+      { "cells": ["1", "Can the target be seen? Is it in range/field of fire?", "Continue", "No line of sight/out of range/out of field → End sequence"] },
+      { "cells": ["2", "Is the target eligible? (See Troop QR sheet)", "Continue", "Not eligible target → End sequence"] },
+      { "cells": ["3", "Is the target a leader/medic/squad support?", "Continue to step 4", "Follow on to next line"] },
+      { "cells": ["4", "Target gets troop roll to avoid being targeted", "Avoided → End sequence", "Failed roll → Continue"] },
+      { "cells": ["5", "Work out base 'to hit' figure (measure range)", "—", "—"] },
+      { "cells": ["6", "Apply all hit modifiers", "—", "—"] },
+      { "cells": ["7", "Roll to hit 2D6 (Natural 12 = critical hit)", "Hit! Continue", "Missed → End sequence"] },
+      { "cells": ["8", "Roll 1D6 on the Infantry Damage Table (apply modifiers)", "—", "—"] },
+      { "cells": ["9", "Consult medical aid/digimedic rules if in play", "—", "—"] }
+    ],
+    "footnotes": [
+      "Natural 12 to hit = critical hit: +2 added to the damage roll.",
+      "Medical Aid: Medic within 6 inches can attempt to save a KO'd figure on 4+ (1D6).",
+      "Digimedic: If hit and has a digimedic, roll 1D6. On 5–6, the hit result is downgraded one level (Kill → GH, GH → NE)."
+    ],
+    "rulesRefs": ["ranged-combat", "infantry-damage-table"]
+  },
+  {
+    "id": "template-sizes",
+    "name": "Template Sizes",
+    "category": "REFERENCE",
+    "description": "Physical dimensions of fire (triangular cone) and blast (circular) templates used in the game.",
+    "headers": ["Template", "Type", "Size / Description"],
+    "rows": [
+      { "cells": ["Fire Template 1", "Triangular cone", "Short cone — for close-range weapons like flamethrowers, short burst"] },
+      { "cells": ["Fire Template 2", "Triangular cone", "Medium cone — assault rifles, short automatic weapons"] },
+      { "cells": ["Fire Template 3", "Triangular cone", "Long cone — squad support weapons, heavy auto weapons"] },
+      { "cells": ["Blast Template 1", "Circular", "Small blast — shaped charges, AP grenades, AT missiles"] },
+      { "cells": ["Blast Template 2", "Circular", "Standard blast — hand grenades, smoke grenades"] },
+      { "cells": ["Blast Template 3", "Circular", "Large blast — rocket batteries, heavy support weapons"] },
+      { "cells": ["Blast Template 4", "Circular", "Very large blast — anti-personnel missiles, heavy ordnance"] }
+    ],
+    "footnotes": [
+      "Fire templates are triangular (cone-shaped) — point at the firer, wide end toward the target.",
+      "Blast templates are circular — centre over the target/impact point.",
+      "Physical template dimensions are provided in the Beamstrike Counters and Templates document.",
+      "Any figure wholly or partially under a template is considered hit."
+    ],
+    "rulesRefs": ["template-weapons"]
+  },
+  {
+    "id": "counter-types",
+    "name": "Counter Types",
+    "category": "REFERENCE",
+    "description": "Game counters used during play to track unit status and special conditions.",
+    "headers": ["Counter", "Purpose", "When Used"],
+    "rows": [
+      { "cells": ["Suppressed", "Placed next to squad", "Squad has failed suppression test — must find cover"] },
+      { "cells": ["Shaken", "Placed next to army", "Army has reached ½ morale value"] },
+      { "cells": ["Broken", "Placed next to army", "Army has failed the Broken test (2D6 ≥ 7 while Shaken)"] },
+      { "cells": ["Deployed", "Placed next to weapon/figure", "Support/heavy weapon has been deployed for use"] },
+      { "cells": ["Sniper Deployed", "Placed next to sniper figure", "Sniper has used one move phase to deploy and is concealed"] },
+      { "cells": ["Stunned", "Placed next to figure/vehicle", "Figure or vehicle is stunned — cannot act for 3 turns"] },
+      { "cells": ["GH (Glancing Hit)", "Figure placed on its side", "Figure has received a Glancing Hit — cannot move or fire until after next phase"] },
+      { "cells": ["KO Marker", "Placed on vehicle wreck", "Vehicle has been knocked out (KO1 or KO2)"] },
+      { "cells": ["Demolition Placed", "Placed at target location", "Sapper has placed demolition pack at the target"] },
+      { "cells": ["First Shot", "Used for concealed units", "Concealed unit that has not yet fired gets First Shot bonus in fire phase"] }
+    ],
+    "footnotes": [
+      "Counter templates are provided in the Beamstrike Counters and Templates document (07__Beamstrike___Counters_And_Templates.pdf)."
+    ],
+    "rulesRefs": ["sequence-of-play", "morale", "suppression"]
+  }
+]

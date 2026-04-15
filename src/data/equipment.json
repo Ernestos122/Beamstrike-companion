@@ -1,0 +1,140 @@
+[
+  {
+    "id": "targeter",
+    "name": "Targeter",
+    "pointsCost": 3,
+    "isVehicleOnly": false,
+    "description": "Applies to main carried weapon only. +1 to hit at 0–8\", +2 at 8\"+. Cannot be fitted to tank guns (vehicle targeting systems already include this). Multiple targeters allowed per figure.",
+    "category": "targeting"
+  },
+  {
+    "id": "support-targeter",
+    "name": "Support Targeter",
+    "pointsCost": 5,
+    "isVehicleOnly": false,
+    "description": "Functions as a normal targeter when not deployed. When deployed (takes 1 move phase), allows indirect fire — another figure within 40\" can fire at a target the support targeter can see, even without direct line of sight. -2 penalty for the indirect firer.",
+    "category": "targeting"
+  },
+  {
+    "id": "digimedic",
+    "name": "Digimedic",
+    "pointsCost": 6,
+    "isVehicleOnly": false,
+    "description": "If figure receives a hit, roll 1d6. On a 5–6, result is downgraded one step: Kill → GH, GH → NE. Some armour types have them built in.",
+    "category": "medical"
+  },
+  {
+    "id": "laser-painter",
+    "name": "Laser Painter",
+    "pointsCost": 15,
+    "isVehicleOnly": false,
+    "description": "Used to call off-table fire support. Counts as an action (laser painting). Designates any target within 40\" with line of sight. Does not expose concealed troops. Used to call reinforcements too.",
+    "category": "support"
+  },
+  {
+    "id": "shield-energy",
+    "name": "Energy Shield (ES)",
+    "pointsCost": 3,
+    "isVehicleOnly": false,
+    "description": "Protects against lasers, blast weapons, beam guns. -3 modifier for infantry weapons, -1 for tank guns/AT missiles. Goes down on roll of 6 (NE hit) or 3–6 (penetrating hit). Vehicles: 10 pts.",
+    "category": "shield",
+    "vehicleCost": 10
+  },
+  {
+    "id": "shield-projectile",
+    "name": "Projectile Shield (PS)",
+    "pointsCost": 3,
+    "isVehicleOnly": false,
+    "description": "Protects against bolters, automatics, pistols, ramjet shots, 40–150mm CPP guns, rail guns, Vulcan, missiles, grenades. -3 for infantry weapons, -1 for tank guns. Goes down on 6 (NE) or 3–6 (penetrating). Vehicles: 10 pts.",
+    "category": "shield",
+    "vehicleCost": 10
+  },
+  {
+    "id": "shield-multi",
+    "name": "Multi-Shield",
+    "pointsCost": 25,
+    "isVehicleOnly": true,
+    "description": "As either ES or PS (only one can be active at a time). Vehicles only. -2 modifier for infantry weapons, -1 for tank guns. Slightly inferior to dedicated shields against small arms.",
+    "category": "shield"
+  },
+  {
+    "id": "shield-null",
+    "name": "Null Shield",
+    "pointsCost": 15,
+    "isVehicleOnly": false,
+    "description": "Cannot be harmed by any weapon while active. User may not fire while shield is active. May laser paint.",
+    "category": "shield"
+  },
+  {
+    "id": "stealth-cloak",
+    "name": "Invisibility/Stealth Cloak",
+    "pointsCost": 7,
+    "isVehicleOnly": false,
+    "description": "Light bending, chameleon shield. Makes wearer invisible in most lighting conditions. Any fire toward cloaked figure: -3 penalty to hit.",
+    "category": "shield"
+  },
+  {
+    "id": "jet-pack-fi",
+    "name": "Jet Pack (FI/Scout)",
+    "pointsCost": 5,
+    "isVehicleOnly": false,
+    "description": "Jump up to 16\" (FI) or 19\" with scout skill. Accident score 12 (2d6). Cannot be used by civilians or UA troops.",
+    "category": "mobility"
+  },
+  {
+    "id": "jet-pack-la",
+    "name": "Jet Pack (LA)",
+    "pointsCost": 5,
+    "isVehicleOnly": false,
+    "description": "Jump up to 10\". Accident score 11 (2d6). Cannot be used by civilians or UA troops.",
+    "category": "mobility"
+  },
+  {
+    "id": "jet-pack-pa",
+    "name": "Jet Pack (PA)",
+    "pointsCost": 6,
+    "isVehicleOnly": false,
+    "description": "Jump up to 8\". Accident score 10 (2d6).",
+    "category": "mobility"
+  },
+  {
+    "id": "jet-pack-ad",
+    "name": "Jet Pack (AD)",
+    "pointsCost": 10,
+    "isVehicleOnly": false,
+    "description": "Jump up to 6\". Accident score 9 (2d6).",
+    "category": "mobility"
+  },
+  {
+    "id": "ecm-suite",
+    "name": "ECM Suite",
+    "pointsCost": 20,
+    "isVehicleOnly": true,
+    "description": "Confuses targeting systems. For vehicle-mounted weapons: -2 to hit. For non-vehicle: negates any targeter bonus.",
+    "category": "electronic"
+  },
+  {
+    "id": "ads",
+    "name": "Automatic Defence System (ADS)",
+    "pointsCost": 15,
+    "isVehicleOnly": true,
+    "description": "Detects incoming missiles/grenade/mortar rounds. D10 roll of 6–10 destroys incoming round. Maximum 2 rounds intercepted per turn.",
+    "category": "electronic"
+  },
+  {
+    "id": "sensor-array",
+    "name": "Sensor Array",
+    "pointsCost": 10,
+    "isVehicleOnly": true,
+    "description": "Required for vehicle indirect fire support. Detects moving vehicles out of sight (size but not type).",
+    "category": "electronic"
+  },
+  {
+    "id": "command-array",
+    "name": "Command Array",
+    "pointsCost": 15,
+    "isVehicleOnly": true,
+    "description": "Allows vehicle to act as a command vehicle. When command vehicle is in play: fire support rolls needed 3–6 instead of 4–6.",
+    "category": "electronic"
+  }
+]

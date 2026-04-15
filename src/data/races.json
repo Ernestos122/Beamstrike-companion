@@ -1,0 +1,162 @@
+[
+  {
+    "id": "HUMAN",
+    "name": "Human",
+    "description": "Standard human forces. Most common faction in Beamstrike. Can use all standard equipment, weapons and armour types.",
+    "h2hModifier": 0,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "Standard movement rates.",
+    "special": [],
+    "alienWeaponIds": []
+  },
+  {
+    "id": "SPUG",
+    "name": "SPUG",
+    "description": "Alien race. Strong close combat fighters.",
+    "h2hModifier": 1,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "Standard movement rates.",
+    "special": ["SPUG through smoke/night: firer gets +1 to hit"],
+    "alienWeaponIds": ["spug-hvy-sup-weapon", "db-support-bolter"]
+  },
+  {
+    "id": "GREY",
+    "name": "GREY",
+    "description": "Classic alien grey beings. Poor close combat ability but with advanced technology.",
+    "h2hModifier": -2,
+    "damageModifier": 1,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "See alien figure movement chart.",
+    "special": ["Damage modifier: +1 to damage roll when target is Hibevor/Grey", "Count Hibevor PA as AD class for damage"],
+    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-sniper-cannon", "adv-grenade-launcher"]
+  },
+  {
+    "id": "BUG",
+    "name": "BUG",
+    "description": "Insectoid alien species with multiple castes: Runner, Hunter, Terror, Flyer, Cerebral, Queen, Colossus.",
+    "h2hModifier": 0,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "See alien figure movement chart. Runners/Terrors: -1 to hit, Hunters/Flyers: -2 to hit.",
+    "special": [
+      "Runner/Terror: firer gets -1 to hit",
+      "Hunter/Flyer: firer gets -2 to hit",
+      "Cerebral/Colossus: firer gets +2 to hit",
+      "Hunter/Terror claws: +3 H2H",
+      "Colossus claws: +5 H2H"
+    ],
+    "alienWeaponIds": []
+  },
+  {
+    "id": "FERRAPUR",
+    "name": "Ferrapur",
+    "description": "Alien race. Good close combat fighters. Use advanced energy weapons.",
+    "h2hModifier": 2,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "Standard movement rates.",
+    "special": [],
+    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-grenade-launcher", "adv-sniper-cannon", "power-sphere-projector"]
+  },
+  {
+    "id": "CENTALING",
+    "name": "Centaling",
+    "description": "Alien race. Excellent close combat fighters.",
+    "h2hModifier": 3,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "See alien figure movement chart.",
+    "special": ["Centaling: firer gets -1 to hit"],
+    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-grenade-launcher"]
+  },
+  {
+    "id": "HIBEVOR",
+    "name": "Hibevor",
+    "description": "Alien race. Poor close combat but uses special firing bonus through smoke/darkness.",
+    "h2hModifier": -2,
+    "damageModifier": 1,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "See alien figure movement chart.",
+    "special": [
+      "Hibevor firing: +1 bonus to hit",
+      "Count Hibevor PA as AD class for damage purposes",
+      "Damage modifier vs Hibevor/Grey: +1"
+    ],
+    "alienWeaponIds": []
+  },
+  {
+    "id": "GROWWLAN",
+    "name": "Growwlan",
+    "description": "Alien race. Night vision capability and good close combat fighters.",
+    "h2hModifier": 1,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "Standard movement rates.",
+    "special": ["Growwlan firing at night/in dark: +1 bonus to hit"],
+    "alienWeaponIds": ["ork-minigun"]
+  },
+  {
+    "id": "REPLICAN",
+    "name": "Replican",
+    "description": "Alien race. Advanced technology users.",
+    "h2hModifier": 0,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "Standard movement rates.",
+    "special": [],
+    "alienWeaponIds": ["shock-pistol", "shock-rifle", "shock-grenade-pack", "p-beam-autogun"]
+  },
+  {
+    "id": "KRAVAK",
+    "name": "Kra'vak",
+    "description": "Alien race with battle rage ability. Uses gauss weaponry.",
+    "h2hModifier": 1,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "Standard movement rates.",
+    "special": [
+      "Normal: +1 H2H",
+      "Enraged: +2 H2H, -1 to damage roll when target, firer gets -1 to hit them",
+      "Battle rage: +3 H2H, -2 to damage roll when target"
+    ],
+    "alienWeaponIds": ["kravak-gauss-rifle", "head-missile-pod"]
+  },
+  {
+    "id": "ORCOID",
+    "name": "Orcoid",
+    "description": "Alien race. Good close combat and sturdy.",
+    "h2hModifier": 2,
+    "damageModifier": -1,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "Standard movement rates.",
+    "special": ["Damage modifier vs Thuntra/Orcoid: -1"],
+    "alienWeaponIds": ["anti-armour-rifle", "carver-revolver", "carver-blunderbuss"]
+  },
+  {
+    "id": "THUNTRA",
+    "name": "Thuntra",
+    "description": "Massive alien race. Exceptional close combat fighters.",
+    "h2hModifier": 5,
+    "damageModifier": -1,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "See alien figure movement chart.",
+    "special": [
+      "Damage modifier vs Thuntra/Orcoid: -1",
+      "Firer vs Thuntra/Warbird: +2 to hit"
+    ],
+    "alienWeaponIds": ["sun-cannon-support", "9-shot-missile-pod"]
+  },
+  {
+    "id": "WARBIRD",
+    "name": "Warbird",
+    "description": "Flying alien race. Exceptional close combat ability.",
+    "h2hModifier": 5,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "See alien figure movement chart. Flying capability.",
+    "special": ["Firer vs Thuntra/Warbird: +2 to hit"],
+    "alienWeaponIds": ["shard-rifle", "shard-carbine", "shard-cannon", "toxcannon"]
+  }
+]

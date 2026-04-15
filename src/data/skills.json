@@ -1,0 +1,83 @@
+[
+  {
+    "id": "LEADERSHIP",
+    "name": "Leadership",
+    "pointsCost": 8,
+    "maxPerArmy": null,
+    "minRequired": 1,
+    "description": "Leaders allow their squad to fire upon targets not normally available (troop roll required). Units within 8\" of leader can be rallied if army breaks. +1 bonus to squad troop rolls. At least 1 leader per army MUST be chosen.",
+    "special": "Up to 1 per squad. Max 1 leader per squad."
+  },
+  {
+    "id": "SNIPER",
+    "name": "Sniper",
+    "pointsCost": 3,
+    "maxPerArmy": 3,
+    "minRequired": 0,
+    "description": "Specialises in killing at long range with a high powered rifle. When deployed, can pick off enemy leaders and support troops, gets enhanced fire and concealment bonuses. ONLY snipers may use sniper laser, sniper rifle, and heavy sniper rifle.",
+    "special": "Maximum 3 snipers per army. Required for SL, SNR, HSR weapons."
+  },
+  {
+    "id": "SAPPER",
+    "name": "Sapper",
+    "pointsCost": 2,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Military engineer. May use demolition charges, lay minefields, deactivate booby traps, and destroy enemy defense systems. +2 to demolition dice rolls.",
+    "special": "No maximum number. Required for demolition packs."
+  },
+  {
+    "id": "GRENADIER",
+    "name": "Grenadier",
+    "pointsCost": 2,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "+2 bonus to hit with thrown grenades. +1 bonus when checking if troops in cover are injured by grenades. +1 bonus in hand to hand combat.",
+    "special": "No maximum. Any number may be fielded."
+  },
+  {
+    "id": "MEDIC",
+    "name": "Medic",
+    "pointsCost": 3,
+    "maxPerArmy": 3,
+    "minRequired": 0,
+    "description": "May attempt to heal one fallen comrade per turn (roll 4+ on 1d6, must move to within 6\" of casualty). Medics do not count toward morale loss if killed.",
+    "special": "Maximum 3 medics per army. Includes medical equipment. Medics killed do not reduce morale."
+  },
+  {
+    "id": "FANATIC",
+    "name": "Fanatic",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Morale rules do not apply. Fanatic troops do not retreat even when army is broken. If not fired upon last fire phase and no leader nearby, must advance toward nearest enemy.",
+    "special": "Available to robots, droids, and certain alien/rebel troops."
+  },
+  {
+    "id": "GUNNER",
+    "name": "Gunner",
+    "pointsCost": 1,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Allows trooper to fire tripod mounted light artillery and weapons from the heavy weapons list without penalty. Unskilled troops fire at -2 hit penalty.",
+    "special": "NOT required to fire squad support weapons."
+  },
+  {
+    "id": "SCOUT",
+    "name": "Scout",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Extra training in jet pack jumping (+3\" jump distance, -1 accident roll), laser painting, and concealment. Concealment range is reduced (shown in brackets on cover chart).",
+    "special": "Up to 2 squads of scouts may be fielded per army."
+  },
+  {
+    "id": "SWORDSMAN",
+    "name": "Swordsman",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Trained in martial arts and advanced hand to hand combat weapons like force swords and power axes. Adds +4 to 1d10 roll in hand to hand combat. Some melee weapons may ONLY be used by figures with swordsman skill.",
+    "special": "Required for Light Sword and Heavy Power Axe (Thuntra)."
+  }
+]

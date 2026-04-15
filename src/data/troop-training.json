@@ -1,0 +1,67 @@
+[
+  {
+    "id": "CIVILIAN",
+    "name": "Civilian",
+    "abbreviation": "CIV",
+    "hitModifier": -2,
+    "troopRoll": 6,
+    "h2hModifier": -2,
+    "eligibleTargets": "The closest enemy target only.",
+    "pointsCost": 0,
+    "skillsAllowed": 0,
+    "description": "Individuals with no combat training. Cannot carry main weapons or powered armour.",
+    "special": "Cannot purchase skills. May not use PA or AD armour."
+  },
+  {
+    "id": "REGULAR",
+    "name": "Regular",
+    "abbreviation": "REG",
+    "hitModifier": 0,
+    "troopRoll": 5,
+    "h2hModifier": 0,
+    "eligibleTargets": "The closest enemy troops OR any vehicle/building visible.",
+    "pointsCost": 2,
+    "skillsAllowed": 1,
+    "description": "Average, trained troops with limited battlefield experience.",
+    "special": "May purchase 1 skill."
+  },
+  {
+    "id": "VETERAN",
+    "name": "Veteran",
+    "abbreviation": "VET",
+    "hitModifier": 2,
+    "troopRoll": 4,
+    "h2hModifier": 1,
+    "eligibleTargets": "Choice of any of the 2 closest targets, or any vehicles/buildings.",
+    "pointsCost": 5,
+    "skillsAllowed": 1,
+    "description": "Battle-hardened, experienced, well trained troops.",
+    "special": "May purchase 1 skill."
+  },
+  {
+    "id": "ELITE",
+    "name": "Elite",
+    "abbreviation": "ELI",
+    "hitModifier": 3,
+    "troopRoll": 3,
+    "h2hModifier": 2,
+    "eligibleTargets": "Choice of any of the 3 closest targets, or any vehicles/buildings.",
+    "pointsCost": 10,
+    "skillsAllowed": 2,
+    "description": "Troops trained to a high level including advanced weaponry and combat techniques.",
+    "special": "May purchase 2 skills."
+  },
+  {
+    "id": "HERO",
+    "name": "Hero",
+    "abbreviation": "HER",
+    "hitModifier": 3,
+    "troopRoll": 2,
+    "h2hModifier": 3,
+    "eligibleTargets": "Choice of any of the 3 closest targets, or any vehicles/buildings.",
+    "pointsCost": 20,
+    "skillsAllowed": 6,
+    "description": "Particularly capable individual with multiple skills and bonuses in combat. Counts as 3 morale points.",
+    "special": "Base 20 points. Gets +3 ranged hit (upgradeable to +6 at 2pts/+1). Rolls 3 abilities from hero table. May fire pistol in each hand. Counts as 3 morale points."
+  }
+]

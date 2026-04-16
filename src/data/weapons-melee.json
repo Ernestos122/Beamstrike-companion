@@ -228,5 +228,37 @@
     "requiresDeployment": false,
     "requiresSkill": "SWORDSMAN",
     "remarks": "H2H bonus: +8. Vehicle damage class 4 (POWER). 10,000 year war era and above ONLY. Counts as main weapon. Elite or Hero class only. Must have Swordsman skill to use."
+  },
+  {
+    "id": "power-claw",
+    "code": "PCL",
+    "name": "Power Claw",
+    "category": "MELEE",
+    "toHit": { "band0_4": null, "band5_20": null, "band21_40": null, "band41_80": null, "band81plus": null },
+    "maxRange": 0,
+    "impact": "HIGH",
+    "optionOrMust": null,
+    "pointsCost": 7,
+    "meleeBonus": 5,
+    "causesSupp": false,
+    "requiresDeployment": false,
+    "racesAllowed": ["SPUG"],
+    "remarks": "H2H bonus: +5. SPUG Omega and Theta drone leaders, Spugnaught exo-suit. Larger and more powerful than the standard power-glove."
+  },
+  {
+    "id": "paralysis-rod",
+    "code": "PAR",
+    "name": "Paralysis Rod",
+    "category": "MELEE",
+    "toHit": { "band0_4": null, "band5_20": null, "band21_40": null, "band41_80": null, "band81plus": null },
+    "maxRange": 0,
+    "impact": "STUN",
+    "optionOrMust": null,
+    "pointsCost": 2,
+    "meleeBonus": 3,
+    "causesSupp": false,
+    "requiresDeployment": false,
+    "racesAllowed": ["GREY"],
+    "remarks": "H2H bonus: +3. Grey close combat device — acts as power sword in melee. If Grey wins combat round, enemy is 'paralysed' for the rest of the action: target troops are beamed up by Grey motherships for examination."
   }
 ]

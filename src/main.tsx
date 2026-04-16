@@ -9,6 +9,7 @@ import { ChartsPage } from '@features/charts/ChartsPage'
 import { RulebookPage } from '@features/rulebook/RulebookPage'
 import { HelpersPage } from '@features/helpers/HelpersPage'
 import { EraGuidePage } from '@features/era-guide/EraGuidePage'
+import { AliensGuidePage } from '@features/aliens-guide/AliensGuidePage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/rulebook" element={<RulebookPage />} />
           <Route path="/helpers" element={<HelpersPage />} />
           <Route path="/era1" element={<EraGuidePage />} />
+          <Route path="/aliens" element={<AliensGuidePage />} />
         </Route>
       </Routes>
     </HashRouter>

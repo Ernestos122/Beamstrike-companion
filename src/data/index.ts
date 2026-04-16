@@ -18,6 +18,8 @@ import _grenades from './grenades.json'
 import _charts from './charts.json'
 import _rulesSections from './rules-sections.json'
 import _rulesEntries from './rules-entries.json'
+import _aliensTroops from './aliens-troops.json'
+import _aliensContent from './aliens-content.json'
 
 export const version = _version
 export const races = _races
@@ -35,6 +37,8 @@ export const grenades = _grenades
 export const charts = _charts as unknown as Chart[]
 export const rulesSections = _rulesSections as unknown as RulesSection[]
 export const rulesEntries = _rulesEntries as unknown as RulesEntry[]
+export const aliensTroops = _aliensTroops
+export const aliensContent = _aliensContent
 
 /** All infantry + support + heavy + alien weapons in a single flat array */
 export const allWeapons: Weapon[] = [

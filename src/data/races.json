@@ -11,152 +11,223 @@
     "alienWeaponIds": []
   },
   {
-    "id": "SPUG",
-    "name": "SPUG",
-    "description": "Alien race. Strong close combat fighters.",
-    "h2hModifier": 1,
-    "damageModifier": 0,
-    "hitModifierWhenTargeted": 0,
-    "movementNotes": "Standard movement rates.",
-    "special": ["SPUG through smoke/night: firer gets +1 to hit"],
-    "alienWeaponIds": ["spug-hvy-sup-weapon", "db-support-bolter"]
-  },
-  {
-    "id": "GREY",
-    "name": "GREY",
-    "description": "Classic alien grey beings. Poor close combat ability but with advanced technology.",
-    "h2hModifier": -2,
-    "damageModifier": 1,
-    "hitModifierWhenTargeted": 0,
-    "movementNotes": "See alien figure movement chart.",
-    "special": ["Damage modifier: +1 to damage roll when target is Hibevor/Grey", "Count Hibevor PA as AD class for damage"],
-    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-sniper-cannon", "adv-grenade-launcher"]
-  },
-  {
-    "id": "BUG",
-    "name": "BUG",
-    "description": "Insectoid alien species with multiple castes: Runner, Hunter, Terror, Flyer, Cerebral, Queen, Colossus.",
-    "h2hModifier": 0,
-    "damageModifier": 0,
-    "hitModifierWhenTargeted": 0,
-    "movementNotes": "See alien figure movement chart. Runners/Terrors: -1 to hit, Hunters/Flyers: -2 to hit.",
-    "special": [
-      "Runner/Terror: firer gets -1 to hit",
-      "Hunter/Flyer: firer gets -2 to hit",
-      "Cerebral/Colossus: firer gets +2 to hit",
-      "Hunter/Terror claws: +3 H2H",
-      "Colossus claws: +5 H2H"
-    ],
-    "alienWeaponIds": []
-  },
-  {
-    "id": "FERRAPUR",
-    "name": "Ferrapur",
-    "description": "Alien race. Good close combat fighters. Use advanced energy weapons.",
-    "h2hModifier": 2,
-    "damageModifier": 0,
-    "hitModifierWhenTargeted": 0,
-    "movementNotes": "Standard movement rates.",
-    "special": [],
-    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-grenade-launcher", "adv-sniper-cannon", "power-sphere-projector"]
-  },
-  {
-    "id": "CENTALING",
-    "name": "Centaling",
-    "description": "Alien race. Excellent close combat fighters.",
-    "h2hModifier": 3,
-    "damageModifier": 0,
-    "hitModifierWhenTargeted": 0,
-    "movementNotes": "See alien figure movement chart.",
-    "special": ["Centaling: firer gets -1 to hit"],
-    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-grenade-launcher"]
-  },
-  {
     "id": "HIBEVOR",
     "name": "Hibevor",
-    "description": "Alien race. Poor close combat but uses special firing bonus through smoke/darkness.",
+    "description": "The most technologically advanced alien race. Physically slim, 5–6ft tall. Long-range snipers who avoid close combat. Use jet-packs, personal shields, and their signature Power Sphere Projector.",
     "h2hModifier": -2,
-    "damageModifier": 1,
+    "damageModifier": 0,
     "hitModifierWhenTargeted": 0,
-    "movementNotes": "See alien figure movement chart.",
+    "movementNotes": "See alien figure movement chart. Use jet-packs.",
     "special": [
-      "Hibevor firing: +1 bonus to hit",
-      "Count Hibevor PA as AD class for damage purposes",
-      "Damage modifier vs Hibevor/Grey: +1"
+      "Hibevor firer: +1 to hit",
+      "Count Hibevor PA armour as AD class for damage purposes",
+      "Damage modifier +1 when target is Hibevor or Grey",
+      "Hibevor may not choose hand-to-hand combat",
+      "Before advancing, Hibevor squad must pass 1d6 roll of 2 or less (or if leader present, move as player wishes)",
+      "Opportunity to take cover: 1d6 roll of 3 or less required (or if troops are in PA or vehicle)",
+      "Use jet-packs and personal shields"
     ],
-    "alienWeaponIds": []
+    "alienWeaponIds": ["power-sphere-projector"]
   },
   {
     "id": "GROWWLAN",
     "name": "Growwlan",
-    "description": "Alien race. Night vision capability and good close combat fighters.",
+    "description": "Proud warrior clan aliens, 7.5ft tall. Value personal bravery and single combat. Settle disputes with laser duels. Ride the fearsome 'Wrok' Warbird mounts. Excel at night fighting.",
     "h2hModifier": 1,
+    "damageModifier": 1,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "Standard movement rates. Wrok Warbird: 10/8/6/3/2.",
+    "special": [
+      "Growwlan units must pass troop roll NOT to advance toward enemy if not in view of a unit chief (commander lowers required score by 1)",
+      "Growwlan units must pass troop roll to hide behind cover if not in view of a unit chief",
+      "Growwlan usually only use lasers for duelling — may not be armed with any other laser weapon except a laser pistol",
+      "Growwlan may not target leaders or medics except in close or hand-to-hand combat",
+      "Growwlan see any aide to ranged combat as dishonourable — do not use targetters",
+      "Growwlan night vision: +1 to hit when firing at night or in dark",
+      "All Growwlan firearms: +1 to damage roll",
+      "Growwlan do not use jet-packs",
+      "Sniper troop skill may NOT be used"
+    ],
+    "alienWeaponIds": ["shock-pistol", "shock-rifle", "shock-grenade-pack"]
+  },
+  {
+    "id": "THUNTRA",
+    "name": "Thuntra",
+    "description": "Huge 12ft reptilian ex-slaves of the Ferrapur. Single-minded and fearsome in hand-to-hand. Hard to kill (–1 damage modifier against them). Sworn enemies of the Ferrapur.",
+    "h2hModifier": 5,
+    "damageModifier": -1,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "See alien figure movement chart. Slow but unstoppable.",
+    "special": [
+      "Thuntra must lose three-quarters of their number before becoming shaken",
+      "Thuntra may not have higher than 'regular' troop class",
+      "Thuntra are never affected by 'Glancing Hit' results — treat as 'no effect'",
+      "Fearsome H2H: humans wishing to engage Thuntra must first succeed a troop roll or choose a different close combat option",
+      "Easy to hit (+2 to hit number), but hard to kill (–1 to damage table roll)",
+      "Thuntra do not use jet-packs",
+      "Thuntra may only fight alongside Ferrapurs in battles set prior to the end of the Ten Thousand Years War",
+      "Thuntra use the Mecha special movement types STOMP and OVERTURN; classed as hull class 3"
+    ],
+    "alienWeaponIds": ["heavy-bolt-pistol", "heavy-adv-grenade-pack"]
+  },
+  {
+    "id": "CENTALING",
+    "name": "Centaling",
+    "description": "7–8ft tall four-legged humanoid mercenaries. Superb scouts and sappers. Temperamental loners — difficult to lead, brutal to enemies. In H2H, get two throws of the dice.",
+    "h2hModifier": 3,
     "damageModifier": 0,
     "hitModifierWhenTargeted": 0,
-    "movementNotes": "Standard movement rates.",
-    "special": ["Growwlan firing at night/in dark: +1 bonus to hit"],
-    "alienWeaponIds": ["ork-minigun"]
+    "movementNotes": "See alien figure movement chart. Very fast.",
+    "special": [
+      "Firer targeting a Centaling: +1 to hit",
+      "Centaling H2H: two throws of the dice — once with all bonuses (hand-held melee weapons), once at +0 (forelegs)",
+      "Centalings do not use jet-packs",
+      "Centalings fight independently — no benefits from leaders of other races. Once rallied, fight independently again",
+      "No more than 10% of any army may be Centaling",
+      "Each individual has Scout and Sapper skills",
+      "To kill a Centaling requires 2 'kill' damage hits (internal organs duplicated)"
+    ],
+    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-grenade-launcher", "adv-basic-grenade-pack"]
+  },
+  {
+    "id": "FERRAPUR",
+    "name": "Ferrapur",
+    "description": "8ft cat-like bipeds. Stealth specialists with chameleon armour. Developed advanced power-lasers. Snipers are feared throughout the Four Galaxies. Excel at close combat.",
+    "h2hModifier": 2,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "Standard movement rates. Fast.",
+    "special": [
+      "May only use advanced weapons and the Ferrapur sniper cannon",
+      "All Ferrapur have scout ability (affects concealment range etc.)",
+      "Ferrapur do not use jet-packs",
+      "Stealth cloaks often used",
+      "Damage modifier: +1 when firing Advanced Laser Pistol/Rifle",
+      "Ferrapur may only fight alongside Thuntras in battles set prior to the end of the Ten Thousand Years War"
+    ],
+    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-grenade-launcher", "adv-sniper-cannon", "adv-basic-grenade-pack"]
   },
   {
     "id": "REPLICAN",
     "name": "Replican",
-    "description": "Alien race. Advanced technology users.",
+    "description": "Advanced androids and artificial intelligences. No morale or suppression. Can field Mimick infiltrators that disguise as enemy troops. Replican vehicles do not have crew.",
     "h2hModifier": 0,
     "damageModifier": 0,
     "hitModifierWhenTargeted": 0,
     "movementNotes": "Standard movement rates.",
-    "special": [],
-    "alienWeaponIds": ["shock-pistol", "shock-rifle", "shock-grenade-pack", "p-beam-autogun"]
+    "special": [
+      "Morale and Suppression rules are NOT applicable to Replican armies",
+      "Replican forces do not suffer Night or Bad weather firing penalties",
+      "Replicans in squads must stay within 2 inches of at least one other squad member (not the standard 3 inches)",
+      "Replican vehicles are computer-controlled — no crew"
+    ],
+    "alienWeaponIds": ["p-beam-autogun"]
+  },
+  {
+    "id": "SPUG",
+    "name": "SPUG",
+    "description": "Insectoid bipeds, 6ft tall. Slow-moving and poor eyesight in dark/smoke. Hive structure: packs of 4–6 cells. Use shard weapons and toxcannons. Spugnaughts are feared exo-suits.",
+    "h2hModifier": 1,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "See alien figure movement chart. Slow. Spugnaught: 10/10/8/6/4.",
+    "special": [
+      "–1 additional to hit penalty when firing through smoke, bad weather or night time (does NOT apply to Spugnaught or Heavy Infantry)",
+      "Spugs may use advanced weapons and sniper rifles along with Spug-specific types listed",
+      "Spugs are not subject to morale rules but follow normal cohesion and suppression rules",
+      "Spugs may use jet-packs (Assault Jump Spugs are a common troop type)",
+      "Spugs may not fight alongside any other race — universally despised",
+      "Pack organisation: 4–6 Cells per Hive. Cell = 2–3 packs of 6 troopers. Spug unit without leader in cohesion suffers –2 firing penalty"
+    ],
+    "alienWeaponIds": ["shard-rifle", "shard-carbine", "shard-cannon", "toxcannon", "adv-grenade-launcher", "adv-basic-grenade-pack", "spug-hvy-sup-weapon"]
+  },
+  {
+    "id": "GREY",
+    "name": "Grey",
+    "description": "Ancient 4ft aliens who 'seeded' Earth. Highly intelligent, abhor direct conflict. Use advanced grav technology, Q-travel pods, invisibility cloaks and P-beam weapons. Shields common.",
+    "h2hModifier": -2,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 1,
+    "movementNotes": "See alien figure movement chart. Grav vehicles and Q-travel pods.",
+    "special": [
+      "Greys may only use the weapons/devices described in the supplement",
+      "Greys cut their losses and beam out sooner than most — shaken when morale points are at 2/3 instead of 1/2",
+      "Greys will not fight their own kind",
+      "Greys will not fight other aliens if games are set during the Great Ten Thousand Years War",
+      "Greys are physically slender and weak: +1 damage roll penalty on hits against them",
+      "Grey Combat Construct squad: must stay within 3 inches of control scout — if control scout killed, squad suppressed and attempts to move back to nearest Grey mothership"
+    ],
+    "alienWeaponIds": ["p-beam-autogun", "paralysis-rod"]
+  },
+  {
+    "id": "BUG",
+    "name": "Bug",
+    "description": "Chitinous semi-intelligent insectoid aliens. No manufactured weapons — claws and natural weapons only. Hive mind, multiple castes: Runner, Hunter, Terror, Flyer, Cerebral, Queen, Colossus.",
+    "h2hModifier": 0,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "See alien figure movement chart. No penalties for night/bad weather. Cerebral burrows at 6\"/move.",
+    "special": [
+      "No penalties for movement or ranged combat in night or bad weather",
+      "Runner and Terror: fanatic troops, Glancing Hit results ignored",
+      "Bug armies will not fight other bug armies (will merge — unless between queens)",
+      "Bugs CANNOT use manufactured weapons, jet packs or other equipment — claws and natural weapons only",
+      "Runner/Terror: firer gets –1 to hit",
+      "Hunter/Flyer: firer gets –2 to hit",
+      "Cerebral/Colossus: firer gets +2 to hit",
+      "Hunter/Terror claws: +3 H2H (power sword equivalent)",
+      "Colossus claws: +5 H2H (power axe equivalent)",
+      "Cerebral tunnelling: may surface anywhere along its burrow within 1 inch of exit hole each move phase"
+    ],
+    "alienWeaponIds": []
+  },
+  {
+    "id": "K_KREE",
+    "name": "K'Kree",
+    "description": "Centaur-like herbivores from the Two Thousand Worlds (T'tkhahk Xeng Kirr). Militaristic vegetarians who fight in large herds. Xenophobic towards carnivores. Conservative and claustrophobic.",
+    "h2hModifier": 1,
+    "damageModifier": 0,
+    "hitModifierWhenTargeted": 0,
+    "movementNotes": "See alien figure movement chart. Quadruped: excellent open-ground speed. K'Kree Fast Infantry: 10/8/7/6/5.",
+    "special": [
+      "All military K'Kree encountered will be at least Veteran troops",
+      "K'Kree cannot use other races' weaponry due to odd hand structure — may use any Human AND Alien chart weapons",
+      "K'Kree squads are herds of 10–20 warriors and NEVER leave a man behind",
+      "K'Kree +3 H2H bonus when fighting carnivores (Ferrapur, Thuntra, Bugs, etc.)",
+      "K'Kree will not seek any enclosed cover (no bunkers or enclosed buildings)",
+      "K'Kree will not transport in small enclosed vehicles",
+      "Coherency distance: 2 inches (not the standard 3)",
+      "K'Kree H2H: two throws — once with all bonuses (hand-held melee weapons), once at +0 (forelegs)",
+      "No K'Kree troop types are independent — all will be in herds"
+    ],
+    "alienWeaponIds": []
   },
   {
     "id": "KRAVAK",
     "name": "Kra'vak",
-    "description": "Alien race with battle rage ability. Uses gauss weaponry.",
+    "description": "Non-canonical race — not in official alien supplement. Alien race with battle rage ability. Uses gauss weaponry.",
     "h2hModifier": 1,
     "damageModifier": 0,
     "hitModifierWhenTargeted": 0,
     "movementNotes": "Standard movement rates.",
+    "canonical": false,
     "special": [
       "Normal: +1 H2H",
       "Enraged: +2 H2H, -1 to damage roll when target, firer gets -1 to hit them",
       "Battle rage: +3 H2H, -2 to damage roll when target"
     ],
-    "alienWeaponIds": ["kravak-gauss-rifle", "head-missile-pod"]
+    "alienWeaponIds": []
   },
   {
     "id": "ORCOID",
     "name": "Orcoid",
-    "description": "Alien race. Good close combat and sturdy.",
+    "description": "Non-canonical race — not in official alien supplement. Alien race. Good close combat and sturdy.",
     "h2hModifier": 2,
     "damageModifier": -1,
     "hitModifierWhenTargeted": 0,
     "movementNotes": "Standard movement rates.",
+    "canonical": false,
     "special": ["Damage modifier vs Thuntra/Orcoid: -1"],
-    "alienWeaponIds": ["anti-armour-rifle", "carver-revolver", "carver-blunderbuss"]
-  },
-  {
-    "id": "THUNTRA",
-    "name": "Thuntra",
-    "description": "Massive alien race. Exceptional close combat fighters.",
-    "h2hModifier": 5,
-    "damageModifier": -1,
-    "hitModifierWhenTargeted": 0,
-    "movementNotes": "See alien figure movement chart.",
-    "special": [
-      "Damage modifier vs Thuntra/Orcoid: -1",
-      "Firer vs Thuntra/Warbird: +2 to hit"
-    ],
-    "alienWeaponIds": ["sun-cannon-support", "9-shot-missile-pod"]
-  },
-  {
-    "id": "WARBIRD",
-    "name": "Warbird",
-    "description": "Flying alien race. Exceptional close combat ability.",
-    "h2hModifier": 5,
-    "damageModifier": 0,
-    "hitModifierWhenTargeted": 0,
-    "movementNotes": "See alien figure movement chart. Flying capability.",
-    "special": ["Firer vs Thuntra/Warbird: +2 to hit"],
-    "alienWeaponIds": ["shard-rifle", "shard-carbine", "shard-cannon", "toxcannon"]
+    "alienWeaponIds": []
   }
 ]

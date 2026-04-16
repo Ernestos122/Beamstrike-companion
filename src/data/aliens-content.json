@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "title": "Alien Races",
+    "version": "1.2",
+    "source": "Beamstrike 1.1 Alien Races Supplement v1.2 — Don Clarke and Neil Cooper, 2007",
+    "eraCompatibility": "All eras — may be fielded as complete armies where the Beamstrike timeline 'Era' allows, or as detached mercenary forces, or as one-off first contact battles."
+  },
+  "usageNote": "Alien units attached to a human army must obey morale rules for that army unless stated otherwise. Aliens may be classed as heroes unless the specific rules forbid it. Special rules for the race MUST be followed.",
+  "races": [
+    {
+      "id": "HIBEVOR",
+      "displayName": "The Hibevor",
+      "lore": "Arguably the most technologically advanced of the major alien races (although the Greys are not far behind). Hibevors are physically weak — slim, 5–6ft tall. They say little, and see much. They have a lack of emotional intelligence to human observers. They know their limitations, and therefore avoid hand-to-hand combat. For this reason their weaponry tends towards long-range, and they maximise protection of cover. Hibevor reluctance to engage at close quarters led to the rumour amongst human troops that the Hibevors were cowards. However, the 5th Imperial Guard division discovered the truth to their cost when a modest Hibevor battlegroup annihilated them in the Battle of Usk-Antares in the Ten Thousand Year War. A favourite Hibevor heavy weapon is an advanced sun weapon, the Power Sphere Projector, firing a 'mini sun' globe of burning superheated plasma — capable of taking out tanks at range.",
+      "tacticsNote": "Long-range snipers. Maximise cover. Advance cautiously. Use Power Sphere Projector as your heavy hitter — it can destroy vehicles. Jet-packs and personal shields give excellent mobility and survivability.",
+      "availability": { "segregationEra": "R", "imperialEra": "Y", "tenThousandYearWar": "Y", "borrowedTimeEra": "R" },
+      "d100Roll": "1-5"
+    },
+    {
+      "id": "GROWWLAN",
+      "displayName": "The Growwlan",
+      "lore": "Standing around seven and a half feet tall, the Growwlan are a proud and fierce race, but not mindlessly aggressive. A sense of humour is a rare thing in a Growwlan. Growwlan society is based on the warrior clan, and great importance is attached to personal acts of bravery. Single combat is the preference of the Growwlan — close combat on the battlefield coming a close second. Coming second is a disgrace. Growwlan usually settle clan grudges, feuds, and disputes with duelling lasers — single-shot, settling it irreversibly within 1 hour of activation to avoid 'mistakes'. A favoured mount is the fearsome armoured 'Wrok', looking like a huge relative of the Dodo.",
+      "tacticsNote": "Aggressive close-assault warriors. Advance toward the enemy — your troop rules may force this. Use Warbirds as fast attack platforms. All your firearms get +1 damage. Night fighting is your advantage.",
+      "availability": { "segregationEra": "-", "imperialEra": "R", "tenThousandYearWar": "Y", "borrowedTimeEra": "R" },
+      "d100Roll": "6-10"
+    },
+    {
+      "id": "THUNTRA",
+      "displayName": "The Thuntra",
+      "lore": "Thuntra are huge, 12ft tall reptilian creatures. Slow-witted, from a low-technology society. Taught to use high-tech equipment when used as a servitor race by the Ferrapurs in the Ten Thousand Year War. They bore the brunt of the Ferrapur defeats. Centuries later, when the truth of how they had been used as slaves and cannon-fodder finally filtered through the armoured skulls of their leaders, they swore eternal hatred of the Ferrapur. Despite their mental frailties, Thuntra are very single-minded and have a powerful instinct to follow a job through to the very end.",
+      "tacticsNote": "Unstoppable close-assault. Hard to kill (–1 damage modifier). Ignore Glancing Hits. Don't become shaken until 3/4 casualties. Best used in direct assault — they won't need much rallying. Keep away from Ferrapur squads unless in a pre-Ten Thousand Year War scenario.",
+      "availability": { "segregationEra": "-", "imperialEra": "R", "tenThousandYearWar": "Y", "borrowedTimeEra": "R" },
+      "d100Roll": "11-13"
+    },
+    {
+      "id": "CENTALING",
+      "displayName": "The Centaling",
+      "lore": "Centalings are seven or eight feet tall with a humanoid head and arms on the body of a four-legged creature similar to a far-ancient horse. They have excellent scouts due to their speed and agility. They are easily swayed by money, so many Centalings end up fighting as mercenary scouts. Commanders in the field find them difficult to control. From a human point of view they can be temperamental, unapproachable, and often sadistic. There is no such thing as a Centaling family unit. They have a reputation for mistreating prisoners. Little is understood about Centaling culture or motivation.",
+      "tacticsNote": "Fast scouting mercenaries. Each individual has Scout and Sapper skills — use them for flanking and infiltration. Their dual H2H throw is deadly. To kill one requires 2 kill hits due to duplicated organs. No more than 10% of any army may be Centaling.",
+      "availability": { "segregationEra": "-", "imperialEra": "R", "tenThousandYearWar": "Y", "borrowedTimeEra": "R" },
+      "d100Roll": "14-15"
+    },
+    {
+      "id": "FERRAPUR",
+      "displayName": "The Ferrapur",
+      "lore": "Ferrapurs are eight foot tall and look like the big cats of far-ancient Earth, only they walk as bipeds. To human eyes they are preening, arrogant, boorish and vain. Weapon technologies developed by the Ferrapur include advanced power-lasers, which fire charged particles along the length of the laser 'designator'. These give much higher damage values than standard lasers while keeping excellent reliability and range. The Ferrapur are stealth specialists despite their large size — their fur, clothing and armour have inbuilt chameleon qualities. Their snipers are feared and infamous throughout the Four Galaxies. Ferrapurs excel at close combat and many of their leaders are deadly in melees.",
+      "tacticsNote": "Stealth and fire superiority. Keep Marksmen at range with the advanced sniper cannon — it reaches 105 inches. Ferrapur Commander is a devastating melee hero. +1 damage on all Advanced Laser weapons. Stealth cloaks make infiltration effective.",
+      "availability": { "segregationEra": "R", "imperialEra": "R", "tenThousandYearWar": "Y", "borrowedTimeEra": "R" },
+      "d100Roll": "16-17"
+    },
+    {
+      "id": "REPLICAN",
+      "displayName": "The Replican",
+      "lore": "Many advanced civilisations eventually design and build artificially intelligent mechanisms to do things biological entities cannot do themselves. The race name 'Replican' is really a misnomer — a term used by humans to collectively name many now-independent races of machines. Several super-intelligent 'droids went to far corners of the universe after the Great Droid War. The Hibevor created, then lost control of, another group of Androids. The Replican name originated on far Earth, home-world of the human race. The first Androids were called 'Replicants', as they perfectly mimicked the Rich, powerful humans they were created to replace.",
+      "tacticsNote": "No morale. No suppression. No night/weather penalties. Field in numbers — sheer weight of Enforcers can overwhelm defenders. Mimicks are your secret weapon — infiltrate one into an enemy squad for devastating ambush. Replican vehicles are computer-controlled and need no crew.",
+      "availability": { "segregationEra": "-", "imperialEra": "R", "tenThousandYearWar": "Y", "borrowedTimeEra": "-" },
+      "d100Roll": "18-19"
+    },
+    {
+      "id": "SPUG",
+      "displayName": "The Spugs",
+      "lore": "The colonists who first encountered this alien menace called them Space Bugs, or 'Spugs', because of their insect-like appearance. In time, after human and other intelligent alien forces had marshalled sufficient resistance and xenobiologists had examined specimens, they were indexed as species XENO:00237/hostile. To the infantry grunt they were always simply Spugs. Whereas the Bugs are non-technological, the Spugs have developed high technology and FTL space travel, and have adapted alien technology for their own purposes. They do share many bug characteristics — they fall upon world after world like locusts, stripping a planet of its useful resources before moving on.",
+      "tacticsNote": "Overwhelm with numbers. Shard weapons are cheap — field lots of drones. Toxcannon is flexible (grenade or plasma barrel). The Spugnaught is a powerful independent unit. Poor visibility in smoke/dark unless using Heavy Infantry. Spugs fight nobody — universally despised by all races.",
+      "availability": { "segregationEra": "Y", "imperialEra": "Y", "tenThousandYearWar": "Y", "borrowedTimeEra": "R" },
+      "d100Roll": "20-40"
+    },
+    {
+      "id": "GREY",
+      "displayName": "The Greys",
+      "lore": "The Greys are one of the most ancient races in the galaxy, rumoured to have even 'seeded' Earth in ancient times with proto-forms of humanity. The Greys re-visited Earth every few decades to see how their 'experiment' was progressing — often abducting, operating on and generally examining the genetic and phenotypic development of individual race-lines. It was in the early years of the 21st Century that the Greys realised the Human race it had spawned had the potential to spread throughout the universe as if it were a virus on a field of crops, and possibly threatens the existence of the other galactic sentient races. The Greys masterminded the coalition of alien forces, and fought bitterly during the Great Ten Thousand Year War.",
+      "tacticsNote": "Elite, expensive, small forces. Invisibility cloaks on all infantry — use concealment aggressively. Grey Leader at 90pts is one of the most powerful individuals in the game. Beam out early (shaken at 2/3 losses, not 1/2). No ground-based wheeled/tracked vehicles — grav only. Light Saucer provides devastating fire support.",
+      "availability": { "segregationEra": "R", "imperialEra": "R", "tenThousandYearWar": "Y", "borrowedTimeEra": "R" },
+      "d100Roll": "41-50"
+    },
+    {
+      "id": "BUG",
+      "displayName": "The Bugs",
+      "lore": "For those who like the idea of Human military troops fighting chitinous semi-intelligent 'bug' type aliens — from small 'face-ripper' running types to larger, more ferocious 'warrior' type aliens. 8 generic types are described — all have NO penalty for night/bad weather movement or firing. Bugs have claws and other natural weapons and MAY NOT use any manufactured weapon system. Their fast movement rates will need to be utilised to find cover or they will be cut down before hand-to-hand range is reached. The fanatic nature of Bug armies will mean a long bloody battle down to the last one in some cases.",
+      "tacticsNote": "Rush and overwhelm. Runners and Terrors are fanatics and ignore Glancing Hits. Cerebral tunnelling gives unparalleled battlefield mobility. Hunter/Terror claws at +3 and Colossus at +5 make H2H devastating. No ranged attacks except Terrors (acid spit) and Cerebrals (barb). Multiple bug armies merge if they meet — friendly fire between queens only.",
+      "availability": { "segregationEra": "-", "imperialEra": "Y", "tenThousandYearWar": "Y", "borrowedTimeEra": "Y" },
+      "d100Roll": "51-94"
+    },
+    {
+      "id": "K_KREE",
+      "displayName": "The K'Kree",
+      "lore": "'The Two Thousand Worlds' is the most common name in the Imperium for the region of space ruled by the K'Kree — 'Two thousand worlds' is a literal translation of the K'Kree T'tkhahk Xeng Kirr. The K'Kree government is highly conservative. The current dynasty ruling the Two Thousand Worlds has been in power since prehistoric times, and the form of the government has remained unchanged. K'Kree expansion into space progressed very slowly after the discovery of the jump drive in 4142. The discovery of other intelligent alien races caused a xenophobic reaction in K'Kree society. K'Kree spaceships must be very large due to their claustrophobia. They are herbivorous and religiously motivated militant vegetarians. Note that although they are superficially similar, the K'Kree are not genetically related to the Centaling.",
+      "tacticsNote": "Elite herds of 10–20 warriors. Never leave a man behind — the herd instinct means K'Kree will aggressively seek to recover fallen companions. +3 H2H bonus vs carnivores (devastating against Ferrapur, Thuntra, Bugs). Can use any Human OR Alien weapons. Dual H2H throws like Centaling.",
+      "availability": { "segregationEra": "-", "imperialEra": "-", "tenThousandYearWar": "Y", "borrowedTimeEra": "R" },
+      "d100Roll": "95-00"
+    }
+  ],
+  "alienCharts": {
+    "firingModifiers": [
+      { "factor": "Hibevor firer", "modifier": "+1" },
+      { "factor": "Growwlan firing at night/in dark", "modifier": "+1" },
+      { "factor": "Firing from a Warbird", "modifier": "-1" },
+      { "factor": "Target is a Warbird", "modifier": "+2" },
+      { "factor": "Target is a Thuntra", "modifier": "+2" },
+      { "factor": "Target is a Centaling", "modifier": "+1" },
+      { "factor": "Target is Runner or Terror", "modifier": "-1" },
+      { "factor": "Target is a Hunter/Flyer", "modifier": "-2" },
+      { "factor": "Target is a Cerebral/Colossus", "modifier": "+2" }
+    ],
+    "damageModifiers": [
+      { "factor": "Firing all Growwlan fire arms", "modifier": "+1" },
+      { "factor": "Firing Advanced Laser Pistol/Rifle", "modifier": "+1" },
+      { "factor": "Firing Heavy Bolt Pistol; OR target is Hibevor or Grey", "modifier": "+1" },
+      { "factor": "Target is Thuntra", "modifier": "-1" },
+      { "factor": "Count Hibevor PA armour as AD class", "modifier": "(rule)" }
+    ],
+    "h2hModifiers": [
+      { "factor": "HIBEVOR / GREY", "modifier": "-2" },
+      { "factor": "GROWWLAN / SPUG", "modifier": "+1" },
+      { "factor": "Warbird (mount)", "modifier": "+5" },
+      { "factor": "FERRAPUR", "modifier": "+2" },
+      { "factor": "CENTALING", "modifier": "+3" },
+      { "factor": "THUNTRA", "modifier": "+5" },
+      { "factor": "Advanced Force Sword", "modifier": "+4" },
+      { "factor": "Heavy Power Axe", "modifier": "+5" },
+      { "factor": "Hunter/Terror claws (as power sword)", "modifier": "+3" },
+      { "factor": "Colossus claws (as power axe)", "modifier": "+5" },
+      { "factor": "K'Kree", "modifier": "+1" },
+      { "factor": "K'Kree vs carnivore", "modifier": "+3" }
+    ]
+  },
+  "bugScenarios": [
+    {
+      "roll": "1-3",
+      "name": "Patrol",
+      "humanPoints": 300,
+      "bugPoints": 400,
+      "humanSetup": "Within 12 ins of table edge",
+      "bugSetup": "Within 12 ins of table edge",
+      "victoryConditions": "Standard"
+    },
+    {
+      "roll": "4-5",
+      "name": "Ambush",
+      "humanPoints": 400,
+      "bugPoints": 500,
+      "humanSetup": "Down centre of board, 8 ins wide — usually on a road or path, no further than halfway towards the bug base edge",
+      "bugSetup": "At either side of road/path and in cover",
+      "victoryConditions": "Humans win if they manage to get 25% of forces up the table edge opposite the bug base"
+    },
+    {
+      "roll": "6",
+      "name": "Fried Eggs!",
+      "humanPoints": 500,
+      "bugPoints": 600,
+      "humanSetup": "Within 12 ins of table",
+      "bugSetup": "Centrally",
+      "victoryConditions": "Bugs must purchase at least 6 bases of eggs. Humans only win if all eggs are destroyed."
+    },
+    {
+      "roll": "7",
+      "name": "Last Stand",
+      "humanPoints": 600,
+      "bugPoints": 1000,
+      "humanSetup": "All troops with fortifications/barricades within a 12 ins circle in the middle of the board",
+      "bugSetup": "Within 12 ins of all table edges",
+      "victoryConditions": "Humans win if they manage to hold off the onslaught of the bugs for 4 full turns, whereby Air evac takes place."
+    },
+    {
+      "roll": "8-9",
+      "name": "Bug Hunt",
+      "humanPoints": 1000,
+      "bugPoints": 1000,
+      "humanSetup": "Within 24 ins of table edge",
+      "bugSetup": "Within 12 ins of all table edges",
+      "victoryConditions": "Standard"
+    },
+    {
+      "roll": "10",
+      "name": "Specimen Collection",
+      "humanPoints": 300,
+      "bugPoints": 600,
+      "humanSetup": "Within 8 ins table edge",
+      "bugSetup": "Has about ¾ of the rest of table",
+      "victoryConditions": "Humans win if 3 or more Bugs are Stunned then transported back off table edge. Takes 2 troops to carry each stunned Bug. If humans come into base contact with a stunned bug it remains stunned for the rest of the game."
+    }
+  ]
+}

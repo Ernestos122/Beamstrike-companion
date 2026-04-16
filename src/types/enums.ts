@@ -18,7 +18,7 @@ export type RaceType =
   | 'KRAVAK'
   | 'ORCOID'
   | 'THUNTRA'
-  | 'WARBIRD'
+  | 'K_KREE'
 
 // Impact type determines the row section in the Infantry Damage Table
 export type ImpactType =

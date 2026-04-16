@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Shield, BookOpen, Table2, BookMarked, Dices, Compass } from 'lucide-react'
+import { Shield, BookOpen, Table2, BookMarked, Dices, Compass, Zap } from 'lucide-react'
 import { cn } from '@lib/utils'
 
 const navItems = [
@@ -9,6 +9,7 @@ const navItems = [
   { to: '/rulebook', icon: BookMarked, label: 'Rulebook' },
   { to: '/helpers', icon: Dices, label: 'Helpers' },
   { to: '/era1', icon: Compass, label: 'ERA 1: Imperialist' },
+  { to: '/aliens', icon: Zap, label: 'Alien Races' },
 ]
 
 export function SideNav() {

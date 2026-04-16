@@ -96,6 +96,11 @@ export type SkillType =
   | 'GUN_SKILL'
   | 'AGGRESSIVE'
   | 'INITIATIVE'
+  | 'ARTILLERIST'
+  | 'MARKSMAN'
+  | 'SHARPSHOOTER'
+  | 'AGILE'
+  | 'MARTIAL_ARTS'
 
 export type ChartCategory =
   | 'TURN_SEQUENCE'

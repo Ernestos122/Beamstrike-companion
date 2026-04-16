@@ -81,84 +81,129 @@
     "special": "Required for Light Sword and Heavy Power Axe (Thuntra)."
   },
   {
-    "id": "DODGE",
-    "name": "Dodge",
+    "id": "GUN_SKILL",
+    "name": "Gun Skill",
     "pointsCost": 3,
     "maxPerArmy": null,
     "minRequired": 0,
-    "description": "Figure is exceptionally quick and evasive. Once per fire phase, when targeted, the figure may attempt a dodge — attacker suffers a -1 penalty to hit. Particularly effective in close terrain.",
-    "special": "ERA supplement skill. Usable by Heroes and Veterans."
-  },
-  {
-    "id": "NERVES_OF_STEEL",
-    "name": "Nerves of Steel",
-    "pointsCost": 3,
-    "maxPerArmy": null,
-    "minRequired": 0,
-    "description": "The figure is utterly unshaken by enemy fire and casualties nearby. Not affected by morale tests caused by nearby kills or suppression. May attempt to rally broken troops within 8\" even when not a leader.",
-    "special": "ERA supplement skill. Abbreviated 'NOS' on troop lists."
-  },
-  {
-    "id": "AMBIDEXTROUS",
-    "name": "Ambidextrous",
-    "pointsCost": 3,
-    "maxPerArmy": null,
-    "minRequired": 0,
-    "description": "May fire two weapons in the same fire phase. The second weapon fires at -1 to hit. Both weapons must be pistol-class or one-handed.",
-    "special": "ERA supplement skill. Commonly found on Heroes and elite troops."
-  },
-  {
-    "id": "CONSTITUTION",
-    "name": "Constitution",
-    "pointsCost": 2,
-    "maxPerArmy": null,
-    "minRequired": 0,
-    "description": "Figure has exceptional physical resilience. When a GH (Glancing Hit) result is received, roll 1d6: on a 4+ the hit is downgraded to No Effect. Does not apply against TOTAL damage types.",
-    "special": "ERA supplement skill. Stacks with Digimedic equipment."
-  },
-  {
-    "id": "FORTUNE",
-    "name": "Fortune",
-    "pointsCost": 3,
-    "maxPerArmy": null,
-    "minRequired": 0,
-    "description": "This figure seems to have luck on their side. Once per turn, may re-roll any single dice roll that directly affects this figure (to-hit, damage, morale, etc.). The second result stands.",
-    "special": "ERA supplement skill. Typically found on Heroes and named characters."
+    "description": "Adds 3 to the hit dice for one nominated weapon (noted in brackets on the troop entry, e.g. 'Gun Skill (Ramjet)').",
+    "special": "Hero ability (core rules p.28, roll 1-5). The specific weapon type is listed in the troop profile."
   },
   {
     "id": "QUICK_FIRE",
     "name": "Quick Fire",
-    "pointsCost": 3,
-    "maxPerArmy": null,
-    "minRequired": 0,
-    "description": "Figure can fire rapidly with exceptional speed. May fire twice at the same or different targets in a single fire phase, but both shots are at -2 to hit. Only applies to personal infantry weapons.",
-    "special": "ERA supplement skill. Common on Hero-class figures."
-  },
-  {
-    "id": "GUN_SKILL",
-    "name": "Gun Skill",
     "pointsCost": 2,
     "maxPerArmy": null,
     "minRequired": 0,
-    "description": "+1 to hit with a specific weapon type (noted in brackets on the troop entry, e.g. 'Gun skill (Ramjet)'). Applies to all range bands for that weapon class.",
-    "special": "ERA supplement skill. The specific weapon type is listed in the troop profile."
+    "description": "May fire an extra shot at each target.",
+    "special": "Hero ability (core rules p.28, roll 6-10)."
   },
   {
-    "id": "AGGRESSIVE",
-    "name": "Aggressive",
-    "pointsCost": 2,
+    "id": "AMBIDEXTROUS",
+    "name": "Ambidextrous",
+    "pointsCost": 5,
     "maxPerArmy": null,
     "minRequired": 0,
-    "description": "+2 bonus in hand to hand combat dice rolls. If not suppressed or pinned and no orders are received, the figure will advance toward the nearest enemy each move phase.",
-    "special": "ERA supplement skill. Similar to Fanatic but does not override morale rules."
+    "description": "Can carry and use 2 hand to hand weapons, and fire at 2 different targets.",
+    "special": "Hero ability (core rules p.28, roll 11-15)."
   },
   {
     "id": "INITIATIVE",
     "name": "Initiative",
+    "pointsCost": 2,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "May roll twice to act in close combat.",
+    "special": "Hero ability (core rules p.28, roll 26-30)."
+  },
+  {
+    "id": "AGGRESSIVE",
+    "name": "Aggressive",
+    "pointsCost": 1,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "May throw for close combat options for enemy within 4 inches (not the usual 2 inches).",
+    "special": "Hero ability (core rules p.28, roll 31-35)."
+  },
+  {
+    "id": "NERVES_OF_STEEL",
+    "name": "Nerves of Steel",
+    "pointsCost": 2,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "May ignore glancing hit results.",
+    "special": "Hero ability (core rules p.28, roll 46-50)."
+  },
+  {
+    "id": "FORTUNE",
+    "name": "Fortune",
+    "pointsCost": 4,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "If you suffer a 'kill' damage result, throw 1d6. On a 5 or 6, this is downgraded to a glancing hit instead.",
+    "special": "Hero ability (core rules p.28, roll 51-55)."
+  },
+  {
+    "id": "DODGE",
+    "name": "Dodge",
+    "pointsCost": 1,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Twice during a battle you can say you are dodging a shot before the hit dice are thrown. Subtract 3 from the firer's dice score to hit you.",
+    "special": "Hero ability (core rules p.28, roll 56-60)."
+  },
+  {
+    "id": "CONSTITUTION",
+    "name": "Constitution",
+    "pointsCost": 5,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Attacks on this hero have -1 penalty when rolling 1d6 for damage.",
+    "special": "Hero ability (core rules p.28, roll 61-65)."
+  },
+  {
+    "id": "ARTILLERIST",
+    "name": "Artillerist",
     "pointsCost": 3,
     "maxPerArmy": null,
     "minRequired": 0,
-    "description": "Figure may act in either player's activation phase once per turn without waiting for orders. +2 bonus to all initiative and reaction rolls. May fire or move out of sequence.",
-    "special": "ERA supplement skill. Powerful individual advantage for Hero-class figures."
+    "description": "May act as a gunner in the game. Allows use of tripod-mounted light artillery and heavy weapons list without penalty.",
+    "special": "Hero ability (core rules p.28, roll 21-25). Equivalent to the Gunner troop skill."
+  },
+  {
+    "id": "MARKSMAN",
+    "name": "Marksman",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Adds 2 to his hit dice throws (applies to all ranged fire).",
+    "special": "Hero ability (core rules p.28, roll 71-75)."
+  },
+  {
+    "id": "SHARPSHOOTER",
+    "name": "Sharpshooter",
+    "pointsCost": 5,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Figure rolls an extra 1d4 as well as the 2d6 when firing, and uses that as the total dice score.",
+    "special": "Hero ability (core rules p.28, roll 76-80)."
+  },
+  {
+    "id": "AGILE",
+    "name": "Agile",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "May move twice the normal amount in either move phase, but not both.",
+    "special": "Hero ability (core rules p.28, roll 86-90)."
+  },
+  {
+    "id": "MARTIAL_ARTS",
+    "name": "Martial Arts",
+    "pointsCost": 4,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Roll an additional D10 in Hand-to-Hand combat — take the highest roll.",
+    "special": "Hero ability (core rules p.28, roll 91-95)."
   }
 ]

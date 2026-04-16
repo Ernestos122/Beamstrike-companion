@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { X, Plus, Minus, Trash2, Search } from 'lucide-react'
 import Fuse from 'fuse.js'
@@ -20,7 +20,7 @@ import type { Weapon } from '@types-bs/weapon'
 import { calcSquadPoints, calcSquadMorale } from '@lib/pointsCalc'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
-type SquadDraft = Omit<SquadSelection, 'selectionId' | 'pointsTotal' | 'moraleValue'>
+export type SquadDraft = Omit<SquadSelection, 'selectionId' | 'pointsTotal' | 'moraleValue'>
 
 const WEAPON_CATEGORIES = [
   { id: 'ALL', label: 'All' },
@@ -72,10 +72,12 @@ function armourEnumToId(a: ArmourType | undefined): string {
 function WeaponPicker({
   loadouts,
   armyRace,
+  modelCount,
   onChange,
 }: {
   loadouts: WeaponLoadout[]
   armyRace: RaceType
+  modelCount: number
   onChange: (l: WeaponLoadout[]) => void
 }) {
   const [catFilter, setCatFilter] = useState<WeaponCatFilter>('ALL')
@@ -84,12 +86,13 @@ function WeaponPicker({
   const allWeaponPool = useMemo(() => {
     const raceData = races.find(r => r.id === armyRace) as { alienWeaponIds: string[] } | undefined
     const alienIds = new Set(raceData?.alienWeaponIds ?? [])
-    const alien = (weaponsAlien as Weapon[]).filter(w => !alienIds.size || alienIds.has(w.id))
+    // Bug fix: only include alien weapons the race actually has access to
+    const alien = (weaponsAlien as Weapon[]).filter(w => alienIds.has(w.id))
     return [
       ...(weaponsInfantry as Weapon[]),
       ...(weaponsSupport as Weapon[]),
       ...(weaponsHeavy as Weapon[]),
-      ...(alien),
+      ...alien,
       ...(weaponsVehicle as Weapon[]),
     ]
   }, [armyRace])
@@ -118,7 +121,8 @@ function WeaponPicker({
 
   function add(weapon: Weapon) {
     if (loadedIds.has(weapon.id)) return
-    onChange([...loadouts, { weaponId: weapon.id, count: 1 }])
+    // Default count = model count so cost is already per-troop
+    onChange([...loadouts, { weaponId: weapon.id, count: modelCount }])
   }
 
   function remove(id: string) {
@@ -139,31 +143,33 @@ function WeaponPicker({
             const w = allWeaponPool.find(w => w.id === l.weaponId)
             if (!w) return null
             return (
-              <div key={l.weaponId} className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--secondary)] px-3 py-1.5">
-                <span className="flex-1 text-sm font-medium min-w-0 truncate">
-                  {w.name}
-                  <span className="ml-1.5 text-xs text-[var(--muted-foreground)]">{w.pointsCost}pts ea</span>
-                </span>
+              <div key={l.weaponId} className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--secondary)] px-3 py-2">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">{w.name}</p>
+                  <p className="text-xs text-[var(--muted-foreground)]">
+                    {w.pointsCost}pts × {l.count} troops = <strong>{w.pointsCost * l.count}pts</strong>
+                  </p>
+                </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <button
                     type="button"
                     onClick={() => setCount(l.weaponId, l.count - 1)}
-                    className="rounded p-0.5 hover:bg-[var(--accent)] transition-colors"
+                    className="rounded p-1 hover:bg-[var(--accent)] transition-colors"
                   >
                     <Minus size={13} />
                   </button>
-                  <span className="w-6 text-center text-sm tabular-nums">{l.count}</span>
+                  <span className="w-6 text-center text-sm font-semibold tabular-nums">{l.count}</span>
                   <button
                     type="button"
                     onClick={() => setCount(l.weaponId, l.count + 1)}
-                    className="rounded p-0.5 hover:bg-[var(--accent)] transition-colors"
+                    className="rounded p-1 hover:bg-[var(--accent)] transition-colors"
                   >
                     <Plus size={13} />
                   </button>
                   <button
                     type="button"
                     onClick={() => remove(l.weaponId)}
-                    className="ml-1 rounded p-0.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                    className="ml-1 rounded p-1 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
                   >
                     <Trash2 size={13} />
                   </button>
@@ -174,7 +180,7 @@ function WeaponPicker({
         </div>
       )}
 
-      {/* Category filter */}
+      {/* Category filter pills */}
       <div className="flex gap-1 flex-wrap">
         {WEAPON_CATEGORIES.map(c => (
           <button
@@ -205,31 +211,35 @@ function WeaponPicker({
       </div>
 
       {/* Weapon list */}
-      <div className="max-h-44 overflow-y-auto space-y-0.5 rounded-lg border border-[var(--border)]">
-        {filtered.length === 0 && (
+      <div className="max-h-48 overflow-y-auto rounded-lg border border-[var(--border)]">
+        {filtered.length === 0 ? (
           <p className="py-4 text-center text-xs text-[var(--muted-foreground)]">No weapons found</p>
+        ) : (
+          filtered.map(w => (
+            <button
+              key={w.id}
+              type="button"
+              disabled={loadedIds.has(w.id)}
+              onClick={() => add(w)}
+              className="w-full flex justify-between items-center px-3 py-2 text-left text-sm border-b border-[var(--border)] last:border-0 hover:bg-[var(--accent)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              <span className="min-w-0 truncate">
+                <span className="font-medium">{w.name}</span>
+                <span className="ml-1.5 text-xs text-[var(--muted-foreground)]">[{w.code}]</span>
+              </span>
+              <span className="shrink-0 ml-3 text-xs text-[var(--muted-foreground)]">
+                {w.pointsCost}pts × {modelCount} = {w.pointsCost * modelCount}pts
+              </span>
+            </button>
+          ))
         )}
-        {filtered.map(w => (
-          <button
-            key={w.id}
-            type="button"
-            disabled={loadedIds.has(w.id)}
-            onClick={() => add(w)}
-            className="w-full flex justify-between items-center px-3 py-1.5 text-left text-sm hover:bg-[var(--accent)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          >
-            <span className="min-w-0 truncate">
-              <span className="font-medium">{w.name}</span>
-              <span className="ml-1.5 text-xs text-[var(--muted-foreground)]">[{w.code}]</span>
-            </span>
-            <span className="shrink-0 ml-2 text-xs text-[var(--muted-foreground)]">{w.pointsCost}pts</span>
-          </button>
-        ))}
       </div>
     </div>
   )
 }
 
 // ── Squad Form ─────────────────────────────────────────────────────────────────
+// NOTE: No useEffect — form is remounted fresh via `key` in SquadFormModal.
 function SquadForm({
   initial,
   onSave,
@@ -241,9 +251,6 @@ function SquadForm({
 }) {
   const [draft, setDraft] = useState<SquadDraft>(initial)
 
-  // Reset when opened with new initial value
-  useEffect(() => { setDraft(initial) }, [initial])
-
   function set<K extends keyof SquadDraft>(key: K, val: SquadDraft[K]) {
     setDraft(prev => ({ ...prev, [key]: val }))
   }
@@ -252,6 +259,7 @@ function SquadForm({
     { id: string; name: string; abbreviation: string; pointsCost: number; skillsAllowed: number } | undefined
   const maxSkills = training?.skillsAllowed ?? 0
   const isHero = draft.trainingClass === 'HERO'
+  const modelCount = draft.modelCount ?? 1
 
   const livePoints = calcSquadPoints({ ...draft, selectionId: '', pointsTotal: 0, moraleValue: 0 })
   const liveMorale = calcSquadMorale({ ...draft, selectionId: '', pointsTotal: 0, moraleValue: 0 })
@@ -279,7 +287,7 @@ function SquadForm({
   const armourId = armourEnumToId(draft.armourType)
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col h-full">
+    <form onSubmit={handleSubmit} className="flex flex-col min-h-0 flex-1">
       {/* Scrollable body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5">
 
@@ -304,26 +312,18 @@ function SquadForm({
               value={draft.race}
               onChange={e => set('race', e.target.value as RaceType)}
             >
-              {races.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
+              {races.map(r => <option key={r.id} value={r.id}>{(r as { name: string }).name}</option>)}
             </select>
           </div>
           <div className="space-y-1">
             <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Type</label>
-            <div className="flex rounded-lg border border-[var(--border)] overflow-hidden">
-              <button
-                type="button"
-                onClick={() => set('isVehicle', false)}
-                className={`flex-1 py-2 text-sm font-medium transition-colors ${!draft.isVehicle ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]'}`}
-              >
-                Infantry
-              </button>
-              <button
-                type="button"
-                onClick={() => set('isVehicle', true)}
-                className={`flex-1 py-2 text-sm font-medium transition-colors ${draft.isVehicle ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]'}`}
-              >
-                Vehicle
-              </button>
+            <div className="flex rounded-lg border border-[var(--border)] overflow-hidden text-sm font-medium">
+              <button type="button" onClick={() => set('isVehicle', false)}
+                className={`flex-1 py-2 transition-colors ${!draft.isVehicle ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]'}`}
+              >Infantry</button>
+              <button type="button" onClick={() => set('isVehicle', true)}
+                className={`flex-1 py-2 transition-colors ${draft.isVehicle ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]'}`}
+              >Vehicle</button>
             </div>
           </div>
         </div>
@@ -341,9 +341,7 @@ function SquadForm({
                   onChange={e => {
                     const tc = e.target.value as TrainingClass
                     set('trainingClass', tc)
-                    // Hero = single model
                     if (tc === 'HERO') set('modelCount', 1)
-                    // Reset skills if new max is lower
                     const newMax = (troopTraining.find(t => t.id === tc) as { skillsAllowed: number } | undefined)?.skillsAllowed ?? 0
                     const cur = draft.skills ?? []
                     if (cur.length > newMax) set('skills', cur.slice(0, newMax))
@@ -351,11 +349,7 @@ function SquadForm({
                 >
                   {troopTraining.map(t => {
                     const tt = t as { id: string; name: string; pointsCost: number }
-                    return (
-                      <option key={tt.id} value={tt.id}>
-                        {tt.name} ({tt.pointsCost}pts)
-                      </option>
-                    )
+                    return <option key={tt.id} value={tt.id}>{tt.name} ({tt.pointsCost}pts)</option>
                   })}
                 </select>
               </div>
@@ -368,44 +362,37 @@ function SquadForm({
                 >
                   {armourTypes.map(a => {
                     const at = a as { id: string; abbreviation: string; pointsCost: number }
-                    return (
-                      <option key={at.id} value={at.id}>
-                        {at.abbreviation} ({at.pointsCost}pts)
-                      </option>
-                    )
+                    return <option key={at.id} value={at.id}>{at.abbreviation} ({at.pointsCost}pts)</option>
                   })}
                 </select>
               </div>
             </div>
 
-            {/* Model count + per-model cost hint */}
+            {/* Model count */}
             <div className="space-y-1">
               <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">
-                Model Count
-                {isHero && <span className="ml-1 normal-case text-[var(--muted-foreground)]">(Hero = 1 model)</span>}
+                Model Count{isHero && <span className="ml-1 normal-case font-normal text-[var(--muted-foreground)]">(Hero = 1)</span>}
               </label>
               <div className="flex items-center gap-3">
                 <input
-                  type="number"
-                  min={1}
-                  max={50}
+                  type="number" min={1} max={50}
                   disabled={isHero}
                   className="w-24 rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)] disabled:opacity-50"
-                  value={draft.modelCount ?? 1}
+                  value={modelCount}
                   onChange={e => set('modelCount', Math.max(1, Number(e.target.value)))}
                 />
                 <span className="text-xs text-[var(--muted-foreground)]">
                   {(training?.pointsCost ?? 0) + getArmourCostFromId(armourId)}pts/model
-                  {' = '}{((training?.pointsCost ?? 0) + getArmourCostFromId(armourId)) * (draft.modelCount ?? 1)}pts base
+                  {' = '}<strong>{((training?.pointsCost ?? 0) + getArmourCostFromId(armourId)) * modelCount}pts</strong> base
                 </span>
               </div>
             </div>
 
-            {/* Skills */}
+            {/* Skills — per model */}
             {maxSkills > 0 && (
               <div className="space-y-2">
                 <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">
-                  Skills ({(draft.skills ?? []).length} / {maxSkills})
+                  Skills ({(draft.skills ?? []).length}/{maxSkills}) — cost per model
                 </label>
                 <div className="grid grid-cols-2 gap-1.5">
                   {skillsData.map(s => {
@@ -418,16 +405,21 @@ function SquadForm({
                         type="button"
                         disabled={disabled}
                         onClick={() => toggleSkill(sk.id as SkillType)}
-                        className={`flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs text-left transition-colors ${
+                        className={`flex items-start gap-2 rounded-lg border px-2.5 py-1.5 text-xs text-left transition-colors ${
                           checked
-                            ? 'border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--foreground)]'
+                            ? 'border-[var(--primary)] bg-[var(--primary)]/10'
                             : 'border-[var(--border)] hover:bg-[var(--accent)] disabled:opacity-40 disabled:cursor-not-allowed'
                         }`}
                       >
-                        <span className={`w-3.5 h-3.5 rounded border shrink-0 flex items-center justify-center text-[10px] ${checked ? 'border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)]' : 'border-[var(--border)]'}`}>
+                        <span className={`mt-0.5 w-3.5 h-3.5 rounded border shrink-0 flex items-center justify-center text-[10px] ${checked ? 'border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)]' : 'border-[var(--border)]'}`}>
                           {checked ? '✓' : ''}
                         </span>
-                        <span>{sk.name} <span className="text-[var(--muted-foreground)]">{sk.pointsCost}pts</span></span>
+                        <span>
+                          {sk.name}
+                          <span className="block text-[var(--muted-foreground)]">
+                            {sk.pointsCost}pts × {modelCount} = {sk.pointsCost * modelCount}pts
+                          </span>
+                        </span>
                       </button>
                     )
                   })}
@@ -452,8 +444,7 @@ function SquadForm({
             <div className="space-y-1">
               <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Base Points (hull + movement)</label>
               <input
-                type="number"
-                min={0}
+                type="number" min={0}
                 className="w-32 rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
                 value={draft.vehicleBasePoints ?? 0}
                 onChange={e => set('vehicleBasePoints', Math.max(0, Number(e.target.value)))}
@@ -463,12 +454,15 @@ function SquadForm({
           </div>
         )}
 
-        {/* Weapons */}
+        {/* Weapons — per troop */}
         <div className="space-y-2">
-          <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Weapons</label>
+          <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">
+            Weapons — count = troops carrying it
+          </label>
           <WeaponPicker
             loadouts={draft.weapons}
             armyRace={draft.race}
+            modelCount={draft.isVehicle ? 1 : modelCount}
             onChange={wl => set('weapons', wl)}
           />
         </div>
@@ -516,7 +510,7 @@ function SquadForm({
         </div>
       </div>
 
-      {/* Sticky footer with live total */}
+      {/* Sticky footer — live total */}
       <div className="shrink-0 border-t border-[var(--border)] px-4 py-3 bg-[var(--card)] space-y-3">
         <div className="flex justify-between text-sm font-semibold">
           <span>Squad total</span>
@@ -547,16 +541,21 @@ function SquadForm({
 interface SquadFormModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  /** When provided, modal is in edit mode */
   editing?: SquadSelection
   armyRace: RaceType
   onSave: (draft: SquadDraft) => void
 }
 
 export function SquadFormModal({ open, onOpenChange, editing, armyRace, onSave }: SquadFormModalProps) {
-  const initial: SquadDraft = editing
-    ? (({ selectionId: _id, pointsTotal: _pt, moraleValue: _mv, ...rest }) => rest)(editing)
-    : defaultDraft(armyRace)
+  // Stable initial value — only recompute when the dialog opens or the editing squad changes.
+  // Using a key prop on SquadForm (below) to remount fresh instead of useEffect.
+  const initial = useMemo<SquadDraft>(
+    () => editing
+      ? (({ selectionId: _id, pointsTotal: _pt, moraleValue: _mv, ...rest }) => rest)(editing)
+      : defaultDraft(armyRace),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [open, editing?.selectionId],
+  )
 
   function handleSave(draft: SquadDraft) {
     onSave(draft)
@@ -567,9 +566,11 @@ export function SquadFormModal({ open, onOpenChange, editing, armyRace, onSave }
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50 z-40" />
-        <Dialog.Content
-          className="fixed inset-0 z-50 flex flex-col bg-[var(--card)] sm:inset-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-lg sm:max-h-[90vh] sm:rounded-2xl sm:shadow-2xl overflow-hidden"
-        >
+        {/*
+          Fixed height (not max-height) on desktop so that the form's flex-1 body
+          can correctly expand and the weapon list is scrollable and clickable.
+        */}
+        <Dialog.Content className="fixed inset-0 z-50 flex flex-col bg-[var(--card)] sm:inset-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-lg sm:h-[min(90vh,700px)] sm:rounded-2xl sm:shadow-2xl overflow-hidden">
           {/* Header */}
           <div className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-[var(--border)]">
             <Dialog.Title className="font-semibold text-base">
@@ -580,7 +581,13 @@ export function SquadFormModal({ open, onOpenChange, editing, armyRace, onSave }
             </Dialog.Close>
           </div>
 
+          {/*
+            key forces a fresh mount (and fresh useState) whenever the dialog
+            opens or switches between add-new and edit-existing.
+            This replaces the fragile useEffect(() => setDraft(initial), [initial]).
+          */}
           <SquadForm
+            key={`${open ? 'open' : 'closed'}-${editing?.selectionId ?? 'new'}`}
             initial={initial}
             onSave={handleSave}
             onCancel={() => onOpenChange(false)}
@@ -590,5 +597,3 @@ export function SquadFormModal({ open, onOpenChange, editing, armyRace, onSave }
     </Dialog.Root>
   )
 }
-
-export type { SquadDraft }

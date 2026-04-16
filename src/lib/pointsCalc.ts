@@ -34,9 +34,10 @@ export function calcSquadPoints(squad: SquadSelection): number {
   const count = squad.modelCount ?? 0
   const basePts = (getTrainingCost(squad.trainingClass) + getArmourCost(squad.armourType)) * count
 
-  const skillPts = (squad.skills ?? []).reduce((sum, skillId) => {
-    const s = skillsData.find(s => s.id === skillId)
-    return sum + ((s as { pointsCost: number } | undefined)?.pointsCost ?? 0) * count
+  // skills is SkillLoadout[] — cost = pointsCost × count (figures that have the skill)
+  const skillPts = (squad.skills ?? []).reduce((sum, sl) => {
+    const s = skillsData.find(s => s.id === sl.skillId)
+    return sum + ((s as { pointsCost: number } | undefined)?.pointsCost ?? 0) * sl.count
   }, 0)
 
   return basePts + weaponPts + skillPts + equipPts

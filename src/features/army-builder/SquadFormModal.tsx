@@ -14,7 +14,7 @@ import {
   weaponsAlien,
   weaponsVehicle,
 } from '@data/index'
-import type { SquadSelection, WeaponLoadout } from '@types-bs/squad'
+import type { SquadSelection, WeaponLoadout, SkillLoadout } from '@types-bs/squad'
 import type { TrainingClass, ArmourType, RaceType, SkillType } from '@types-bs/enums'
 import type { Weapon } from '@types-bs/weapon'
 import { calcSquadPoints, calcSquadMorale } from '@lib/pointsCalc'
@@ -264,12 +264,19 @@ function SquadForm({
   const livePoints = calcSquadPoints({ ...draft, selectionId: '', pointsTotal: 0, moraleValue: 0 })
   const liveMorale = calcSquadMorale({ ...draft, selectionId: '', pointsTotal: 0, moraleValue: 0 })
 
-  function toggleSkill(id: SkillType) {
-    const current = draft.skills ?? []
-    if (current.includes(id)) {
-      set('skills', current.filter(s => s !== id))
-    } else if (current.length < maxSkills) {
-      set('skills', [...current, id])
+  const skillLoadouts: SkillLoadout[] = draft.skills ?? []
+
+  function setSkillCount(id: SkillType, count: number) {
+    const current: SkillLoadout[] = draft.skills ?? []
+    if (count <= 0) {
+      set('skills', current.filter(sl => sl.skillId !== id))
+    } else {
+      const existing = current.find(sl => sl.skillId === id)
+      if (existing) {
+        set('skills', current.map(sl => sl.skillId === id ? { ...sl, count } : sl))
+      } else if (current.length < maxSkills) {
+        set('skills', [...current, { skillId: id, count }])
+      }
     }
   }
 
@@ -388,39 +395,66 @@ function SquadForm({
               </div>
             </div>
 
-            {/* Skills — per model */}
+            {/* Skills — per troop count */}
             {maxSkills > 0 && (
               <div className="space-y-2">
                 <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">
-                  Skills ({(draft.skills ?? []).length}/{maxSkills}) — cost per model
+                  Skills ({skillLoadouts.length}/{maxSkills} types) — cost per troop
                 </label>
-                <div className="grid grid-cols-2 gap-1.5">
+                <div className="space-y-1.5">
                   {skillsData.map(s => {
                     const sk = s as { id: string; name: string; pointsCost: number }
-                    const checked = (draft.skills ?? []).includes(sk.id as SkillType)
-                    const disabled = !checked && (draft.skills ?? []).length >= maxSkills
+                    const loadout = skillLoadouts.find(sl => sl.skillId === sk.id)
+                    const isSelected = !!loadout
+                    const count = loadout?.count ?? 0
+                    const canAdd = !isSelected && skillLoadouts.length < maxSkills
+                    const isLeadership = sk.id === 'LEADERSHIP'
+                    const maxCount = isLeadership ? 1 : modelCount
                     return (
-                      <button
-                        key={sk.id}
-                        type="button"
-                        disabled={disabled}
-                        onClick={() => toggleSkill(sk.id as SkillType)}
-                        className={`flex items-start gap-2 rounded-lg border px-2.5 py-1.5 text-xs text-left transition-colors ${
-                          checked
-                            ? 'border-[var(--primary)] bg-[var(--primary)]/10'
-                            : 'border-[var(--border)] hover:bg-[var(--accent)] disabled:opacity-40 disabled:cursor-not-allowed'
-                        }`}
-                      >
-                        <span className={`mt-0.5 w-3.5 h-3.5 rounded border shrink-0 flex items-center justify-center text-[10px] ${checked ? 'border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)]' : 'border-[var(--border)]'}`}>
-                          {checked ? '✓' : ''}
-                        </span>
-                        <span>
-                          {sk.name}
-                          <span className="block text-[var(--muted-foreground)]">
-                            {sk.pointsCost}pts × {modelCount} = {sk.pointsCost * modelCount}pts
-                          </span>
-                        </span>
-                      </button>
+                      <div key={sk.id} className={`flex items-center gap-2 rounded-lg border px-2.5 py-2 transition-colors ${
+                        isSelected
+                          ? 'border-[var(--primary)] bg-[var(--primary)]/10'
+                          : canAdd
+                            ? 'border-[var(--border)] hover:bg-[var(--accent)]'
+                            : 'border-[var(--border)] opacity-40'
+                      }`}>
+                        <div
+                          className="flex-1 min-w-0 cursor-pointer select-none"
+                          onClick={() => {
+                            if (isSelected) setSkillCount(sk.id as SkillType, 0)
+                            else if (canAdd) setSkillCount(sk.id as SkillType, 1)
+                          }}
+                        >
+                          <p className="text-xs font-medium">{sk.name}</p>
+                          <p className="text-xs text-[var(--muted-foreground)]">
+                            {isSelected
+                              ? <>{sk.pointsCost}pts × {count} = <strong>{sk.pointsCost * count}pts</strong></>
+                              : <>{sk.pointsCost}pts/troop{isLeadership ? ' (max 1)' : ''}</>
+                            }
+                          </p>
+                        </div>
+                        {isSelected && (
+                          <div className="flex items-center gap-1 shrink-0">
+                            <button type="button" onClick={() => setSkillCount(sk.id as SkillType, count - 1)}
+                              className="rounded p-1 hover:bg-[var(--accent)] transition-colors">
+                              <Minus size={13} />
+                            </button>
+                            <span className="w-6 text-center text-sm font-semibold tabular-nums">{count}</span>
+                            <button type="button" onClick={() => setSkillCount(sk.id as SkillType, count + 1)}
+                              disabled={count >= maxCount}
+                              className="rounded p-1 hover:bg-[var(--accent)] transition-colors disabled:opacity-40">
+                              <Plus size={13} />
+                            </button>
+                            {!isLeadership && (
+                              <button type="button" onClick={() => setSkillCount(sk.id as SkillType, modelCount)}
+                                title="Assign to all troops"
+                                className="ml-1 text-xs px-1.5 py-0.5 rounded border border-[var(--border)] hover:bg-[var(--accent)] transition-colors">
+                                ×All
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     )
                   })}
                 </div>

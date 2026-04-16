@@ -5,6 +5,12 @@ export interface WeaponLoadout {
   count: number // how many figures in the squad carry this weapon
 }
 
+/** How many figures in the squad have a given skill, and the cost is per figure. */
+export interface SkillLoadout {
+  skillId: SkillType
+  count: number
+}
+
 export interface EquipmentItem {
   id: string
   name: string
@@ -26,7 +32,7 @@ export interface SquadSelection {
   armourType?: ArmourType
   shieldType?: ShieldType | null
   modelCount?: number
-  skills?: SkillType[]
+  skills?: SkillLoadout[]
   basePointsPerModel?: number // from points table: armour cost + training cost
 
   // Vehicle squads

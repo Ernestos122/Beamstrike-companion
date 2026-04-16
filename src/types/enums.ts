@@ -87,6 +87,15 @@ export type SkillType =
   | 'GUNNER'
   | 'SCOUT'
   | 'SWORDSMAN'
+  | 'DODGE'
+  | 'NERVES_OF_STEEL'
+  | 'AMBIDEXTROUS'
+  | 'CONSTITUTION'
+  | 'FORTUNE'
+  | 'QUICK_FIRE'
+  | 'GUN_SKILL'
+  | 'AGGRESSIVE'
+  | 'INITIATIVE'
 
 export type ChartCategory =
   | 'TURN_SEQUENCE'

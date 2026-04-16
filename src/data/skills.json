@@ -79,5 +79,86 @@
     "minRequired": 0,
     "description": "Trained in martial arts and advanced hand to hand combat weapons like force swords and power axes. Adds +4 to 1d10 roll in hand to hand combat. Some melee weapons may ONLY be used by figures with swordsman skill.",
     "special": "Required for Light Sword and Heavy Power Axe (Thuntra)."
+  },
+  {
+    "id": "DODGE",
+    "name": "Dodge",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Figure is exceptionally quick and evasive. Once per fire phase, when targeted, the figure may attempt a dodge — attacker suffers a -1 penalty to hit. Particularly effective in close terrain.",
+    "special": "ERA supplement skill. Usable by Heroes and Veterans."
+  },
+  {
+    "id": "NERVES_OF_STEEL",
+    "name": "Nerves of Steel",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "The figure is utterly unshaken by enemy fire and casualties nearby. Not affected by morale tests caused by nearby kills or suppression. May attempt to rally broken troops within 8\" even when not a leader.",
+    "special": "ERA supplement skill. Abbreviated 'NOS' on troop lists."
+  },
+  {
+    "id": "AMBIDEXTROUS",
+    "name": "Ambidextrous",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "May fire two weapons in the same fire phase. The second weapon fires at -1 to hit. Both weapons must be pistol-class or one-handed.",
+    "special": "ERA supplement skill. Commonly found on Heroes and elite troops."
+  },
+  {
+    "id": "CONSTITUTION",
+    "name": "Constitution",
+    "pointsCost": 2,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Figure has exceptional physical resilience. When a GH (Glancing Hit) result is received, roll 1d6: on a 4+ the hit is downgraded to No Effect. Does not apply against TOTAL damage types.",
+    "special": "ERA supplement skill. Stacks with Digimedic equipment."
+  },
+  {
+    "id": "FORTUNE",
+    "name": "Fortune",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "This figure seems to have luck on their side. Once per turn, may re-roll any single dice roll that directly affects this figure (to-hit, damage, morale, etc.). The second result stands.",
+    "special": "ERA supplement skill. Typically found on Heroes and named characters."
+  },
+  {
+    "id": "QUICK_FIRE",
+    "name": "Quick Fire",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Figure can fire rapidly with exceptional speed. May fire twice at the same or different targets in a single fire phase, but both shots are at -2 to hit. Only applies to personal infantry weapons.",
+    "special": "ERA supplement skill. Common on Hero-class figures."
+  },
+  {
+    "id": "GUN_SKILL",
+    "name": "Gun Skill",
+    "pointsCost": 2,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "+1 to hit with a specific weapon type (noted in brackets on the troop entry, e.g. 'Gun skill (Ramjet)'). Applies to all range bands for that weapon class.",
+    "special": "ERA supplement skill. The specific weapon type is listed in the troop profile."
+  },
+  {
+    "id": "AGGRESSIVE",
+    "name": "Aggressive",
+    "pointsCost": 2,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "+2 bonus in hand to hand combat dice rolls. If not suppressed or pinned and no orders are received, the figure will advance toward the nearest enemy each move phase.",
+    "special": "ERA supplement skill. Similar to Fanatic but does not override morale rules."
+  },
+  {
+    "id": "INITIATIVE",
+    "name": "Initiative",
+    "pointsCost": 3,
+    "maxPerArmy": null,
+    "minRequired": 0,
+    "description": "Figure may act in either player's activation phase once per turn without waiting for orders. +2 bonus to all initiative and reaction rolls. May fire or move out of sequence.",
+    "special": "ERA supplement skill. Powerful individual advantage for Hero-class figures."
   }
 ]

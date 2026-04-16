@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Plus, Pencil, Copy, Trash2, Shield, Swords, ChevronDown, ChevronUp } from 'lucide-react'
 import { useArmyStore } from '@store/armyStore'
-import { armourTypes, troopTraining, allWeapons, races, skills as skillsData } from '@data/index'
+import { armourTypes, troopTraining, allWeapons, races } from '@data/index'
 import type { SquadSelection } from '@types-bs/squad'
 import type { ArmyList } from '@types-bs/army'
 import { SquadFormModal } from './SquadFormModal'
@@ -210,7 +210,7 @@ function ArmySettingsPanel({ army, onClose }: { army: ArmyList; onClose: () => v
   const [nominatedObj, setNominatedObj] = useState(army.nominatedObjectiveMorale)
   const [notes, setNotes] = useState(army.notes)
 
-  function save(e: React.FormEvent) {
+  function save(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     updateArmy(army.id, {
       name: name.trim(),

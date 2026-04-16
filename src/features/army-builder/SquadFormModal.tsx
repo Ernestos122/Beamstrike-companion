@@ -285,7 +285,7 @@ function SquadForm({
     set('equipment', current.includes(id) ? current.filter(e => e !== id) : [...current, id])
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!draft.squadName.trim()) return
     onSave({ ...draft, squadName: draft.squadName.trim() })

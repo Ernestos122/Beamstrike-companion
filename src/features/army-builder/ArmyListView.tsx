@@ -15,7 +15,7 @@ function NewArmyForm({ onDone }: { onDone: () => void }) {
   const createArmy = useArmyStore(s => s.createArmy)
   const navigate = useNavigate()
 
-  function submit(e: React.FormEvent) {
+  function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!name.trim()) return
     const id = createArmy(name.trim(), playerName.trim(), race, pointsLimit)

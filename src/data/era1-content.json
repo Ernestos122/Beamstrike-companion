@@ -1,0 +1,346 @@
+{
+  "meta": {
+    "title": "ERA 1: Imperialist Era",
+    "subtitle": "circa 3500–4500 AD",
+    "lore": "The Imperialist Era covers the long century of Imperial dominance, punctuated by the rise of the Crimson Rebellion and the corporate wars of the great Companies. Human factions clash across the galaxy while Alien races watch, trade, or fight alongside whoever pays best. Merchant Barons and Mercenary coalitions add unpredictability to every engagement."
+  },
+  "eraSkillIds": [
+    "DODGE",
+    "NERVES_OF_STEEL",
+    "AMBIDEXTROUS",
+    "CONSTITUTION",
+    "FORTUNE",
+    "QUICK_FIRE",
+    "GUN_SKILL",
+    "AGGRESSIVE",
+    "INITIATIVE"
+  ],
+  "eraWeaponIds": [
+    "blast-pistol",
+    "blast-carbine",
+    "blast-rifle",
+    "am-beamer"
+  ],
+  "factions": [
+    {
+      "id": "imperial",
+      "name": "Imperial Forces",
+      "colour": "#6b7280",
+      "paintNote": "Standard mid-brown uniform and armour. Gunmetal weapons. Vehicle colour usually dark green or mid-brown. Officers wear a red insignia or crest on the back of the helmet. Imperial black Guards have black helmets. Imperial scouts often have pale brown armour with green helmets.",
+      "description": "The backbone of the Imperium. Disciplined, well-equipped, and backed by overwhelming firepower and off-table artillery. Favour combined-arms: regular infantry bolstered by battlesuits and vehicle support.",
+      "troops": [
+        { "name": "Imperial Trooper", "training": "VET", "armour": "FI", "mainWeapon": "Blast carbine", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 22 },
+        { "name": "Squad Support 1 (Bolter)", "training": "VET", "armour": "FI", "mainWeapon": "Support bolter", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Leadership", "ptsPerFigure": 35 },
+        { "name": "Squad Support 2 (Minigun)", "training": "VET", "armour": "FI", "mainWeapon": "Minigun", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Leadership", "ptsPerFigure": 38 },
+        { "name": "Squad Support 3 (GL)", "training": "VET", "armour": "FI", "mainWeapon": "Grenade launcher", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Leadership", "ptsPerFigure": 31 },
+        { "name": "Imperial Lieutenant", "training": "HERO", "armour": "FI", "mainWeapon": "Blast rifle", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Leadership", "ptsPerFigure": 50 },
+        { "name": "Imperial Scout", "training": "VET", "armour": "LA", "mainWeapon": "Assault rifle", "otherWeapons": "Basic grenades", "equipment": "Laser painter", "skills": "Scout", "ptsPerFigure": 34 },
+        { "name": "Imperial Scout Leader", "training": "HERO", "armour": "LA", "mainWeapon": "Assault rifle", "otherWeapons": "Basic grenades", "equipment": "Laser painter", "skills": "Scout, Leadership", "ptsPerFigure": 53 },
+        { "name": "Imperial Sniper", "training": "VET", "armour": "FI", "mainWeapon": "Sniper rifle", "otherWeapons": null, "equipment": "Laser painter", "skills": "Sniper", "ptsPerFigure": 23 },
+        { "name": "Imp. AT Grenadier", "training": "VET", "armour": "FI", "mainWeapon": "Grenade launcher", "otherWeapons": "AT grenades", "equipment": null, "skills": "Grenadier", "ptsPerFigure": 35 },
+        { "name": "Imp. Heavy Battlesuit", "training": "VET", "armour": "DA", "mainWeapon": "Support bolter", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 101 },
+        { "name": "Imp. Medium Battlesuit", "training": "VET", "armour": "PA", "mainWeapon": "Support bolter", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 74 }
+      ]
+    },
+    {
+      "id": "crimson-rebels",
+      "name": "Crimson Rebels",
+      "colour": "#dc2626",
+      "paintNote": "Red and black uniform and battlesuits. Silver weapons and equipment. Vehicles are red or camouflaged crimson/brown patterns. Preachers and lords usually have pale blue helmets or banners/tunics over their armour.",
+      "description": "Fanatic warriors of the Crimson Rebellion. Rely on assault tactics, close-combat specialists, and religious fervour. Backed by heavy support troopers and alien warrior lords.",
+      "troops": [
+        { "name": "CR Devout", "training": "VET", "armour": "PA", "mainWeapon": "Blast pistol", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 18 },
+        { "name": "CR Preacher", "training": "HERO", "armour": "PA", "mainWeapon": "Blast pistol", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Leadership", "ptsPerFigure": 40 },
+        { "name": "CR Warrior", "training": "VET", "armour": "PA", "mainWeapon": "Blast rifle", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 25 },
+        { "name": "CR Warrior Support", "training": "VET", "armour": "PA", "mainWeapon": "Grenade launcher", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 30 },
+        { "name": "CR AT Buster", "training": "VET", "armour": "PA", "mainWeapon": "AM Beamer", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 40 },
+        { "name": "CR Disciple Swordsman", "training": "VET", "armour": "PA", "mainWeapon": "Force sword", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Swordsman", "ptsPerFigure": 28 },
+        { "name": "Cancrian Warrior Lord", "training": "HERO", "armour": "PA", "mainWeapon": "Power glaive, Force sword", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Leadership, Swordsman", "ptsPerFigure": 55 },
+        { "name": "Omicronian Warrior Lord", "training": "HERO", "armour": "PA", "mainWeapon": "Power sword", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Leadership, Swordsman", "ptsPerFigure": 48 },
+        { "name": "Imorian Warrior Lord", "training": "HERO", "armour": "PA", "mainWeapon": "AM Beamer", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Leadership", "ptsPerFigure": 45 }
+      ]
+    },
+    {
+      "id": "company",
+      "name": "Company Troops",
+      "colour": "#1d4ed8",
+      "paintNote": "Company colours can vary considerably, but favourites are black/grey urban camouflage or yellow and white camouflage. Vehicles painted in company colours, or if combat vehicle will be usually grey/black urban camouflage.",
+      "description": "Corporate soldiers of the great Companies. Cost-efficient regular infantry with flexible support options. Companies favour staying power over aggression — adaptable forces for a variety of missions.",
+      "troops": [
+        { "name": "Company Trooper", "training": "REG", "armour": "FI", "mainWeapon": "Assault rifle", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 14 },
+        { "name": "Company Support", "training": "REG", "armour": "FI", "mainWeapon": "Grenade launcher", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 16 },
+        { "name": "Company Leader", "training": "VET", "armour": "FI", "mainWeapon": "Assault rifle", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Leadership", "ptsPerFigure": 23 },
+        { "name": "Company Officer", "training": "HERO", "armour": "FI", "mainWeapon": "Assault rifle", "otherWeapons": "Basic grenades", "equipment": "Targetter", "skills": "Leadership", "ptsPerFigure": 36 },
+        { "name": "Company Heavy Support", "training": "REG", "armour": "PA", "mainWeapon": "AM Beamer", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 28 }
+      ]
+    },
+    {
+      "id": "merchant",
+      "name": "Merchant Troops",
+      "colour": "#d97706",
+      "paintNote": "Often green and pale brown camouflaged uniforms. Battlesuits often green. Dull green vehicles. Merchant armour is a fusion of light and mesh armour, often brightly coloured or highly decorated.",
+      "description": "Bodyguards and hired guns of the Merchant Barons. Close-range specialists with cartridge pistols and jetpack mobility. Include exotic alien allies and droids. Weak at range, dangerous up close.",
+      "troops": [
+        { "name": "Merchant Guard", "training": "REG", "armour": "LA", "mainWeapon": "Auto-laser", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 11 },
+        { "name": "Merchant Trooper", "training": "REG", "armour": "FI", "mainWeapon": "Machine pistol", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 9 },
+        { "name": "Merchant Scout", "training": "REG", "armour": "LA", "mainWeapon": "Machine pistol", "otherWeapons": "Basic grenades", "equipment": "Jet pack", "skills": null, "ptsPerFigure": 17 },
+        { "name": "Merchant Heavy", "training": "REG", "armour": "PA", "mainWeapon": "Support bolter", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 21 },
+        { "name": "Merchant Droid", "training": "REG", "armour": "FI", "mainWeapon": "Machine pistol", "otherWeapons": null, "equipment": null, "skills": "Fanatic", "ptsPerFigure": 10, "note": "Robot — morale rules do not apply." }
+      ]
+    },
+    {
+      "id": "mercenary",
+      "name": "Mercenary Troops",
+      "colour": "#4b5563",
+      "paintNote": "Often green and pale brown camouflaged uniforms. Battlesuits often green. Dull green vehicles.",
+      "description": "Professional soldiers for hire. Available to Imperials, Crimson Rebels, Companies, and Merchants alike. Flexible composition with a mix of regular and veteran figures. Battlesuit troopers are the elite core.",
+      "troops": [
+        { "name": "Merc. Rifleman", "training": "REG", "armour": "FI", "mainWeapon": "Assault rifle", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 14 },
+        { "name": "Merc. Gunner", "training": "REG", "armour": "FI", "mainWeapon": "SMG", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 12 },
+        { "name": "Merc. Support", "training": "REG", "armour": "FI", "mainWeapon": "Machine gun", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 16 },
+        { "name": "Merc. Jumper", "training": "REG", "armour": "FI", "mainWeapon": "Auto-laser", "otherWeapons": "Basic grenades", "equipment": "Jet pack", "skills": null, "ptsPerFigure": 19 },
+        { "name": "Merc. Scout", "training": "REG", "armour": "FI", "mainWeapon": "Assault rifle", "otherWeapons": "Basic grenades", "equipment": "Laser painter", "skills": null, "ptsPerFigure": 19 },
+        { "name": "Merc. Officer", "training": "VET", "armour": "FI", "mainWeapon": "Bolt pistol", "otherWeapons": "Basic grenades", "equipment": null, "skills": "Leadership", "ptsPerFigure": 23 },
+        { "name": "Merc. Battlesuit Trooper", "training": "VET", "armour": "PA", "mainWeapon": "Support bolter", "otherWeapons": "Squad laser, Force sword", "equipment": "Jet pack, Digimedic", "skills": "Leadership", "ptsPerFigure": 62 },
+        { "name": "Merc. Draftee", "training": "REG", "armour": "UA", "mainWeapon": "Any 3pt weapon", "otherWeapons": "Basic grenades", "equipment": null, "skills": null, "ptsPerFigure": 9 },
+        { "name": "Merc. Sniper", "training": "VET", "armour": "FI", "mainWeapon": "Sniper rifle", "otherWeapons": "Basic grenades", "equipment": "Laser painter", "skills": "Sniper", "ptsPerFigure": 23 }
+      ]
+    },
+    {
+      "id": "police",
+      "name": "Police Troops",
+      "colour": "#2563eb",
+      "paintNote": "Mid-blue uniforms with black weapons and equipment. Vehicles are dull green with mid-blue doors/wheels and details. Police battlesuits are grey/gunmetal with mid-blue helmets.",
+      "description": "Local law enforcement ranging from beat officers to heavily armed SWAT units and Sentinel officers. Police rarely battle Imperials — more common opponents are Crimson Rebels, Merchants, and Company soldiers.",
+      "troops": [
+        { "name": "Law Officer", "training": "REG", "armour": "FI", "mainWeapon": "Law pistol", "otherWeapons": "Riot stick", "equipment": null, "skills": null, "ptsPerFigure": 14 },
+        { "name": "Law Sergeant", "training": "REG", "armour": "FI", "mainWeapon": "Law pistol", "otherWeapons": "Riot stick", "equipment": null, "skills": "Leadership", "ptsPerFigure": 25 },
+        { "name": "Riot Officer", "training": "REG", "armour": "FI", "mainWeapon": "Riot gun", "otherWeapons": "Riot stick", "equipment": null, "skills": null, "ptsPerFigure": 13, "note": "Support grenades available." },
+        { "name": "SWAT Powered Officer", "training": "VET", "armour": "PA", "mainWeapon": "RA: Power glove, Flamethrower", "otherWeapons": "LA: Minigun", "equipment": "Digimedic", "skills": null, "ptsPerFigure": 41 },
+        { "name": "Sentinel Officer", "training": "HERO+5", "armour": "LA", "mainWeapon": "Ramjet pistol", "otherWeapons": "Riot stick", "equipment": null, "skills": "Gun skill (Ramjet), Leadership, Nerves of Steel", "ptsPerFigure": 53, "note": "HERO +5 means +5 bonus to hit above standard Hero." },
+        { "name": "Support Officer", "training": "REG", "armour": "FI", "mainWeapon": "Grenade launcher", "otherWeapons": "Riot stick, Adv. grenades", "equipment": null, "skills": null, "ptsPerFigure": 15 },
+        { "name": "Police Marksman", "training": "REG", "armour": "FI", "mainWeapon": "Sniper rifle", "otherWeapons": "Autopistol", "equipment": "Targetter", "skills": "Sniper", "ptsPerFigure": 20 },
+        { "name": "Bomb Disposal", "training": "REG", "armour": "FI", "mainWeapon": "Autopistol", "otherWeapons": "Riot stick", "equipment": "Null shield", "skills": "Sapper", "ptsPerFigure": 27 }
+      ]
+    }
+  ],
+  "armyExamples": [
+    {
+      "id": "imp-light-assault",
+      "faction": "imperial",
+      "name": "Imperial Light Ground Assault Group",
+      "totalPoints": 655,
+      "totalFigures": 24,
+      "flavour": "Fast assault group for clearing out pockets of resistance and designating air support, with enough firepower to take on low to medium threats.",
+      "squads": [
+        {
+          "name": "Command Squad",
+          "points": 162,
+          "composition": "Imperial lieutenant, 3× Imperial troopers, 2× Squad Support 2 (minigun)"
+        },
+        {
+          "name": "Combat Squad 1",
+          "points": 149,
+          "composition": "4× Imperial troopers, 1× Squad Support 1 trooper (support bolter), 1× squad leader"
+        },
+        {
+          "name": "Combat Squad 2",
+          "points": 149,
+          "composition": "As Combat Squad 1"
+        },
+        {
+          "name": "Scout Group",
+          "points": 195,
+          "composition": "Imp. Scout leader, 4× Imp. Scouts, 1× Support scout"
+        }
+      ],
+      "builderTips": [
+        "The command squad acts as a firepower hub — keep the lieutenant and miniguns together to maximise their command range.",
+        "Combat squads are self-contained with a leader for independent operation. Each has a heavy weapon trooper to threaten armoured enemies.",
+        "Scouts hang back with laser painters to call off-table fire support, then advance to mark targets. Protect them — losing a laser painter hurts the whole army."
+      ]
+    },
+    {
+      "id": "imp-battlefield-platoon",
+      "faction": "imperial",
+      "name": "Imperial Battle Field Platoon",
+      "totalPoints": 596,
+      "totalFigures": 24,
+      "flavour": "Regular troop platoon, used in total war situations, drop shipped into war zones as needed.",
+      "squads": [
+        {
+          "name": "Battle Squad 1",
+          "points": 149,
+          "composition": "4× Imperial troopers, 1× Squad Support 3 trooper (grenade launcher), 1× squad leader"
+        },
+        {
+          "name": "Battle Squad 2",
+          "points": 149,
+          "composition": "As Battle Squad 1"
+        },
+        {
+          "name": "Battle Squad 3",
+          "points": 149,
+          "composition": "As Battle Squad 1"
+        },
+        {
+          "name": "Battle Squad 4",
+          "points": 149,
+          "composition": "As Battle Squad 1"
+        }
+      ],
+      "builderTips": [
+        "Four identical squads = maximum tactical flexibility. Any squad can hold, advance, or support as the situation demands.",
+        "Grenade launchers are superb: they fire any specialised grenade, making each squad adaptable to infantry or vehicle targets.",
+        "Each squad leader provides a +1 to all troop rolls — spread them across the battlefield to keep morale solid across the whole platoon."
+      ]
+    },
+    {
+      "id": "imp-black-guard",
+      "faction": "imperial",
+      "name": "Imperial Black Guard Platoon",
+      "totalPoints": 718,
+      "totalFigures": 22,
+      "flavour": "Veteran Black Guard troops are sent in when the regular troops just can't handle the heat — these guys get the job done fast.",
+      "squads": [
+        {
+          "name": "Command Squad",
+          "points": 171,
+          "composition": "2× Black Guard leader, 3× Black Guard trooper"
+        },
+        {
+          "name": "Battle Squad 1",
+          "points": 180,
+          "composition": "5× Black Guard troopers, 1× Black Guard leader"
+        },
+        {
+          "name": "Battle Squad 2",
+          "points": 180,
+          "composition": "As Battle Squad 1"
+        },
+        {
+          "name": "Support Squad",
+          "points": 187,
+          "composition": "2× Black Guard support, 2× Black Guard indirect support, 1× Black Guard leader"
+        }
+      ],
+      "builderTips": [
+        "Black Guard are Veterans in heavy armour — higher per-figure cost, but much harder to kill than regular FI troopers.",
+        "Two leaders in the command squad ensures reliable rally capability even if one falls.",
+        "The support squad mixes direct and indirect support weapons — use the indirect support troopers to engage targets behind cover that line-of-sight weapons can't reach."
+      ]
+    },
+    {
+      "id": "imp-dreadnought",
+      "faction": "imperial",
+      "name": "Imperial Assault Dreadnought Unit",
+      "totalPoints": 572,
+      "totalFigures": 8,
+      "flavour": "When the going gets tough, the tough get the dreadnoughts into action — each group supported by scouts who mark and designate suitable targets, these boys are real vehicle killers.",
+      "squads": [
+        {
+          "name": "Combat Squad",
+          "points": 404,
+          "composition": "4× Imp. Heavy Battlesuit troopers"
+        },
+        {
+          "name": "Support Scouts",
+          "points": 138,
+          "composition": "Imp. Scout leader, 3× Imp. Scouts"
+        },
+        {
+          "name": "Off-Table Fire Support",
+          "points": 30,
+          "composition": "2 modules of off-table fire support"
+        }
+      ],
+      "builderTips": [
+        "At 101pts each, Heavy Battlesuits in DA armour are among the most durable infantry in the game. Four is expensive but nearly unstoppable.",
+        "Scouts with laser painters are essential — they designate targets for the fire support modules AND for the battlesuits to engage prioritised threats.",
+        "Off-table fire support (30pts for 2 modules) gives the force indirect reach without adding figures to the morale count."
+      ]
+    },
+    {
+      "id": "imp-power-armour",
+      "faction": "imperial",
+      "name": "Imperial Power Armour Unit",
+      "totalPoints": 370,
+      "totalFigures": 5,
+      "flavour": "Powering into action, this 5-man squad has the firepower and defensive capabilities to neutralize light vehicles and armoured troops.",
+      "squads": [
+        {
+          "name": "Combat Squad",
+          "points": 370,
+          "composition": "5× Imperial Medium Battlesuit troopers"
+        }
+      ],
+      "builderTips": [
+        "This is a single elite squad — ideal as a support force for a larger army or as one element of a mixed list.",
+        "Medium Battlesuits (PA armour) at 74pts each are durable against standard infantry weapons. Pair with scouts for designation.",
+        "Consider this unit when you want concentrated PA firepower without the cost of DA Dreadnoughts."
+      ]
+    },
+    {
+      "id": "cr-raiding-party",
+      "faction": "crimson-rebels",
+      "name": "Crimson Rebel Raiding Party",
+      "totalPoints": 448,
+      "totalFigures": 16,
+      "flavour": "Double-edged attack force — close melee specialists backed up by a group of ranged fighters. Take no prisoners and expect no mercy.",
+      "squads": [
+        {
+          "name": "Cancrian Close Combat Group",
+          "points": 220,
+          "composition": "Cancrian Warrior lord, CR Preacher, 6× CR Disciple Swordsmen"
+        },
+        {
+          "name": "Omicronian Ranged Group",
+          "points": 228,
+          "composition": "Omicronian warrior lord, CR Preacher, 6× CR Warriors"
+        }
+      ],
+      "builderTips": [
+        "The CC group uses the Swordsman skill to devastating effect — charge into melee range and the +4 bonus makes them extremely dangerous.",
+        "The ranged group with Blast rifles covers the melee group's advance, suppressing defenders to reduce incoming fire.",
+        "Both groups have their own Preacher (Hero + Leadership) for independent morale — they don't need to stay together.",
+        "The weakness is lack of anti-armour capability. Consider adding CR AT Busters if facing vehicle lists."
+      ]
+    },
+    {
+      "id": "cr-cleansing-avengers",
+      "faction": "crimson-rebels",
+      "name": "Crimson Rebel Cleansing Avengers",
+      "totalPoints": 595,
+      "totalFigures": 26,
+      "flavour": "Organised Rebellion strike force with a command section and three self-contained assault groups.",
+      "squads": [
+        {
+          "name": "Lead Section",
+          "points": 136,
+          "composition": "Imorian Warrior Lord, 4× loyal retainers"
+        },
+        {
+          "name": "1st Group",
+          "points": 153,
+          "composition": "CR Preacher, 4× CR Warriors, 1× CR Warrior support, 1× CR AT Buster"
+        },
+        {
+          "name": "2nd Group",
+          "points": 153,
+          "composition": "As 1st Group"
+        },
+        {
+          "name": "3rd Group",
+          "points": 153,
+          "composition": "As 1st Group"
+        }
+      ],
+      "builderTips": [
+        "Three identical assault groups provide wave tactics — if one group is suppressed, the other two continue pressing.",
+        "Each group has 1 AT Buster (AM Beamer) for anti-vehicle work, 1 support weapon for indirect fire, and a Preacher for morale.",
+        "The Imorian Warrior Lord's AM Beamer makes the lead section a credible anti-armour threat even at close range.",
+        "At 595pts with 26 figures, morale loss per casualty is modest — the army can absorb losses before reaching break point."
+      ]
+    }
+  ]
+}

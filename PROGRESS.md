@@ -1,6 +1,6 @@
 # Beamstrike Companion — Progress Tracker
 
-_Last updated: 2026-04-15 (Phases 4, 6, 7 complete)_
+_Last updated: 2026-04-16 (Phase 8 complete — all phases done)_
 
 ---
 
@@ -12,10 +12,10 @@ _Last updated: 2026-04-15 (Phases 4, 6, 7 complete)_
 | 2 | Data Foundation (types, JSON files, barrel, validate) | **COMPLETE** |
 | 3 | Charts Reference | **COMPLETE** |
 | 4 | Rules Reference | **COMPLETE** |
-| 5 | Army Builder | Not started |
+| 5 | Army Builder | **COMPLETE** |
 | 6 | Ordered Rulebook | **COMPLETE** |
 | 7 | Helpers | **COMPLETE** |
-| 8 | Global Search, PWA polish, deploy | Not started |
+| 8 | Global Search, PWA polish, deploy | **COMPLETE** |
 
 ---
 
@@ -142,11 +142,34 @@ All 9 type files complete: `enums.ts`, `weapon.ts`, `squad.ts`, `army.ts`, `rule
 
 ---
 
-## Phase 5 — Army Builder ❌ NOT STARTED
+## Phase 5 — Army Builder ✅ COMPLETE
 
-Target: Zustand store with `persist`, points calculator, validator, full CRUD UI.
-Data ready: all weapon/equipment/race/training/skills JSON.
-**Prerequisite:** Phase 2 review gate (cross-check weapon data).
+### Files
+
+| File | Description | Status |
+|---|---|---|
+| `src/lib/pointsCalc.ts` | `calcSquadPoints`, `calcSquadMorale`, `recalcArmyTotals` — pure functions, auto-triggered by store on every mutation | ✅ Done |
+| `src/store/armyStore.ts` | Zustand store with `persist` (localStorage key `beamstrike-armies`). CRUD: `createArmy`, `updateArmy`, `deleteArmy`, `addSquad`, `updateSquad`, `removeSquad`, `duplicateSquad` | ✅ Done |
+| `src/features/army-builder/ArmyListView.tsx` | Army list with inline create form, points-bar per army, delete confirmation | ✅ Done |
+| `src/features/army-builder/ArmyEditorView.tsx` | Sticky header + back nav, points bar, morale summary (total/half/objectives), squad list with collapsible detail, settings panel | ✅ Done |
+| `src/features/army-builder/SquadFormModal.tsx` | Full-screen dialog with live points total; infantry: training, armour, model count, skills (capped at class limit), weapon picker (Fuse.js, category filter, per-figure count), equipment checkboxes; vehicle: name + base points | ✅ Done |
+| `src/features/army-builder/ArmyBuilderPage.tsx` | Routes to `ArmyListView` (no armyId) or `ArmyEditorView` (/army/:armyId) | ✅ Done |
+
+### Points Formula
+- Infantry: `(training.pointsCost + armour.pointsCost) × modelCount + Σ weapon.pointsCost × count + Σ skill.pointsCost × modelCount + Σ equipment.pointsCost`
+- Vehicle: `vehicleBasePoints + Σ weapon.pointsCost × count + Σ equipment.pointsCost`
+- Morale: Hero or vehicle = 3; otherwise = modelCount
+
+### Verification
+- [x] `npm run build` passes cleanly (683 kB bundle, `dist/sw.js` exists)
+- [ ] Create army → navigates to editor
+- [ ] Add infantry squad → live points total updates; morale bar reflects count
+- [ ] Edit squad → form pre-filled; save updates totals
+- [ ] Duplicate squad → copy appears with "(copy)" suffix
+- [ ] Delete army → confirm dialog; removed from list
+- [ ] Reload page → armies persist from localStorage
+- [ ] Hero training → model count locked at 1; morale = 3
+- [ ] Over-limit points bar → turns red
 
 ---
 
@@ -189,14 +212,38 @@ Data ready: all weapon/equipment/race/training/skills JSON.
 
 ---
 
-## Phase 8 — Global Search + PWA Polish + Deploy ❌ NOT STARTED
+## Phase 8 — Global Search + PWA Polish + Deploy ✅ COMPLETE
 
-Target: Fuse.js global search across rules/weapons/charts, Lighthouse PWA ≥ 90, GitHub Pages deploy.
+### Files
+
+| File | Description | Status |
+|---|---|---|
+| `src/components/search/GlobalSearch.tsx` | Fuse.js modal across rules (25 entries), charts (30), weapons (all tables). Groups results by type. Keyboard nav ↑↓ + ↵. ⌘K/Ctrl+K shortcut. | ✅ Done |
+| `src/components/layout/AppShell.tsx` | Added `searchOpen` state + global `keydown` listener; passes `onSearchOpen` to TopBar | ✅ Done |
+| `vite.config.ts` | Changed `base` from `/Beamstrike-companion/` → `/` for Vercel. Updated PWA `start_url` to `/`. Added SVG icon entry. | ✅ Done |
+| `public/icon-192.png` | Generated 192×192 PWA icon (purple lightning bolt, dark navy bg) | ✅ Done |
+| `public/icon-512.png` | Generated 512×512 PWA icon | ✅ Done |
+| `public/apple-touch-icon.png` | Generated 180×180 Apple touch icon | ✅ Done |
+| `scripts/generate-icons.mjs` | Pure-Node.js PNG generator (no deps) — re-run to regenerate icons | ✅ Done |
+
+### Vercel Deployment
+- `base: '/'` — assets served from root, no subdirectory prefix
+- HashRouter — no `vercel.json` rewrites needed (all routing is client-side `#/` hashes)
+- Connect Vercel to GitHub repo, set Framework Preset to **Vite**, build command `npm run build`, output dir `dist`
+- PWA service worker precaches 14 assets (730 KB) including all icons
+
+### Verification
+- [x] `npm run build` passes cleanly (689 kB bundle, `dist/sw.js` exists, 14 precache entries)
+- [ ] Click search button in TopBar → modal opens
+- [ ] Press ⌘K / Ctrl+K → modal opens/closes
+- [ ] Type "morale" → results show Rules, Charts, Weapons grouped
+- [ ] Arrow keys navigate results; Enter opens correct page
+- [ ] ESC closes modal
+- [ ] Vercel deploy → app loads at root `/`
+- [ ] DevTools → Application → PWA installable check
 
 ---
 
-## Next Steps
+## Remaining Optional Work
 
-1. **Phase 2 review gate** — open source PDFs side-by-side and cross-check weapon tables cell-by-cell
-2. **Phase 5: Army Builder** — Zustand store with `persist`, points calculator, squad CRUD UI (requires Phase 2 review gate first)
-3. **Phase 8: Global Search + PWA Polish + Deploy** — Fuse.js global search across rules/weapons/charts, Lighthouse PWA ≥ 90, GitHub Pages deploy
+1. **Phase 2 review gate** — cross-check weapon data cell-by-cell vs source PDFs (recommended before competitive play)

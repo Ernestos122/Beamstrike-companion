@@ -1,8 +1,13 @@
+import { useParams } from 'react-router-dom'
+import { ArmyListView } from './ArmyListView'
+import { ArmyEditorView } from './ArmyEditorView'
+
 export function ArmyBuilderPage() {
-  return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">ArmyBuilder</h1>
-      <p className="mt-2 text-[var(--muted-foreground)]">Coming soon…</p>
-    </div>
-  )
+  const { armyId } = useParams<{ armyId?: string }>()
+
+  if (armyId) {
+    return <ArmyEditorView armyId={armyId} />
+  }
+
+  return <ArmyListView />
 }

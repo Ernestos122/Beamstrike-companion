@@ -131,6 +131,23 @@
     "remarks": "Robot sentry turret as above. May fire twice per phase."
   },
   {
+    "id": "bolt-cannon",
+    "code": "BLC",
+    "name": "Bolt Cannon",
+    "category": "HEAVY",
+    "toHit": { "band0_4": 6, "band5_20": 7, "band21_40": 8, "band41_80": 10, "band81plus": null },
+    "maxRange": 80,
+    "impact": "HIGH",
+    "fireTemplate": null,
+    "blastTemplate": null,
+    "optionOrMust": null,
+    "shotsPerPhase": 2,
+    "pointsCost": 25,
+    "causesSupp": true,
+    "requiresDeployment": true,
+    "remarks": "2 shots per phase at same target OR may use Template 3. Must be deployed before use. ERA weapon — heavy infantry bolter cannon."
+  },
+  {
     "id": "patgw",
     "code": "PATGW",
     "name": "Portable Anti-Tank Guided Weapon",

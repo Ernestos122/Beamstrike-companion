@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Shield, BookOpen, Table2, BookMarked, Dices, Compass } from 'lucide-react'
+import { Shield, BookOpen, Table2, Dices, Compass } from 'lucide-react'
 import { cn } from '@lib/utils'
 
 const tabs = [

@@ -21,7 +21,8 @@ export interface Weapon {
   impact: ImpactType | 'SPECIAL' | 'VARIES'
   avImpact?: ImpactType // vehicle-mounted weapons: AV round impact
   heImpact?: ImpactType // vehicle-mounted weapons: HE round impact
-  fireTemplate?: 1 | 2 | 3 // triangular cone template
+  fireTemplate?: 1 | 2 | 3 | 4 | 5 // triangular cone template (1=short, 2=rifle, 3=support, 4-5=heavy burst)
+  meleeBonus?: number // H2H combat modifier (melee weapons only)
   blastTemplate?: 1 | 2 | 3 | 4 // circular blast template
   optionOrMust: 'OPTION' | 'MUST' | null // whether template use is optional or mandatory
   shotsPerPhase?: number // e.g. 2 for HMG, 3 for MIN

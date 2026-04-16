@@ -484,6 +484,38 @@
     "remarks": "Cost: 1pt infantry grenades, 2pts support grenades, 3pts specialised grenades. See grenade section."
   },
   {
+    "id": "bolt-pistol",
+    "code": "BOP",
+    "name": "Bolt Pistol",
+    "category": "INFANTRY",
+    "toHit": { "band0_4": 6, "band5_20": 8, "band21_40": null, "band41_80": null, "band81plus": null },
+    "maxRange": 10,
+    "impact": "STANDARD",
+    "fireTemplate": null,
+    "blastTemplate": null,
+    "optionOrMust": null,
+    "pointsCost": 3,
+    "causesSupp": false,
+    "requiresDeployment": false,
+    "remarks": "ERA 1 weapon. Standard Imperial/Mercenary sidearm pistol firing explosive bolts."
+  },
+  {
+    "id": "rf-bolter",
+    "code": "RFB",
+    "name": "RF Bolter (Rapid Fire)",
+    "category": "INFANTRY",
+    "toHit": { "band0_4": 5, "band5_20": 8, "band21_40": null, "band41_80": null, "band81plus": null },
+    "maxRange": 20,
+    "impact": "STANDARD",
+    "fireTemplate": 5,
+    "blastTemplate": null,
+    "optionOrMust": "OPTION",
+    "pointsCost": 5,
+    "causesSupp": false,
+    "requiresDeployment": false,
+    "remarks": "ERA 1 weapon. Standard Imperial infantry bolter rifle. Rapid-fire capable (fire template 5 optional)."
+  },
+  {
     "id": "demolition-pack",
     "code": "DP",
     "name": "Demolition Pack",

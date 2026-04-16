@@ -13,6 +13,7 @@ import _weaponsSupport from './weapons-support.json'
 import _weaponsHeavy from './weapons-heavy.json'
 import _weaponsVehicle from './weapons-vehicle.json'
 import _weaponsAlien from './weapons-alien.json'
+import _weaponsMelee from './weapons-melee.json'
 import _grenades from './grenades.json'
 import _charts from './charts.json'
 import _rulesSections from './rules-sections.json'
@@ -29,6 +30,7 @@ export const weaponsSupport = _weaponsSupport as unknown as Weapon[]
 export const weaponsHeavy = _weaponsHeavy as unknown as Weapon[]
 export const weaponsVehicle = _weaponsVehicle as unknown as Weapon[]
 export const weaponsAlien = _weaponsAlien as unknown as Weapon[]
+export const weaponsMelee = _weaponsMelee as unknown as Weapon[]
 export const grenades = _grenades
 export const charts = _charts as unknown as Chart[]
 export const rulesSections = _rulesSections as unknown as RulesSection[]
@@ -41,4 +43,5 @@ export const allWeapons: Weapon[] = [
   ...(weaponsHeavy),
   ...(weaponsVehicle),
   ...(weaponsAlien),
+  ...(weaponsMelee),
 ]

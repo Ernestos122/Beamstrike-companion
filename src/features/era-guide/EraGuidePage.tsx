@@ -7,7 +7,7 @@ import { cn } from '@lib/utils'
 
 // ── Types inferred from JSON ────────────────────────────────────────────────
 type Faction = typeof eraContent.factions[number]
-type Troop = Faction['troops'][number]
+type Troop = Faction['troops'][number] & { note?: string }
 type ArmyExample = typeof eraContent.armyExamples[number]
 
 // ── Helpers ─────────────────────────────────────────────────────────────────

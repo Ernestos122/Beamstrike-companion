@@ -1,5 +1,6 @@
 import { Crosshair, Search, Wifi, WifiOff } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { cn } from '@lib/utils'
 
 interface TopBarProps {
@@ -22,11 +23,11 @@ export function TopBar({ onSearchOpen }: TopBarProps) {
 
   return (
     <header className="flex h-14 items-center gap-3 border-b bg-[var(--card)] px-4">
-      <div className="flex items-center gap-2">
+      <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
         <Crosshair size={20} className="text-[var(--primary)]" />
         <span className="font-bold tracking-tight">Beamstrike</span>
         <span className="hidden text-xs text-[var(--muted-foreground)] sm:inline">v1.22</span>
-      </div>
+      </Link>
 
       <div className="flex-1" />
 

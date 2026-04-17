@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Shield, BookOpen, Table2, Dices, Zap } from 'lucide-react'
+import { Shield, BookOpen, Table2, Dices, Compass, Zap } from 'lucide-react'
 import { cn } from '@lib/utils'
 
 const tabs = [
@@ -7,6 +7,7 @@ const tabs = [
   { to: '/rules', icon: BookOpen, label: 'Rules' },
   { to: '/charts', icon: Table2, label: 'Charts' },
   { to: '/helpers', icon: Dices, label: 'Helpers' },
+  { to: '/era1', icon: Compass, label: 'ERA 1' },
   { to: '/aliens', icon: Zap, label: 'Aliens' },
 ]
 

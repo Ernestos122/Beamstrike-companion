@@ -1,8 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import { AppShell } from '@components/layout/AppShell'
+import { HomePage } from '@features/home/HomePage'
 import { ArmyBuilderPage } from '@features/army-builder/ArmyBuilderPage'
 import { RulesReferencePage } from '@features/rules-reference/RulesReferencePage'
 import { ChartsPage } from '@features/charts/ChartsPage'
@@ -16,7 +17,7 @@ createRoot(document.getElementById('root')!).render(
     <HashRouter>
       <Routes>
         <Route element={<AppShell />}>
-          <Route index element={<Navigate to="/army" replace />} />
+          <Route index element={<HomePage />} />
           <Route path="/army" element={<ArmyBuilderPage />} />
           <Route path="/army/:armyId" element={<ArmyBuilderPage />} />
           <Route path="/rules" element={<RulesReferencePage />} />

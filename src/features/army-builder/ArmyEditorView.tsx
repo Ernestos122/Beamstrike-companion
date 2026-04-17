@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Plus, Pencil, Copy, Trash2, Shield, Swords, ChevronDown, ChevronUp } from 'lucide-react'
+import { ArrowLeft, Plus, Pencil, Copy, Trash2, Shield, Swords, ChevronDown, ChevronUp, PlayCircle, PenSquare } from 'lucide-react'
 import { useArmyStore } from '@store/armyStore'
 import { armourTypes, troopTraining, allWeapons, races, skills as skillsData } from '@data/index'
 import type { SquadSelection } from '@types-bs/squad'
 import type { ArmyList } from '@types-bs/army'
 import { SquadFormModal } from './SquadFormModal'
 import type { SquadDraft } from './SquadFormModal'
+import { PlayModeView } from './PlayModeView'
+import { cn } from '@lib/utils'
 
 // ── Points bar ─────────────────────────────────────────────────────────────────
 function PointsBar({ used, limit }: { used: number; limit: number }) {
@@ -308,6 +310,7 @@ export function ArmyEditorView({ armyId }: { armyId: string }) {
   const [modalOpen, setModalOpen] = useState(false)
   const [editingSquad, setEditingSquad] = useState<SquadSelection | undefined>()
   const [showSettings, setShowSettings] = useState(false)
+  const [mode, setMode] = useState<'build' | 'play'>('build')
 
   if (!army) {
     return (
@@ -353,16 +356,46 @@ export function ArmyEditorView({ armyId }: { armyId: string }) {
             <p className="font-bold truncate">{army.name}</p>
             <p className="text-xs text-[var(--muted-foreground)]">{raceName}{army.playerName ? ` · ${army.playerName}` : ''}</p>
           </div>
-          <button
-            onClick={() => setShowSettings(s => !s)}
-            className="rounded-lg px-2.5 py-1.5 text-xs border border-[var(--border)] hover:bg-[var(--accent)] transition-colors"
-          >
-            Settings
-          </button>
+          {/* Build / Play toggle */}
+          <div className="flex rounded-lg border border-[var(--border)] overflow-hidden text-xs font-semibold">
+            <button
+              onClick={() => setMode('build')}
+              className={cn(
+                'flex items-center gap-1 px-2.5 py-1.5 transition-colors',
+                mode === 'build'
+                  ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
+                  : 'hover:bg-[var(--accent)] text-[var(--muted-foreground)]',
+              )}
+            >
+              <PenSquare size={13} /> Build
+            </button>
+            <button
+              onClick={() => setMode('play')}
+              className={cn(
+                'flex items-center gap-1 px-2.5 py-1.5 transition-colors',
+                mode === 'play'
+                  ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
+                  : 'hover:bg-[var(--accent)] text-[var(--muted-foreground)]',
+              )}
+            >
+              <PlayCircle size={13} /> Play
+            </button>
+          </div>
+
+          {mode === 'build' && (
+            <button
+              onClick={() => setShowSettings(s => !s)}
+              className="rounded-lg px-2.5 py-1.5 text-xs border border-[var(--border)] hover:bg-[var(--accent)] transition-colors"
+            >
+              Settings
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="p-4 space-y-4">
+      {mode === 'play' && <PlayModeView army={army} />}
+
+      {mode === 'build' && <div className="p-4 space-y-4">
         {/* Settings panel */}
         {showSettings && <ArmySettingsPanel army={army} onClose={() => setShowSettings(false)} />}
 
@@ -414,7 +447,7 @@ export function ArmyEditorView({ armyId }: { armyId: string }) {
             <span>{army.totalPoints} / {army.pointsLimit} pts</span>
           </div>
         )}
-      </div>
+      </div>}
 
       {/* Squad form modal */}
       <SquadFormModal

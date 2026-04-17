@@ -402,8 +402,10 @@ function SquadForm({
                   Skills ({skillLoadouts.length}/{maxSkills} types) — cost per troop
                 </label>
                 <div className="space-y-1.5">
-                  {skillsData.map(s => {
-                    const sk = s as { id: string; name: string; pointsCost: number }
+                  {(skillsData as { id: string; name: string; pointsCost: number; heroOnly: boolean }[])
+                    .filter(s => !s.heroOnly || draft.trainingClass === 'HERO')
+                    .map(s => {
+                    const sk = s
                     const loadout = skillLoadouts.find(sl => sl.skillId === sk.id)
                     const isSelected = !!loadout
                     const count = loadout?.count ?? 0

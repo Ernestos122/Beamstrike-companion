@@ -101,6 +101,7 @@ export type SkillType =
   | 'SHARPSHOOTER'
   | 'AGILE'
   | 'MARTIAL_ARTS'
+  | 'INTUITIVE'
 
 export type ChartCategory =
   | 'TURN_SEQUENCE'

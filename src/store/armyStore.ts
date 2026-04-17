@@ -96,6 +96,24 @@ export const useArmyStore = create<ArmyStore>()(
         }),
       })),
     }),
-    { name: 'beamstrike-armies' },
+    {
+      name: 'beamstrike-armies',
+      version: 2,
+      migrate: (persistedState: unknown, fromVersion: number) => {
+        const state = persistedState as { armies: ArmyList[] }
+        if (fromVersion < 2) {
+          state.armies = (state.armies ?? []).map(army => ({
+            ...army,
+            squads: army.squads.map(squad => ({
+              ...squad,
+              skills: ((squad.skills ?? []) as unknown[]).map(s =>
+                typeof s === 'string' ? { skillId: s, count: 1 } : s
+              ) as SquadSelection['skills'],
+            })),
+          }))
+        }
+        return state as unknown as ArmyStore
+      },
+    },
   ),
 )

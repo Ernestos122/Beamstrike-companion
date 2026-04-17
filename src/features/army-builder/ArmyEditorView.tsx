@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Plus, Pencil, Copy, Trash2, Shield, Swords, ChevronDown, ChevronUp } from 'lucide-react'
 import { useArmyStore } from '@store/armyStore'
-import { armourTypes, troopTraining, allWeapons, races } from '@data/index'
+import { armourTypes, troopTraining, allWeapons, races, skills as skillsData } from '@data/index'
 import type { SquadSelection } from '@types-bs/squad'
 import type { ArmyList } from '@types-bs/army'
 import { SquadFormModal } from './SquadFormModal'
@@ -180,7 +180,12 @@ function SquadCard({
           {(squad.skills ?? []).length > 0 && (
             <div>
               <p className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide mb-1">Skills</p>
-              <p className="text-xs">{squad.skills!.join(', ')}</p>
+              <p className="text-xs">
+                {(squad.skills ?? []).map(sl => {
+                  const s = (skillsData as { id: string; name: string }[]).find(s => s.id === sl.skillId)
+                  return `${s?.name ?? sl.skillId} ×${sl.count}`
+                }).join(', ')}
+              </p>
             </div>
           )}
           {squad.equipment.length > 0 && (

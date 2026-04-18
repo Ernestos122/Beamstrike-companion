@@ -12,6 +12,7 @@ import {
   weaponsSupport,
   weaponsHeavy,
   weaponsAlien,
+  weaponsMelee,
   allWeapons,
 } from '@data/index'
 import type { SquadSelection, TrooperLine, WeaponLoadout } from '@types-bs/squad'
@@ -30,6 +31,7 @@ const WEAPON_CATEGORIES = [
   { id: 'INFANTRY', label: 'Infantry' },
   { id: 'SUPPORT', label: 'Support' },
   { id: 'HEAVY', label: 'Heavy' },
+  { id: 'MELEE', label: 'Melee' },
   { id: 'ALIEN', label: 'Alien' },
   { id: 'VEHICLE', label: 'Vehicle' },
 ] as const
@@ -107,6 +109,7 @@ function WeaponPicker({
       ...(weaponsInfantry as Weapon[]),
       ...(weaponsSupport as Weapon[]),
       ...(weaponsHeavy as Weapon[]),
+      ...(weaponsMelee as Weapon[]),
       ...(weaponsAlien as Weapon[]).filter(w => alienIds.has(w.id)),
     ]
   }, [armyRace])
@@ -147,7 +150,7 @@ function WeaponPicker({
 
       {/* Category pills */}
       <div className="flex gap-1 flex-wrap">
-        {WEAPON_CATEGORIES.slice(0, 5).map(c => (
+        {WEAPON_CATEGORIES.map(c => (
           <button key={c.id} type="button" onClick={() => setCatFilter(c.id)}
             className={cn('rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors',
               catFilter === c.id

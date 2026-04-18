@@ -219,10 +219,20 @@ function TrooperLineSection({ line, casualties, onCasualtiesChange }: {
                       {w.shotsPerPhase && w.shotsPerPhase > 1 && <span className="ml-1 text-[10px] text-sky-400">{w.shotsPerPhase}×</span>}
                       {w.causesSupp && <span className="ml-1 text-[10px] text-amber-400">S</span>}
                     </td>
-                    <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band0_4)}</td>
-                    <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band5_20)}</td>
-                    <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band21_40)}</td>
-                    <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band41_80)}</td>
+                    {w.category === 'MELEE' ? (
+                      <>
+                        <td colSpan={4} className="px-2 py-1 text-center text-[10px] text-[var(--muted-foreground)]">
+                          H2H bonus: <span className="font-mono font-bold text-[var(--foreground)]">{(w as unknown as { meleeBonus: number }).meleeBonus >= 0 ? '+' : ''}{(w as unknown as { meleeBonus: number }).meleeBonus}</span>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band0_4)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band5_20)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band21_40)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band41_80)}</td>
+                      </>
+                    )}
                     <td className="px-2 py-1 text-center">
                       <span className={cn('px-1 py-0.5 rounded text-[10px] font-bold', IMPACT_COLOUR[String(w.impact)] ?? 'bg-gray-500/20 text-gray-400')}>
                         {String(w.impact).replace('TOTAL_', 'TOT')}

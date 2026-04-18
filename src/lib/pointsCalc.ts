@@ -45,8 +45,8 @@ export function calcSquadPoints(squad: SquadSelection): number {
       return sum + (w?.pointsCost ?? 0) * wl.count
     }, 0)
     const equipPts = (squad.vehicleEquipment ?? []).reduce((sum, eId) => {
-      const eq = equipmentData.find(e => e.id === eId)
-      return sum + ((eq as { pointsCost: number } | undefined)?.pointsCost ?? 0)
+      const eq = equipmentData.find(e => e.id === eId) as { pointsCost: number; vehicleCost?: number } | undefined
+      return sum + (eq?.vehicleCost ?? eq?.pointsCost ?? 0)
     }, 0)
     return (squad.vehicleBasePoints ?? 0) + weaponPts + equipPts
   }

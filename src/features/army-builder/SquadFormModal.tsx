@@ -13,6 +13,7 @@ import {
   weaponsHeavy,
   weaponsAlien,
   weaponsMelee,
+  grenades,
   allWeapons,
 } from '@data/index'
 import type { SquadSelection, TrooperLine, WeaponLoadout } from '@types-bs/squad'
@@ -32,6 +33,7 @@ const WEAPON_CATEGORIES = [
   { id: 'SUPPORT', label: 'Support' },
   { id: 'HEAVY', label: 'Heavy' },
   { id: 'MELEE', label: 'Melee' },
+  { id: 'GRENADE', label: 'Grenades' },
   { id: 'ALIEN', label: 'Alien' },
   { id: 'VEHICLE', label: 'Vehicle' },
 ] as const
@@ -110,6 +112,7 @@ function WeaponPicker({
       ...(weaponsSupport as Weapon[]),
       ...(weaponsHeavy as Weapon[]),
       ...(weaponsMelee as Weapon[]),
+      ...(grenades as unknown as Weapon[]),
       ...(weaponsAlien as Weapon[]).filter(w => alienIds.has(w.id)),
     ]
   }, [armyRace])

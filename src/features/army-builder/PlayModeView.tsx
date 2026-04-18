@@ -225,6 +225,12 @@ function TrooperLineSection({ line, casualties, onCasualtiesChange }: {
                           H2H bonus: <span className="font-mono font-bold text-[var(--foreground)]">{(w as unknown as { meleeBonus: number }).meleeBonus >= 0 ? '+' : ''}{(w as unknown as { meleeBonus: number }).meleeBonus}</span>
                         </td>
                       </>
+                    ) : w.category === 'GRENADE' ? (
+                      <>
+                        <td colSpan={4} className="px-2 py-1 text-center text-[10px] text-[var(--muted-foreground)]">
+                          Blast template <span className="font-mono font-bold text-[var(--foreground)]">{(w as unknown as { blastTemplate?: number }).blastTemplate ?? '—'}</span>
+                        </td>
+                      </>
                     ) : (
                       <>
                         <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band0_4)}</td>

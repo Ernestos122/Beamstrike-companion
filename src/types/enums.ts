@@ -36,7 +36,7 @@ export type DamageResult = 'NE' | 'STUN' | 'GH' | 'KILL'
 
 export type ShieldType = 'ES' | 'PS' | 'MULTI'
 
-export type WeaponCategory = 'INFANTRY' | 'SUPPORT' | 'HEAVY' | 'VEHICLE_MOUNTED' | 'ALIEN' | 'MELEE'
+export type WeaponCategory = 'INFANTRY' | 'SUPPORT' | 'HEAVY' | 'VEHICLE_MOUNTED' | 'ALIEN' | 'MELEE' | 'GRENADE'
 
 export type VehicleArmourClass = 0 | 1 | 2 | 3 | 4 | 5 | 6
 

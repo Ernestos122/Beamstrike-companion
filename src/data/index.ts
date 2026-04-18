@@ -40,7 +40,7 @@ export const rulesEntries = _rulesEntries as unknown as RulesEntry[]
 export const aliensTroops = _aliensTroops
 export const aliensContent = _aliensContent
 
-/** All infantry + support + heavy + alien weapons in a single flat array */
+/** All infantry + support + heavy + alien + melee + grenade weapons in a single flat array */
 export const allWeapons: Weapon[] = [
   ...(weaponsInfantry),
   ...(weaponsSupport),
@@ -48,4 +48,5 @@ export const allWeapons: Weapon[] = [
   ...(weaponsVehicle),
   ...(weaponsAlien),
   ...(weaponsMelee),
+  ...(_grenades as unknown as Weapon[]),
 ]

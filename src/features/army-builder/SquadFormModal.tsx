@@ -12,13 +12,12 @@ import {
   weaponsSupport,
   weaponsHeavy,
   weaponsAlien,
-  weaponsVehicle,
   allWeapons,
 } from '@data/index'
 import type { SquadSelection, TrooperLine, WeaponLoadout } from '@types-bs/squad'
 import type { TrainingClass, ArmourType, RaceType, SkillType } from '@types-bs/enums'
 import type { Weapon } from '@types-bs/weapon'
-import { calcSquadPoints, calcSquadMorale, calcTrooperLinePoints } from '@lib/pointsCalc'
+import { calcSquadPoints, calcSquadMorale } from '@lib/pointsCalc'
 import { generateId } from '@lib/utils'
 import { cn } from '@lib/utils'
 
@@ -59,7 +58,7 @@ function getSkillCost(sId: string): number {
   return (skillsData.find(s => s.id === sId) as { pointsCost: number } | undefined)?.pointsCost ?? 0
 }
 
-function defaultLine(race: RaceType): TrooperLine {
+function defaultLine(): TrooperLine {
   return {
     id: generateId(),
     label: '',
@@ -77,7 +76,7 @@ function defaultDraft(race: RaceType): SquadDraft {
     squadName: '',
     race,
     isVehicle: false,
-    troopers: [defaultLine(race)],
+    troopers: [defaultLine()],
     vehicleHullType: undefined,
     vehicleArmourClass: undefined,
     vehicleName: undefined,
@@ -444,7 +443,7 @@ function SquadForm({ initial, onSave, onCancel }: {
   }
 
   function addLine() {
-    set('troopers', [...draft.troopers, defaultLine(draft.race)])
+    set('troopers', [...draft.troopers, defaultLine()])
   }
 
   function updateLine(idx: number, updated: TrooperLine) {

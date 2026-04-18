@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Plus, Pencil, Copy, Trash2, Shield, Swords, ChevronDown, ChevronUp, PlayCircle, PenSquare } from 'lucide-react'
 import { useArmyStore } from '@store/armyStore'
+import { useHouseRulesStore } from '@store/houseRulesStore'
 import { troopTraining, armourTypes, allWeapons, races, skills as skillsData, equipment as equipmentData } from '@data/index'
 import type { SquadSelection, TrooperLine } from '@types-bs/squad'
 import type { ArmyList } from '@types-bs/army'
@@ -192,6 +193,7 @@ function SquadCard({ squad, onEdit, onDuplicate, onRemove }: {
 // ── Army settings panel ────────────────────────────────────────────────────────
 function ArmySettingsPanel({ army, onClose }: { army: ArmyList; onClose: () => void }) {
   const updateArmy = useArmyStore(s => s.updateArmy)
+  const { d12Mode, toggleD12 } = useHouseRulesStore()
   const [name, setName] = useState(army.name)
   const [playerName, setPlayerName] = useState(army.playerName)
   const [pointsLimit, setPointsLimit] = useState(army.pointsLimit)
@@ -237,6 +239,21 @@ function ArmySettingsPanel({ army, onClose }: { army: ArmyList; onClose: () => v
           <label className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wide">Notes</label>
           <textarea rows={2} className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)] resize-none"
             value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+        <div className="col-span-2">
+          <button type="button" onClick={toggleD12}
+            className={cn('w-full flex items-center gap-3 rounded-lg border px-3 py-2.5 text-left transition-colors',
+              d12Mode ? 'border-amber-500/60 bg-amber-500/10' : 'border-[var(--border)] hover:bg-[var(--accent)]')}>
+            <div className={cn('flex h-5 w-9 shrink-0 items-center rounded-full transition-colors',
+              d12Mode ? 'bg-amber-500' : 'bg-[var(--secondary)]')}>
+              <div className={cn('h-4 w-4 rounded-full bg-white shadow transition-transform',
+                d12Mode ? 'translate-x-4' : 'translate-x-0.5')} />
+            </div>
+            <div>
+              <p className="text-xs font-semibold">House Rule: 1d12 mode</p>
+              <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">Roll 1d12 instead of 2d6. All target numbers and modifiers unchanged. Roll of 1 always misses.</p>
+            </div>
+          </button>
         </div>
       </div>
       <button type="submit" className="w-full rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] py-2 text-sm font-semibold hover:opacity-90 transition-opacity">

@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, Minus, Plus, RotateCcw, Skull, Zap } from 'lucide-react'
+import { ChevronDown, ChevronUp, Minus, Plus, RotateCcw, Skull, Zap, Dice6 } from 'lucide-react'
 import { armourTypes, troopTraining, allWeapons, skills as allSkills, equipment as equipmentData } from '@data/index'
 import type { ArmyList } from '@types-bs/army'
 import type { SquadSelection, TrooperLine } from '@types-bs/squad'
 import { cn } from '@lib/utils'
 import { calcTrooperLinePoints } from '@lib/pointsCalc'
+import { useHouseRulesStore } from '@store/houseRulesStore'
 
 // ── Static lookups ─────────────────────────────────────────────────────────────
 
@@ -313,8 +314,8 @@ function SquadPlayCard({ squad, casualties, onCasualtiesChange }: {
 // ── Play Mode View ─────────────────────────────────────────────────────────────
 export function PlayModeView({ army }: { army: ArmyList }) {
   const [moraleSpent, setMoraleSpent] = useState(0)
-  // casualties keyed by TrooperLine.id
   const [casualties, setCasualties] = useState<Record<string, number>>({})
+  const d12Mode = useHouseRulesStore(s => s.d12Mode)
 
   function adjustMorale(delta: number) {
     setMoraleSpent(v => Math.max(0, v + delta))
@@ -332,6 +333,15 @@ export function PlayModeView({ army }: { army: ArmyList }) {
   return (
     <div className="p-4 max-w-xl mx-auto space-y-4">
       <MoraleBar army={army} moraleSpent={moraleSpent} onAdjust={adjustMorale} onReset={reset} />
+      {d12Mode && (
+        <div className="flex items-start gap-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2.5">
+          <Dice6 size={15} className="text-amber-400 mt-0.5 shrink-0" />
+          <div>
+            <p className="text-xs font-bold text-amber-300">House Rule: 1d12 Mode active</p>
+            <p className="text-[10px] text-amber-200/70 leading-snug mt-0.5">Roll 1d12 instead of 2d6. All target numbers and modifiers are unchanged. A roll of 1 always misses.</p>
+          </div>
+        </div>
+      )}
       {army.squads.length === 0 && (
         <p className="text-sm text-center text-[var(--muted-foreground)] py-8">No squads in this army yet.</p>
       )}

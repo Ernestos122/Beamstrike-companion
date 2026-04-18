@@ -116,5 +116,34 @@
       { "id": "alien-weapons", "title": "Alien Weapons", "order": 2, "pageRef": "p.18" },
       { "id": "alien-movement", "title": "Alien Figure Movement", "order": 3, "pageRef": "p.18" }
     ]
+  },
+  {
+    "id": "leadership-rallying",
+    "title": "Leadership and Rallying Troops",
+    "order": 10,
+    "pageRef": "p.24",
+    "subsections": [
+      { "id": "leadership-rallying-overview", "title": "Leadership and Rallying", "order": 1, "pageRef": "p.24" },
+      { "id": "leadership-fanatic", "title": "Fanatic Troops and Robots", "order": 2, "pageRef": "p.24" }
+    ]
+  },
+  {
+    "id": "reinforcements",
+    "title": "Reinforcements",
+    "order": 11,
+    "pageRef": "p.25",
+    "subsections": [
+      { "id": "reinforcements-overview", "title": "Reinforcement Methods", "order": 1, "pageRef": "p.25" },
+      { "id": "reinforcements-morale", "title": "Reinforcements and Morale", "order": 2, "pageRef": "p.25" }
+    ]
+  },
+  {
+    "id": "androids-robots",
+    "title": "Androids and Robots in Battle",
+    "order": 12,
+    "pageRef": "p.25",
+    "subsections": [
+      { "id": "androids-robots-overview", "title": "Androids and Robots Rules", "order": 1, "pageRef": "p.25" }
+    ]
   }
 ]

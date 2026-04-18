@@ -212,7 +212,7 @@
   {
     "id": "AGILE",
     "name": "Agile",
-    "pointsCost": 2,
+    "pointsCost": 3,
     "heroOnly": true,
     "maxPerArmy": null,
     "minRequired": 0,

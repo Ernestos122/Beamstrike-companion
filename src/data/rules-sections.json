@@ -141,9 +141,21 @@
     "id": "androids-robots",
     "title": "Androids and Robots in Battle",
     "order": 12,
-    "pageRef": "p.25",
+    "pageRef": "p.26",
     "subsections": [
-      { "id": "androids-robots-overview", "title": "Androids and Robots Rules", "order": 1, "pageRef": "p.25" }
+      { "id": "androids-robots-overview", "title": "Androids and Robots Rules", "order": 1, "pageRef": "p.26" },
+      { "id": "androids-robots-malfunction", "title": "Malfunction Rules", "order": 2, "pageRef": "p.26" }
+    ]
+  },
+  {
+    "id": "heroes",
+    "title": "Heroes and Characters",
+    "order": 13,
+    "pageRef": "p.28",
+    "subsections": [
+      { "id": "heroes-constructing", "title": "Constructing Heroes", "order": 1, "pageRef": "p.28" },
+      { "id": "heroes-ability-table", "title": "Hero Ability Table", "order": 2, "pageRef": "p.28" },
+      { "id": "heroes-record-sheet", "title": "Hero Record Sheet", "order": 3, "pageRef": "p.28" }
     ]
   }
 ]

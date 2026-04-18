@@ -554,10 +554,54 @@
     "title": "Androids and Robots Rules",
     "sectionId": "androids-robots",
     "subsectionId": "androids-robots-overview",
-    "content": "The use of androids and robots on the future battlefield is commonplace. Often built stronger than mere flesh and hard-wired to ignore suppression and morale, they make excellent warriors. Variants include massive walking artillery support bots, stealthy assassin droids, maintenance robots, and technical robots.\n\n**Ranged combat:** Robots and androids are moved and shoot in the same way as living troops. Ranged combat is treated normally if the robot or android is fitted with firearms.\n\n**RULES SPECIFIC TO ROBOTS:**\n- **-2 penalty** to Hand to Hand combat roll (often have inferior close combat capability)\n- Each time a robot receives a **glancing hit** (hit but not killed), roll 1D6. On a **5 or 6**, the robot has a **malfunction** — it may not move or fire for 1D3 turns\n- **May not** call off-table fire support or reinforcements\n- Robots **may not** be classed as Heroes\n- Robots do not count as 'fanatics' but ARE immune to morale rules (they cannot be suppressed or broken)\n- Robots do not benefit from Leadership bonuses\n\n**RULES SPECIFIC TO ANDROIDS:**\n- **-2 penalty** to Hand to Hand combat roll\n- Androids are more sophisticated than robots and may optionally be granted skills (at normal cost)\n- Androids ARE immune to morale and suppression rules\n- Unlike robots, androids do not suffer from the malfunction rule on glancing hits — they are more resilient\n- Androids may be purchased as Hero-class figures if their points reflect this\n\n**Fanatic robots and androids:** War droids with the Fanatic skill advance toward the nearest enemy when not fired upon — see [Fanatic Troops](#leadership-fanatic).",
-    "tags": ["android", "robot", "malfunction", "H2H penalty", "morale immune", "glancing hit", "war droid"],
-    "seeAlso": ["leadership-fanatic", "close-combat-h2h", "morale-suppression", "deployment-skills"],
-    "pageRef": "p.25",
+    "content": "Androids and robots are immune to suppression and morale rules but have specific combat limitations.\n\n**RULES SPECIFIC TO ROBOTS:**\n- **-2 penalty** to Hand to Hand combat roll\n- On a **glancing hit**, roll 1D6 — on **5 or 6** the robot enters malfunction state (see Malfunction Rules)\n- May **not** call off-table fire support or reinforcements\n- May **not** be classed as Heroes, but may be assigned skills including Fanatic\n\n**RULES SPECIFIC TO ANDROIDS:**\n- **-2 penalty** to Hand to Hand combat roll\n- May **not** call off-table fire support or reinforcements\n- May **not** be classed as Heroes, but may be assigned skills including Fanatic\n- Androids may **NOT mount personal shields** — they interfere with positronic brains\n\n**Both robots and androids:**\n- May be assigned the Fanatic skill and fight to the bitter end per their programming\n- Do **not** advance automatically toward enemies (unlike organic Fanatic troops)\n- Ignore Suppression rules entirely\n\n**Example robots:** Imperial Heavy Battle Droid (VET/PA/DA, 37pts), Security Robot (VET/FI/PA, 19pts), Robo-Artillery (REG/AD, 55pts+guns), Medical Droid (REG/LA, 15pts), Cyborg Dog (REG/FI, 13pts), Robo-Scout (REG/PA, 40pts), Sentry Robot (REG/PA, 29pts).",
+    "tags": ["android", "robot", "malfunction", "H2H penalty", "morale immune", "glancing hit", "shields", "positronic"],
+    "seeAlso": ["androids-robots-malfunction", "leadership-fanatic", "close-combat-h2h", "morale-suppression"],
+    "pageRef": "p.26",
     "order": 1
+  },
+  {
+    "id": "androids-robots-malfunction",
+    "title": "Robot Malfunction Rules",
+    "sectionId": "androids-robots",
+    "subsectionId": "androids-robots-malfunction",
+    "content": "When a robot enters malfunction (5–6 on 1D6 after a glancing hit), place a malfunction marker next to it.\n\n**Malfunction Action Table** — at end of the firing phase, after all other attacks resolved, roll 1D6 for each malfunctioning robot:\n\n| Roll | Result |\n|---|---|\n| 1–3 | Does not fire in next fire phase (essentially as glancing hit — no action) |\n| 4 | Fires at nearest enemy (resolve in this fire phase) |\n| 5 | Fires at nearest building, vehicle, or flying vehicle (in that order), friend or foe |\n| 6 | Fires at nearest figure, vehicle, flying vehicle, support weapon, or occupied building (in that order), friend or foe |\n\n**Movement while malfunctioning:** Roll 2D6 in the movement phase:\n- Score **less than 6** — robot does not move that phase\n- Score **6 or above** — robot moves in the direction corresponding to the dice arrangement shown in the rulebook diagram\n\n**Recovering from malfunction** — at the end of each player's own turn, roll 1D6 per malfunctioning robot:\n\n| Roll | Result |\n|---|---|\n| 1–3 | Continues to malfunction (keep marker) |\n| 4 | Robot shuts down — removed from play, counts as killed for morale |\n| 5–6 | Restored to full operation (remove malfunction marker) |",
+    "tags": ["robot", "malfunction", "1D6", "2D6", "movement", "friendly fire", "shut down", "recover"],
+    "seeAlso": ["androids-robots-overview", "infantry-damage-table"],
+    "pageRef": "p.26",
+    "order": 2
+  },
+  {
+    "id": "heroes-constructing",
+    "title": "Constructing Heroes",
+    "sectionId": "heroes",
+    "subsectionId": "heroes-constructing",
+    "content": "Heroes are particularly capable individuals — on the battlefield they can turn the tide, boost morale, and cut a swathe through enemy ranks.\n\n**Base profile:**\n- **Base cost:** 20 points each\n- **Troop roll:** 2+ to succeed\n- **H2H bonus:** +3 to all hand-to-hand combat rolls\n- **Ranged hit bonus:** Base +3 to all ranged fire hit rolls\n- Ranged bonus can be upgraded: **+2 points per additional +1**, up to a maximum of **+6 total** (6 extra points)\n- May be male, female, or cyborg\n\n**Pistol rules:**\n- Heroes may fire a pistol (including palm flamers) in **each hand** at the **same target**\n- Heroes with **Ambidextrous** skill may fire each pistol at a **different target**\n- Heroes with both **Ambidextrous + Constitution** may fire any infantry weapon from each hand at different targets\n\n**Skills:**\n- Each hero rolls **3 abilities** on the Hero Ability Table (1D100) — re-roll duplicates\n- Additional skills may be **purchased** at the cost shown\n- **Maximum 6 special abilities** per hero — choose and roll wisely\n- Hero-only abilities are NOT available to regular troops\n- All regular troop abilities ARE available to heroes\n\n**Note:** Heroes are expensive (20 base points) and can be killed. If a hero is killed in battle they are removed from that engagement only.",
+    "tags": ["hero", "constructing", "20 points", "troop roll", "H2H bonus", "ranged bonus", "ambidextrous", "6 skills max"],
+    "seeAlso": ["heroes-ability-table", "deployment-heroes", "deployment-skills"],
+    "pageRef": "p.28",
+    "order": 1
+  },
+  {
+    "id": "heroes-ability-table",
+    "title": "Hero Ability Table (1D100)",
+    "sectionId": "heroes",
+    "subsectionId": "heroes-ability-table",
+    "content": "Roll 1D100 three times to determine a hero's starting abilities. Re-roll duplicates. Additional abilities may be purchased.\n\n| 1D100 | Skill (cost) | Effect |\n|---|---|---|\n| 1–5 | Gun Skill (3) | +3 to hit dice for one nominated weapon |\n| 6–10 | Scout (3) | Acts as scout — jet pack bonus, concealment, laser painting |\n| 11–15 | Quick Fire (2) | May fire an extra shot at each target |\n| 16–18 | Ambidextrous (5) | Use 2 hand weapons; fire 2 pistols at different targets |\n| 19–20 | Sapper (2) | Acts as sapper — demolitions, minefields, booby traps |\n| 21–25 | Artillerist (1) | Acts as gunner — heavy/support weapons without penalty |\n| 26–30 | Initiative (2) | May roll twice to act in close combat |\n| 31–35 | Aggressive (1) | Close combat options against enemies within 4\" (not usual 2\") |\n| 36–40 | Leadership (8) | Acts as leader — rally troops, fire at non-nearest targets |\n| 41–45 | Medical (3) | Acts as medic — heal one fallen figure per turn |\n| 46–50 | Nerves of Steel (2) | May ignore glancing hit results |\n| 51–55 | Fortune (4) | On 'Kill' result: roll 1D6, on 5–6 downgrade to glancing hit |\n| 56–60 | Dodge (1) | Twice per battle, subtract 3 from firer's to-hit dice (declared before roll) |\n| 61–65 | Constitution (5) | Attackers have -1 penalty on 1D6 damage roll against this hero |\n| 66–70 | Swordsman (3) | +4 to 1D10 in H2H; required for advanced melee weapons |\n| 71–75 | Marksman (4) | +2 to all ranged hit dice throws |\n| 76–80 | Sharpshooter (5) | Roll extra 1D4 alongside 2D6 when firing; use as total score |\n| 81–85 | Grenadier (2) | +2 to hit with grenades and indirect fire weapons |\n| 86–90 | Agile (3) | Move twice normal distance in either move phase (not both) |\n| 91–95 | Martial Arts (4) | Roll additional D10 in H2H — take the highest roll |\n| 96–98 | Sniper (3) | Acts as sniper — pick off leaders, enhanced concealment |\n| 99–100 | Intuitive (–) | After enemy moves, immediately move 3\" in any direction (not toward unconcealed enemy). Roll only — no purchase cost. |",
+    "tags": ["hero", "ability table", "1D100", "gun skill", "quick fire", "ambidextrous", "martial arts", "sharpshooter", "intuitive"],
+    "seeAlso": ["heroes-constructing", "deployment-skills"],
+    "pageRef": "p.28",
+    "order": 2
+  },
+  {
+    "id": "heroes-record-sheet",
+    "title": "Hero Record Sheet",
+    "sectionId": "heroes",
+    "subsectionId": "heroes-record-sheet",
+    "content": "The Hero/Heroine Record Sheet tracks a hero's full profile for use across battles.\n\n**Record sheet fields:** Name, Sex, Age, Race, Ranged Hit Bonus, HtH Bonus, Skills (list all up to 6), Armour class, Weapons, Hero Point Cost, Loyalty (faction), Equipment, and Story (background narrative).\n\n**Calculating hero point cost:**\n- 20 pts base\n- + Ranged bonus upgrades (2 pts per +1, up to +6 total)\n- + Purchased skills (at skill cost)\n- + Armour class cost\n- + Weapons and equipment\n\n**Using heroes sparingly:** Heroes are not ordinary battlefield troops — they can serve as assassination targets, diplomatic convoy protectors, or special operatives. Specific named heroes can be found in each ERA supplement with pre-built profiles.\n\n**Army size guidance (from Points Values chart):**\n- ~500 pts per side: 2–3 hour session\n- ~1000 pts per side: 4–5 hour session\n- ~2000 pts per side: full day game",
+    "tags": ["hero", "record sheet", "points", "profile", "loyalty", "army size"],
+    "seeAlso": ["heroes-constructing", "heroes-ability-table", "introduction-points"],
+    "pageRef": "p.28",
+    "order": 3
   }
 ]

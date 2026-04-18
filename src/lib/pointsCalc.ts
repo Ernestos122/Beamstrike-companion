@@ -1,8 +1,7 @@
 import { troopTraining, armourTypes, skills as skillsData, equipment as equipmentData, allWeapons } from '@data/index'
-import type { SquadSelection } from '@types-bs/squad'
+import type { SquadSelection, TrooperLine } from '@types-bs/squad'
 import type { ArmourType } from '@types-bs/enums'
 
-// ArmourType enum uses 'DA'/'DA_SHIELDED' for what armour-types.json calls 'AD'
 function getArmourCost(armourType: ArmourType | undefined): number {
   if (!armourType) return 0
   const id = armourType === 'DA' || armourType === 'DA_SHIELDED' ? 'AD' : armourType.replace('_SHIELDED', '')
@@ -16,37 +15,51 @@ function getTrainingCost(trainingClass: string | undefined): number {
   return (t as { pointsCost: number } | undefined)?.pointsCost ?? 0
 }
 
-export function calcSquadPoints(squad: SquadSelection): number {
-  const weaponPts = squad.weapons.reduce((sum, wl) => {
-    const w = allWeapons.find(w => w.id === wl.weaponId)
-    return sum + (w?.pointsCost ?? 0) * wl.count
+// Cost for a single TrooperLine (count × per-figure total).
+// Per-figure = training + armour + sum(all weapon costs) + sum(all equip costs) + sum(all skill costs).
+export function calcTrooperLinePoints(line: TrooperLine): number {
+  const base = getTrainingCost(line.trainingClass) + getArmourCost(line.armourType)
+
+  const weaponPts = line.weapons.reduce((sum, wId) => {
+    const w = allWeapons.find(w => w.id === wId)
+    return sum + (w?.pointsCost ?? 0)
   }, 0)
 
-  const equipPts = squad.equipment.reduce((sum, eqId) => {
-    const eq = equipmentData.find(e => e.id === eqId)
+  const equipPts = line.equipment.reduce((sum, eId) => {
+    const eq = equipmentData.find(e => e.id === eId)
     return sum + ((eq as { pointsCost: number } | undefined)?.pointsCost ?? 0)
   }, 0)
 
+  const skillPts = line.skills.reduce((sum, sId) => {
+    const s = skillsData.find(s => s.id === sId)
+    return sum + ((s as { pointsCost: number } | undefined)?.pointsCost ?? 0)
+  }, 0)
+
+  return line.count * (base + weaponPts + equipPts + skillPts)
+}
+
+export function calcSquadPoints(squad: SquadSelection): number {
   if (squad.isVehicle) {
+    const weaponPts = (squad.vehicleWeapons ?? []).reduce((sum, wl) => {
+      const w = allWeapons.find(w => w.id === wl.weaponId)
+      return sum + (w?.pointsCost ?? 0) * wl.count
+    }, 0)
+    const equipPts = (squad.vehicleEquipment ?? []).reduce((sum, eId) => {
+      const eq = equipmentData.find(e => e.id === eId)
+      return sum + ((eq as { pointsCost: number } | undefined)?.pointsCost ?? 0)
+    }, 0)
     return (squad.vehicleBasePoints ?? 0) + weaponPts + equipPts
   }
 
-  const count = squad.modelCount ?? 0
-  const basePts = (getTrainingCost(squad.trainingClass) + getArmourCost(squad.armourType)) * count
-
-  // skills is SkillLoadout[] — cost = pointsCost × count (figures that have the skill)
-  const skillPts = (squad.skills ?? []).reduce((sum, sl) => {
-    const s = skillsData.find(s => s.id === sl.skillId)
-    return sum + ((s as { pointsCost: number } | undefined)?.pointsCost ?? 0) * sl.count
-  }, 0)
-
-  return basePts + weaponPts + skillPts + equipPts
+  return squad.troopers.reduce((sum, line) => sum + calcTrooperLinePoints(line), 0)
 }
 
 export function calcSquadMorale(squad: SquadSelection): number {
   if (squad.isVehicle) return 3
-  if (squad.trainingClass === 'HERO') return 3
-  return squad.modelCount ?? 0
+  return squad.troopers.reduce((sum, line) => {
+    const mv = line.trainingClass === 'HERO' ? 3 : 1
+    return sum + mv * line.count
+  }, 0)
 }
 
 export function recalcArmyTotals(

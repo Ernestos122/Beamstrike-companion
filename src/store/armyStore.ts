@@ -1,13 +1,13 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { ArmyList } from '@types-bs/army'
-import type { SquadSelection } from '@types-bs/squad'
+import type { SquadSelection, TrooperLine } from '@types-bs/squad'
 import type { RaceType } from '@types-bs/enums'
 import { generateId } from '@lib/utils'
 import { calcSquadPoints, calcSquadMorale, recalcArmyTotals } from '@lib/pointsCalc'
 
 type ArmyUpdates = Partial<Pick<ArmyList, 'name' | 'playerName' | 'pointsLimit' | 'nominatedObjectiveMorale' | 'notes'>>
-type SquadDraft = Omit<SquadSelection, 'selectionId' | 'pointsTotal' | 'moraleValue'>
+export type SquadDraft = Omit<SquadSelection, 'selectionId' | 'pointsTotal' | 'moraleValue'>
 
 interface ArmyStore {
   armies: ArmyList[]
@@ -91,27 +91,91 @@ export const useArmyStore = create<ArmyStore>()(
           const orig = a.squads.find(s => s.selectionId === squadId)
           if (!orig) return a
           const { selectionId: _id, pointsTotal: _pt, moraleValue: _mv, ...draft } = orig
-          const copy = materialize(generateId(), { ...draft, squadName: `${orig.squadName} (copy)` })
+          // Deep-clone troopers so IDs are unique
+          const clonedDraft = {
+            ...draft,
+            squadName: `${orig.squadName} (copy)`,
+            troopers: orig.troopers.map(t => ({ ...t, id: generateId() })),
+          }
+          const copy = materialize(generateId(), clonedDraft)
           return syncTotals({ ...a, squads: [...a.squads, copy] })
         }),
       })),
     }),
     {
       name: 'beamstrike-armies',
-      version: 2,
+      version: 3,
       migrate: (persistedState: unknown, fromVersion: number) => {
-        const state = persistedState as { armies: ArmyList[] }
+        const state = persistedState as { armies: Record<string, unknown>[] }
+
+        // v1 → v2: skills string[] → SkillLoadout[]
         if (fromVersion < 2) {
           state.armies = (state.armies ?? []).map(army => ({
             ...army,
-            squads: army.squads.map(squad => ({
+            squads: ((army.squads ?? []) as Record<string, unknown>[]).map(squad => ({
               ...squad,
               skills: ((squad.skills ?? []) as unknown[]).map(s =>
                 typeof s === 'string' ? { skillId: s, count: 1 } : s
-              ) as SquadSelection['skills'],
+              ),
             })),
           }))
         }
+
+        // v2 → v3: flat infantry model → TrooperLine[]
+        if (fromVersion < 3) {
+          state.armies = (state.armies ?? []).map(army => ({
+            ...army,
+            squads: ((army.squads ?? []) as Record<string, unknown>[]).map(squad => {
+              if (squad.isVehicle) {
+                return {
+                  selectionId: squad.selectionId,
+                  squadName: squad.squadName,
+                  race: squad.race,
+                  isVehicle: true,
+                  troopers: [],
+                  vehicleHullType: squad.vehicleHullType,
+                  vehicleArmourClass: squad.vehicleArmourClass,
+                  vehicleName: squad.vehicleName,
+                  vehicleBasePoints: squad.vehicleBasePoints,
+                  vehicleWeapons: (squad.weapons ?? []) as unknown[],
+                  vehicleEquipment: (squad.equipment ?? []) as unknown[],
+                  notes: squad.notes ?? '',
+                  pointsTotal: squad.pointsTotal ?? 0,
+                  moraleValue: squad.moraleValue ?? 0,
+                }
+              }
+
+              // Infantry: fold existing flat fields into a single TrooperLine
+              const oldSkills = ((squad.skills ?? []) as { skillId: string }[])
+                .map(sl => sl.skillId) as TrooperLine['skills']
+              const oldWeapons = ((squad.weapons ?? []) as { weaponId: string }[])
+                .map(wl => wl.weaponId)
+
+              const line: TrooperLine = {
+                id: generateId(),
+                label: '',
+                count: (squad.modelCount as number) ?? 1,
+                trainingClass: squad.trainingClass as TrooperLine['trainingClass'],
+                armourType: squad.armourType as TrooperLine['armourType'],
+                weapons: oldWeapons,
+                equipment: (squad.equipment ?? []) as string[],
+                skills: oldSkills,
+              }
+
+              return {
+                selectionId: squad.selectionId,
+                squadName: squad.squadName,
+                race: squad.race,
+                isVehicle: false,
+                troopers: [line],
+                notes: squad.notes ?? '',
+                pointsTotal: squad.pointsTotal ?? 0,
+                moraleValue: squad.moraleValue ?? 0,
+              }
+            }),
+          }))
+        }
+
         return state as unknown as ArmyStore
       },
     },

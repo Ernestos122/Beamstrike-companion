@@ -2,20 +2,20 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Plus, Pencil, Copy, Trash2, Shield, Swords, ChevronDown, ChevronUp, PlayCircle, PenSquare } from 'lucide-react'
 import { useArmyStore } from '@store/armyStore'
-import { armourTypes, troopTraining, allWeapons, races, skills as skillsData } from '@data/index'
-import type { SquadSelection } from '@types-bs/squad'
+import { troopTraining, armourTypes, allWeapons, races, skills as skillsData, equipment as equipmentData } from '@data/index'
+import type { SquadSelection, TrooperLine } from '@types-bs/squad'
 import type { ArmyList } from '@types-bs/army'
 import { SquadFormModal } from './SquadFormModal'
 import type { SquadDraft } from './SquadFormModal'
 import { PlayModeView } from './PlayModeView'
 import { cn } from '@lib/utils'
+import { calcTrooperLinePoints } from '@lib/pointsCalc'
 
 // ── Points bar ─────────────────────────────────────────────────────────────────
 function PointsBar({ used, limit }: { used: number; limit: number }) {
   const pct = limit > 0 ? Math.min(100, (used / limit) * 100) : 0
   const over = used > limit
   const remaining = limit - used
-
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between text-sm">
@@ -25,10 +25,8 @@ function PointsBar({ used, limit }: { used: number; limit: number }) {
         </span>
       </div>
       <div className="h-2 rounded-full bg-[var(--secondary)] overflow-hidden">
-        <div
-          className={`h-full rounded-full transition-all ${over ? 'bg-red-500' : 'bg-[var(--primary)]'}`}
-          style={{ width: `${pct}%` }}
-        />
+        <div className={`h-full rounded-full transition-all ${over ? 'bg-red-500' : 'bg-[var(--primary)]'}`}
+          style={{ width: `${pct}%` }} />
       </div>
       <div className="text-xs text-[var(--muted-foreground)]">Limit: {limit} pts</div>
     </div>
@@ -55,13 +53,51 @@ function MoraleSummary({ army }: { army: ArmyList }) {
   )
 }
 
+// ── Trooper line row (inside expanded squad card) ──────────────────────────────
+function TrooperLineRow({ line }: { line: TrooperLine }) {
+  const trainingAbbr = (troopTraining.find(t => t.id === line.trainingClass) as { abbreviation: string } | undefined)?.abbreviation ?? line.trainingClass
+  const armourId = line.armourType === 'DA' || line.armourType === 'DA_SHIELDED' ? 'AD' : line.armourType?.replace('_SHIELDED', '')
+  const armourAbbr = (armourTypes.find(a => a.id === armourId) as { abbreviation: string } | undefined)?.abbreviation ?? line.armourType
+
+  const weaponNames = line.weapons.map(wId => allWeapons.find(w => w.id === wId)?.name ?? wId)
+  const equipNames = line.equipment.map(eId => (equipmentData.find(e => e.id === eId) as { name: string } | undefined)?.name ?? eId)
+  const skillNames = line.skills.map(sId => (skillsData.find(s => s.id === sId) as { name: string } | undefined)?.name ?? sId)
+
+  const linePts = calcTrooperLinePoints(line)
+
+  return (
+    <div className="py-2 border-t border-[var(--border)] first:border-t-0">
+      <div className="flex items-baseline gap-2 flex-wrap">
+        <span className="text-sm font-semibold">
+          {line.count}×{line.label ? ` ${line.label}` : ''}
+        </span>
+        <div className="flex gap-1">
+          <span className="text-[10px] rounded bg-[var(--secondary)] px-1.5 py-0.5">{trainingAbbr}</span>
+          <span className="text-[10px] rounded bg-[var(--secondary)] px-1.5 py-0.5">{armourAbbr}</span>
+        </div>
+        <span className="ml-auto text-xs font-semibold text-[var(--primary)]">{linePts}pts</span>
+      </div>
+      {weaponNames.length > 0 && (
+        <p className="text-xs text-[var(--muted-foreground)] mt-0.5">
+          <span className="font-medium text-[var(--foreground)]">Wpn: </span>{weaponNames.join(', ')}
+        </p>
+      )}
+      {equipNames.length > 0 && (
+        <p className="text-xs text-[var(--muted-foreground)] mt-0.5">
+          <span className="font-medium text-[var(--foreground)]">Equip: </span>{equipNames.join(', ')}
+        </p>
+      )}
+      {skillNames.length > 0 && (
+        <p className="text-xs text-[var(--muted-foreground)] mt-0.5">
+          <span className="font-medium text-[var(--foreground)]">Skills: </span>{skillNames.join(', ')}
+        </p>
+      )}
+    </div>
+  )
+}
+
 // ── Squad card ─────────────────────────────────────────────────────────────────
-function SquadCard({
-  squad,
-  onEdit,
-  onDuplicate,
-  onRemove,
-}: {
+function SquadCard({ squad, onEdit, onDuplicate, onRemove }: {
   squad: SquadSelection
   onEdit: () => void
   onDuplicate: () => void
@@ -70,81 +106,48 @@ function SquadCard({
   const [expanded, setExpanded] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
 
-  const trainingName = squad.isVehicle
-    ? 'Vehicle'
-    : (troopTraining.find(t => t.id === squad.trainingClass) as { abbreviation: string } | undefined)?.abbreviation ?? squad.trainingClass ?? '—'
-
-  const armourAbbr = squad.isVehicle
-    ? null
-    : (armourTypes.find(a => {
-        const id = squad.armourType === 'DA' || squad.armourType === 'DA_SHIELDED' ? 'AD' : squad.armourType?.replace('_SHIELDED', '')
-        return a.id === id
-      }) as { abbreviation: string } | undefined)?.abbreviation ?? squad.armourType
-
+  const totalFigures = squad.isVehicle ? 1 : squad.troopers.reduce((s, t) => s + t.count, 0)
   const raceName = (races.find(r => r.id === squad.race) as { name: string } | undefined)?.name ?? squad.race
 
   return (
     <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] overflow-hidden">
       {/* Main row */}
       <div className="flex items-start gap-3 p-3">
-        <div
-          className="flex-1 min-w-0 cursor-pointer"
-          onClick={() => setExpanded(e => !e)}
-        >
+        <div className="flex-1 min-w-0 cursor-pointer" onClick={() => setExpanded(e => !e)}>
           <div className="flex items-baseline gap-2 flex-wrap">
             <span className="font-semibold truncate">{squad.squadName}</span>
             <div className="flex gap-1 flex-wrap">
-              {squad.isVehicle ? (
-                <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">Vehicle</span>
-              ) : (
-                <>
-                  <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">{trainingName}</span>
-                  <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">{armourAbbr}</span>
-                  {(squad.modelCount ?? 0) > 0 && (
-                    <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">×{squad.modelCount}</span>
-                  )}
-                  <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">{raceName}</span>
-                </>
-              )}
+              {squad.isVehicle
+                ? <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">Vehicle</span>
+                : <>
+                    <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">{totalFigures} fig{totalFigures !== 1 ? 's' : ''}</span>
+                    <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">{raceName}</span>
+                  </>
+              }
             </div>
           </div>
           <div className="flex items-center gap-3 mt-1 text-xs text-[var(--muted-foreground)]">
             <span className="font-medium text-[var(--foreground)]">{squad.pointsTotal} pts</span>
             <span>{squad.moraleValue} morale</span>
-            {squad.weapons.length > 0 && <span>{squad.weapons.length} weapon{squad.weapons.length !== 1 ? 's' : ''}</span>}
+            {!squad.isVehicle && squad.troopers.length > 1 && (
+              <span>{squad.troopers.length} figure types</span>
+            )}
           </div>
         </div>
 
         <div className="flex items-center gap-1 shrink-0">
-          <button
-            type="button"
-            onClick={() => setExpanded(e => !e)}
-            className="rounded-lg p-1.5 hover:bg-[var(--accent)] transition-colors text-[var(--muted-foreground)]"
-          >
+          <button type="button" onClick={() => setExpanded(e => !e)}
+            className="rounded-lg p-1.5 hover:bg-[var(--accent)] transition-colors text-[var(--muted-foreground)]">
             {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
-          <button
-            type="button"
-            onClick={onEdit}
-            className="rounded-lg p-1.5 hover:bg-[var(--accent)] transition-colors"
-            title="Edit"
-          >
+          <button type="button" onClick={onEdit} className="rounded-lg p-1.5 hover:bg-[var(--accent)] transition-colors" title="Edit">
             <Pencil size={15} />
           </button>
-          <button
-            type="button"
-            onClick={onDuplicate}
-            className="rounded-lg p-1.5 hover:bg-[var(--accent)] transition-colors"
-            title="Duplicate"
-          >
+          <button type="button" onClick={onDuplicate} className="rounded-lg p-1.5 hover:bg-[var(--accent)] transition-colors" title="Duplicate">
             <Copy size={15} />
           </button>
-          <button
-            type="button"
-            onClick={() => setConfirmDelete(true)}
-            className="rounded-lg p-1.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-500 transition-colors"
-            title="Remove"
-          >
+          <button type="button" onClick={() => setConfirmDelete(true)}
+            className="rounded-lg p-1.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-500 transition-colors" title="Remove">
             <Trash2 size={15} />
           </button>
         </div>
@@ -159,48 +162,26 @@ function SquadCard({
         </div>
       )}
 
-      {/* Expanded detail */}
+      {/* Expanded — TrooperLine breakdown */}
       {expanded && (
-        <div className="border-t border-[var(--border)] px-3 py-2.5 space-y-2 bg-[var(--secondary)]/40">
-          {squad.weapons.length > 0 && (
-            <div>
-              <p className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide mb-1">Weapons</p>
-              <div className="space-y-0.5">
-                {squad.weapons.map(wl => {
-                  const w = allWeapons.find(w => w.id === wl.weaponId)
-                  if (!w) return null
-                  return (
-                    <div key={wl.weaponId} className="flex justify-between text-xs">
-                      <span>{w.name} <span className="text-[var(--muted-foreground)]">×{wl.count}</span></span>
-                      <span className="text-[var(--muted-foreground)]">{w.pointsCost * wl.count}pts</span>
-                    </div>
-                  )
-                })}
-              </div>
+        <div className="border-t border-[var(--border)] px-3 py-2 bg-[var(--secondary)]/40">
+          {squad.isVehicle ? (
+            <div className="space-y-1 text-xs">
+              <p className="font-semibold">{squad.vehicleName ?? 'Vehicle'}</p>
+              {(squad.vehicleWeapons ?? []).map(wl => {
+                const w = allWeapons.find(w => w.id === wl.weaponId)
+                return w ? <p key={wl.weaponId} className="text-[var(--muted-foreground)]">{w.name}</p> : null
+              })}
             </div>
-          )}
-          {(squad.skills ?? []).length > 0 && (
+          ) : (
             <div>
-              <p className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide mb-1">Skills</p>
-              <p className="text-xs">
-                {(squad.skills ?? []).map(sl => {
-                  const s = (skillsData as { id: string; name: string }[]).find(s => s.id === sl.skillId)
-                  return `${s?.name ?? sl.skillId} ×${sl.count}`
-                }).join(', ')}
-              </p>
-            </div>
-          )}
-          {squad.equipment.length > 0 && (
-            <div>
-              <p className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide mb-1">Equipment</p>
-              <p className="text-xs">{squad.equipment.join(', ')}</p>
+              {squad.troopers.map(line => (
+                <TrooperLineRow key={line.id} line={line} />
+              ))}
             </div>
           )}
           {squad.notes && (
-            <div>
-              <p className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide mb-1">Notes</p>
-              <p className="text-xs">{squad.notes}</p>
-            </div>
+            <p className="text-xs text-[var(--muted-foreground)] mt-2 pt-2 border-t border-[var(--border)]">{squad.notes}</p>
           )}
         </div>
       )}
@@ -219,13 +200,7 @@ function ArmySettingsPanel({ army, onClose }: { army: ArmyList; onClose: () => v
 
   function save(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    updateArmy(army.id, {
-      name: name.trim(),
-      playerName: playerName.trim(),
-      pointsLimit,
-      nominatedObjectiveMorale: nominatedObj,
-      notes,
-    })
+    updateArmy(army.id, { name: name.trim(), playerName: playerName.trim(), pointsLimit, nominatedObjectiveMorale: nominatedObj, notes })
     onClose()
   }
 
@@ -235,63 +210,36 @@ function ArmySettingsPanel({ army, onClose }: { army: ArmyList; onClose: () => v
         <h3 className="font-semibold text-sm">Army Settings</h3>
         <button type="button" onClick={onClose} className="text-xs text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Close</button>
       </div>
-
       <div className="grid grid-cols-2 gap-3">
         <div className="col-span-2 space-y-1">
           <label className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wide">Army Name</label>
-          <input
-            className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            required
-          />
+          <input className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+            value={name} onChange={e => setName(e.target.value)} required />
         </div>
         <div className="space-y-1">
           <label className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wide">Player</label>
-          <input
-            className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-            value={playerName}
-            onChange={e => setPlayerName(e.target.value)}
-          />
+          <input className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+            value={playerName} onChange={e => setPlayerName(e.target.value)} />
         </div>
         <div className="space-y-1">
           <label className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wide">Points Limit</label>
-          <input
-            type="number"
-            min={100}
-            max={10000}
-            step={50}
+          <input type="number" min={100} max={10000} step={50}
             className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-            value={pointsLimit}
-            onChange={e => setPointsLimit(Number(e.target.value))}
-          />
+            value={pointsLimit} onChange={e => setPointsLimit(Number(e.target.value))} />
         </div>
         <div className="space-y-1">
           <label className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wide">Objectives Morale (0–20)</label>
-          <input
-            type="number"
-            min={0}
-            max={20}
+          <input type="number" min={0} max={20}
             className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-            value={nominatedObj}
-            onChange={e => setNominatedObj(Math.min(20, Math.max(0, Number(e.target.value))))}
-          />
+            value={nominatedObj} onChange={e => setNominatedObj(Math.min(20, Math.max(0, Number(e.target.value))))} />
         </div>
         <div className="col-span-2 space-y-1">
           <label className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wide">Notes</label>
-          <textarea
-            rows={2}
-            className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)] resize-none"
-            value={notes}
-            onChange={e => setNotes(e.target.value)}
-          />
+          <textarea rows={2} className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)] resize-none"
+            value={notes} onChange={e => setNotes(e.target.value)} />
         </div>
       </div>
-
-      <button
-        type="submit"
-        className="w-full rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] py-2 text-sm font-semibold hover:opacity-90 transition-opacity"
-      >
+      <button type="submit" className="w-full rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] py-2 text-sm font-semibold hover:opacity-90 transition-opacity">
         Save Changes
       </button>
     </form>
@@ -321,105 +269,71 @@ export function ArmyEditorView({ armyId }: { armyId: string }) {
     )
   }
 
-  function openAdd() {
-    setEditingSquad(undefined)
-    setModalOpen(true)
-  }
-
-  function openEdit(squad: SquadSelection) {
-    setEditingSquad(squad)
-    setModalOpen(true)
-  }
-
+  function openAdd() { setEditingSquad(undefined); setModalOpen(true) }
+  function openEdit(squad: SquadSelection) { setEditingSquad(squad); setModalOpen(true) }
   function handleSave(draft: SquadDraft) {
-    if (editingSquad) {
-      updateSquad(army!.id, editingSquad.selectionId, draft)
-    } else {
-      addSquad(army!.id, draft)
-    }
+    if (editingSquad) updateSquad(army!.id, editingSquad.selectionId, draft)
+    else addSquad(army!.id, draft)
   }
 
   const raceName = (races.find(r => r.id === army.primaryRace) as { name: string } | undefined)?.name ?? army.primaryRace
 
   return (
     <div className="max-w-xl mx-auto">
-      {/* Top header */}
+      {/* Sticky header */}
       <div className="sticky top-0 z-10 bg-[var(--background)] border-b border-[var(--border)] px-4 py-3">
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate('/army')}
-            className="rounded-lg p-1.5 hover:bg-[var(--accent)] transition-colors text-[var(--muted-foreground)]"
-          >
+          <button onClick={() => navigate('/army')}
+            className="rounded-lg p-1.5 hover:bg-[var(--accent)] transition-colors text-[var(--muted-foreground)]">
             <ArrowLeft size={18} />
           </button>
           <div className="flex-1 min-w-0">
             <p className="font-bold truncate">{army.name}</p>
             <p className="text-xs text-[var(--muted-foreground)]">{raceName}{army.playerName ? ` · ${army.playerName}` : ''}</p>
           </div>
+
           {/* Build / Play toggle */}
           <div className="flex rounded-lg border border-[var(--border)] overflow-hidden text-xs font-semibold">
-            <button
-              onClick={() => setMode('build')}
-              className={cn(
-                'flex items-center gap-1 px-2.5 py-1.5 transition-colors',
-                mode === 'build'
-                  ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
-                  : 'hover:bg-[var(--accent)] text-[var(--muted-foreground)]',
-              )}
-            >
+            <button onClick={() => setMode('build')}
+              className={cn('flex items-center gap-1 px-2.5 py-1.5 transition-colors',
+                mode === 'build' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)] text-[var(--muted-foreground)]')}>
               <PenSquare size={13} /> Build
             </button>
-            <button
-              onClick={() => setMode('play')}
-              className={cn(
-                'flex items-center gap-1 px-2.5 py-1.5 transition-colors',
-                mode === 'play'
-                  ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
-                  : 'hover:bg-[var(--accent)] text-[var(--muted-foreground)]',
-              )}
-            >
+            <button onClick={() => setMode('play')}
+              className={cn('flex items-center gap-1 px-2.5 py-1.5 transition-colors',
+                mode === 'play' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)] text-[var(--muted-foreground)]')}>
               <PlayCircle size={13} /> Play
             </button>
           </div>
 
           {mode === 'build' && (
-            <button
-              onClick={() => setShowSettings(s => !s)}
-              className="rounded-lg px-2.5 py-1.5 text-xs border border-[var(--border)] hover:bg-[var(--accent)] transition-colors"
-            >
+            <button onClick={() => setShowSettings(s => !s)}
+              className="rounded-lg px-2.5 py-1.5 text-xs border border-[var(--border)] hover:bg-[var(--accent)] transition-colors">
               Settings
             </button>
           )}
         </div>
       </div>
 
+      {/* Play mode */}
       {mode === 'play' && <PlayModeView army={army} />}
 
+      {/* Build mode */}
       {mode === 'build' && <div className="p-4 space-y-4">
-        {/* Settings panel */}
         {showSettings && <ArmySettingsPanel army={army} onClose={() => setShowSettings(false)} />}
-
-        {/* Points bar */}
         <PointsBar used={army.totalPoints} limit={army.pointsLimit} />
-
-        {/* Morale summary */}
         <MoraleSummary army={army} />
 
-        {/* Squad list header */}
         <div className="flex items-center justify-between">
           <h2 className="font-semibold flex items-center gap-1.5 text-sm uppercase tracking-wide text-[var(--muted-foreground)]">
-            <Swords size={15} />
-            Squads ({army.squads.length})
+            <Swords size={15} /> Squads ({army.squads.length})
           </h2>
-          <button
-            onClick={openAdd}
-            className="flex items-center gap-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] px-3 py-1.5 text-sm font-semibold hover:opacity-90 transition-opacity"
-          >
+          <button onClick={openAdd}
+            className="flex items-center gap-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] px-3 py-1.5 text-sm font-semibold hover:opacity-90 transition-opacity">
             <Plus size={15} /> Add Squad
           </button>
         </div>
 
-        {/* Empty state */}
         {army.squads.length === 0 && (
           <div className="rounded-xl border border-dashed border-[var(--border)] p-8 text-center space-y-2">
             <Shield size={28} className="mx-auto text-[var(--muted-foreground)]" />
@@ -427,20 +341,15 @@ export function ArmyEditorView({ armyId }: { armyId: string }) {
           </div>
         )}
 
-        {/* Squad cards */}
         <div className="space-y-2">
           {army.squads.map(squad => (
-            <SquadCard
-              key={squad.selectionId}
-              squad={squad}
+            <SquadCard key={squad.selectionId} squad={squad}
               onEdit={() => openEdit(squad)}
               onDuplicate={() => duplicateSquad(army.id, squad.selectionId)}
-              onRemove={() => removeSquad(army.id, squad.selectionId)}
-            />
+              onRemove={() => removeSquad(army.id, squad.selectionId)} />
           ))}
         </div>
 
-        {/* Total footer */}
         {army.squads.length > 0 && (
           <div className="rounded-xl border border-[var(--border)] bg-[var(--secondary)] px-4 py-3 flex justify-between text-sm font-semibold">
             <span>Total</span>
@@ -449,7 +358,6 @@ export function ArmyEditorView({ armyId }: { armyId: string }) {
         )}
       </div>}
 
-      {/* Squad form modal */}
       <SquadFormModal
         open={modalOpen}
         onOpenChange={setModalOpen}

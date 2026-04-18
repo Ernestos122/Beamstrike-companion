@@ -1,13 +1,23 @@
-import type { TrainingClass, ArmourType, RaceType, ShieldType, SkillType, VehicleArmourClass, VehicleHullType } from './enums'
+import type { TrainingClass, ArmourType, RaceType, SkillType, VehicleArmourClass, VehicleHullType } from './enums'
 
-export interface WeaponLoadout {
-  weaponId: string
-  count: number // how many figures in the squad carry this weapon
+// One figure type within a squad.
+// All figures in this line share identical loadouts — same training, armour,
+// weapons, equipment, and skills. Cost = count × per-figure total.
+export interface TrooperLine {
+  id: string            // UUID — stable key for React list rendering
+  label: string         // figure description, e.g. "Scout Leader", "Sniper"
+  count: number         // how many figures of this type
+  trainingClass: TrainingClass
+  armourType: ArmourType
+  weapons: string[]     // weapon IDs — every figure in the line carries all of these
+  equipment: string[]   // equipment IDs — every figure has all of these
+  skills: SkillType[]   // skill IDs — every figure has all of these
 }
 
-/** How many figures in the squad have a given skill, and the cost is per figure. */
-export interface SkillLoadout {
-  skillId: SkillType
+// Legacy shape used only by the v2→v3 migration.
+// Do NOT use this for new code.
+export interface WeaponLoadout {
+  weaponId: string
   count: number
 }
 
@@ -19,32 +29,26 @@ export interface EquipmentItem {
   isVehicleOnly?: boolean
 }
 
-// Represents one squad/unit entry on the army sheet
-// Matches: Squad | Troops | Training | Armour | Weapons | Equip | Points
+// One squad / unit entry on the army list.
 export interface SquadSelection {
-  selectionId: string // UUID
-  squadName: string // e.g. "Alpha Squad", "Tank 1"
+  selectionId: string
+  squadName: string
   race: RaceType
   isVehicle: boolean
 
-  // Infantry squads
-  trainingClass?: TrainingClass
-  armourType?: ArmourType
-  shieldType?: ShieldType | null
-  modelCount?: number
-  skills?: SkillLoadout[]
-  basePointsPerModel?: number // from points table: armour cost + training cost
+  // Infantry — list of distinct figure types
+  troopers: TrooperLine[]
 
-  // Vehicle squads
+  // Vehicle — kept as a flat model (vehicles don't "level up" like troopers do)
   vehicleHullType?: VehicleHullType
   vehicleArmourClass?: VehicleArmourClass
-  vehicleName?: string // e.g. "Medium Battle Tank"
-  vehicleBasePoints?: number // hull + movement + accessories
+  vehicleName?: string
+  vehicleBasePoints?: number      // hull + movement base cost
+  vehicleWeapons?: WeaponLoadout[] // weapons mounted on the vehicle
+  vehicleEquipment?: string[]      // equipment IDs on the vehicle
 
   // Both
-  weapons: WeaponLoadout[]
-  equipment: string[] // equipment item IDs
-  pointsTotal: number // calculated
-  moraleValue: number // calculated: 1/trooper or 3/hero/armoured vehicle
+  pointsTotal: number   // calculated
+  moraleValue: number   // calculated
   notes: string
 }

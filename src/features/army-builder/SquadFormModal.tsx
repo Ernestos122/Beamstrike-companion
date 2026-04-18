@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
-import { X, Plus, Minus, Trash2, Search, ChevronDown, ChevronUp, UserPlus } from 'lucide-react'
+import { X, Plus, Minus, Trash2, Search, ChevronDown, ChevronUp, UserPlus, Info } from 'lucide-react'
 import Fuse from 'fuse.js'
 import {
   troopTraining,
@@ -141,16 +141,32 @@ function WeaponPicker({
   const [query, setQuery] = useState('')
 
   const pool = useMemo(() => {
-    const raceData = races.find(r => r.id === armyRace) as { alienWeaponIds: string[] } | undefined
-    const alienIds = new Set(raceData?.alienWeaponIds ?? [])
-    return [
+    const raceData = races.find(r => r.id === armyRace) as {
+      alienWeaponIds: string[]
+      weaponPool: string
+      forbidMeleeWeapons: boolean
+    } | undefined
+    const wp = raceData?.weaponPool ?? 'HUMAN_AND_ALIEN'
+    const forbidMelee = raceData?.forbidMeleeWeapons ?? false
+
+    if (wp === 'NONE') return []
+
+    const humanWeapons = wp === 'ALIEN_ONLY' ? [] : [
       ...(weaponsInfantry as Weapon[]),
       ...(weaponsSupport as Weapon[]),
       ...(weaponsHeavy as Weapon[]),
-      ...(weaponsMelee as Weapon[]),
-      ...(grenades as unknown as Weapon[]),
-      ...(weaponsAlien as Weapon[]).filter(w => alienIds.has(w.id)),
     ]
+    const humanGrenades = wp === 'ALIEN_ONLY' ? [] : (grenades as unknown as Weapon[])
+    const meleeWeapons = forbidMelee ? [] : (weaponsMelee as Weapon[]).filter(w => {
+      const allowed = (w as { racesAllowed?: string[] }).racesAllowed
+      if (!allowed || allowed.length === 0) return wp !== 'ALIEN_ONLY'
+      return allowed.includes(armyRace)
+    })
+    const alienWeapons = wp === 'HUMAN_AND_ALL_ALIEN'
+      ? (weaponsAlien as Weapon[])
+      : (weaponsAlien as Weapon[]).filter(w => new Set(raceData?.alienWeaponIds ?? []).has(w.id))
+
+    return [...humanWeapons, ...meleeWeapons, ...humanGrenades, ...alienWeapons]
   }, [armyRace])
 
   const fuse = useMemo(() => new Fuse(pool, { keys: ['name', 'code'], threshold: 0.35 }), [pool])
@@ -261,6 +277,11 @@ function TrooperLineCard({
   const pfCost = perFigureCost(line)
   const linePts = pfCost * line.count
   const lineMorale = (isHero ? 3 : 1) * line.count
+
+  const forbidEquipIds = useMemo(() => {
+    const rd = races.find(r => r.id === armyRace) as { forbidEquipmentIds?: string[] } | undefined
+    return new Set(rd?.forbidEquipmentIds ?? [])
+  }, [armyRace])
 
   function update<K extends keyof TrooperLine>(key: K, val: TrooperLine[K]) {
     onChange({ ...line, [key]: val })
@@ -407,7 +428,7 @@ function TrooperLineCard({
                 <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Equipment (per figure)</p>
                 <div className="space-y-1">
                   {(equipmentData as { id: string; name: string; pointsCost: number; isVehicleOnly: boolean }[])
-                    .filter(e => !e.isVehicleOnly)
+                    .filter(e => !e.isVehicleOnly && !forbidEquipIds.has('*') && !forbidEquipIds.has(e.id))
                     .map(e => {
                       const on = line.equipment.includes(e.id)
                       return (
@@ -552,6 +573,37 @@ function SquadForm({ initial, onSave, onCancel }: {
             </div>
           </div>
         </div>
+
+        {/* Race special rules panel (non-human only) */}
+        {(() => {
+          const raceInfo = races.find(r => r.id === draft.race) as {
+            id: string; name: string; special: string[]
+            h2hModifier: number; damageModifier: number; hitModifierWhenTargeted: number
+          } | undefined
+          if (!raceInfo || raceInfo.id === 'HUMAN' || raceInfo.special.length === 0) return null
+          return (
+            <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-3 space-y-2">
+              <div className="flex items-center gap-1.5">
+                <Info size={13} className="text-blue-400 shrink-0" />
+                <span className="text-xs font-semibold text-blue-400">{raceInfo.name} Race Rules</span>
+                {(raceInfo.h2hModifier !== 0 || raceInfo.damageModifier !== 0 || raceInfo.hitModifierWhenTargeted !== 0) && (
+                  <span className="ml-auto text-[10px] text-[var(--muted-foreground)]">
+                    {raceInfo.h2hModifier !== 0 && `H2H ${raceInfo.h2hModifier > 0 ? '+' : ''}${raceInfo.h2hModifier}`}
+                    {raceInfo.damageModifier !== 0 && ` · Dmg ${raceInfo.damageModifier > 0 ? '+' : ''}${raceInfo.damageModifier}`}
+                    {raceInfo.hitModifierWhenTargeted !== 0 && ` · Hit ${raceInfo.hitModifierWhenTargeted > 0 ? '+' : ''}${raceInfo.hitModifierWhenTargeted}`}
+                  </span>
+                )}
+              </div>
+              <ul className="space-y-0.5">
+                {raceInfo.special.map((rule, i) => (
+                  <li key={i} className="text-[10px] text-[var(--muted-foreground)] leading-relaxed pl-2 border-l border-blue-500/20">
+                    {rule}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        })()}
 
         {/* Infantry — TrooperLine cards */}
         {!draft.isVehicle && (

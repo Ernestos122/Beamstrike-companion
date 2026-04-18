@@ -8,7 +8,10 @@
     "hitModifierWhenTargeted": 0,
     "movementNotes": "Standard movement rates.",
     "special": [],
-    "alienWeaponIds": []
+    "alienWeaponIds": [],
+    "weaponPool": "HUMAN_AND_ALIEN",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": []
   },
   {
     "id": "HIBEVOR",
@@ -27,7 +30,10 @@
       "Opportunity to take cover: 1d6 roll of 3 or less required (or if troops are in PA or vehicle)",
       "Use jet-packs and personal shields"
     ],
-    "alienWeaponIds": ["power-sphere-projector"]
+    "alienWeaponIds": ["power-sphere-projector"],
+    "weaponPool": "HUMAN_AND_ALIEN",
+    "forbidMeleeWeapons": true,
+    "forbidEquipmentIds": []
   },
   {
     "id": "GROWWLAN",
@@ -48,7 +54,10 @@
       "Growwlan do not use jet-packs",
       "Sniper troop skill may NOT be used"
     ],
-    "alienWeaponIds": ["shock-pistol", "shock-rifle", "shock-grenade-pack"]
+    "alienWeaponIds": ["shock-pistol", "shock-rifle", "shock-grenade-pack"],
+    "weaponPool": "HUMAN_AND_ALIEN",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": ["targeter", "support-targeter"]
   },
   {
     "id": "THUNTRA",
@@ -68,7 +77,10 @@
       "Thuntra may only fight alongside Ferrapurs in battles set prior to the end of the Ten Thousand Years War",
       "Thuntra use the Mecha special movement types STOMP and OVERTURN; classed as hull class 3"
     ],
-    "alienWeaponIds": ["heavy-bolt-pistol", "heavy-adv-grenade-pack"]
+    "alienWeaponIds": ["heavy-bolt-pistol", "heavy-adv-grenade-pack"],
+    "weaponPool": "HUMAN_AND_ALIEN",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": []
   },
   {
     "id": "CENTALING",
@@ -87,7 +99,10 @@
       "Each individual has Scout and Sapper skills",
       "To kill a Centaling requires 2 'kill' damage hits (internal organs duplicated)"
     ],
-    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-grenade-launcher", "adv-basic-grenade-pack"]
+    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-grenade-launcher", "adv-basic-grenade-pack"],
+    "weaponPool": "HUMAN_AND_ALIEN",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": []
   },
   {
     "id": "FERRAPUR",
@@ -105,7 +120,10 @@
       "Damage modifier: +1 when firing Advanced Laser Pistol/Rifle",
       "Ferrapur may only fight alongside Thuntras in battles set prior to the end of the Ten Thousand Years War"
     ],
-    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-grenade-launcher", "adv-sniper-cannon", "adv-basic-grenade-pack"]
+    "alienWeaponIds": ["adv-laser-pistol", "adv-laser-rifle", "adv-grenade-launcher", "adv-sniper-cannon", "adv-basic-grenade-pack"],
+    "weaponPool": "ALIEN_ONLY",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": []
   },
   {
     "id": "REPLICAN",
@@ -121,7 +139,10 @@
       "Replicans in squads must stay within 2 inches of at least one other squad member (not the standard 3 inches)",
       "Replican vehicles are computer-controlled — no crew"
     ],
-    "alienWeaponIds": ["p-beam-autogun"]
+    "alienWeaponIds": ["p-beam-autogun"],
+    "weaponPool": "HUMAN_AND_ALIEN",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": []
   },
   {
     "id": "SPUG",
@@ -139,7 +160,10 @@
       "Spugs may not fight alongside any other race — universally despised",
       "Pack organisation: 4–6 Cells per Hive. Cell = 2–3 packs of 6 troopers. Spug unit without leader in cohesion suffers –2 firing penalty"
     ],
-    "alienWeaponIds": ["shard-rifle", "shard-carbine", "shard-cannon", "toxcannon", "adv-grenade-launcher", "adv-basic-grenade-pack", "spug-hvy-sup-weapon"]
+    "alienWeaponIds": ["shard-rifle", "shard-carbine", "shard-cannon", "toxcannon", "adv-grenade-launcher", "adv-basic-grenade-pack", "spug-hvy-sup-weapon"],
+    "weaponPool": "HUMAN_AND_ALIEN",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": []
   },
   {
     "id": "GREY",
@@ -157,7 +181,10 @@
       "Greys are physically slender and weak: +1 damage roll penalty on hits against them",
       "Grey Combat Construct squad: must stay within 3 inches of control scout — if control scout killed, squad suppressed and attempts to move back to nearest Grey mothership"
     ],
-    "alienWeaponIds": ["p-beam-autogun", "paralysis-rod"]
+    "alienWeaponIds": ["p-beam-autogun", "paralysis-rod"],
+    "weaponPool": "ALIEN_ONLY",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": []
   },
   {
     "id": "BUG",
@@ -179,7 +206,10 @@
       "Colossus claws: +5 H2H (power axe equivalent)",
       "Cerebral tunnelling: may surface anywhere along its burrow within 1 inch of exit hole each move phase"
     ],
-    "alienWeaponIds": []
+    "alienWeaponIds": [],
+    "weaponPool": "NONE",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": ["*"]
   },
   {
     "id": "K_KREE",
@@ -200,7 +230,10 @@
       "K'Kree H2H: two throws — once with all bonuses (hand-held melee weapons), once at +0 (forelegs)",
       "No K'Kree troop types are independent — all will be in herds"
     ],
-    "alienWeaponIds": []
+    "alienWeaponIds": [],
+    "weaponPool": "HUMAN_AND_ALL_ALIEN",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": []
   },
   {
     "id": "KRAVAK",
@@ -216,7 +249,10 @@
       "Enraged: +2 H2H, -1 to damage roll when target, firer gets -1 to hit them",
       "Battle rage: +3 H2H, -2 to damage roll when target"
     ],
-    "alienWeaponIds": []
+    "alienWeaponIds": [],
+    "weaponPool": "HUMAN_AND_ALIEN",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": []
   },
   {
     "id": "ORCOID",
@@ -228,6 +264,9 @@
     "movementNotes": "Standard movement rates.",
     "canonical": false,
     "special": ["Damage modifier vs Thuntra/Orcoid: -1"],
-    "alienWeaponIds": []
+    "alienWeaponIds": [],
+    "weaponPool": "HUMAN_AND_ALIEN",
+    "forbidMeleeWeapons": false,
+    "forbidEquipmentIds": []
   }
 ]

@@ -8,6 +8,8 @@
     "movement": { "road": 4, "openGround": 3, "lightWoods": 3, "difficultGround": 2, "veryDifficult": 2 },
     "trainingClass": "REGULAR",
     "isVehicle": false,
+    "squadMin": 6,
+    "squadMax": 10,
     "notes": "Fast infantry movement type. Fielded in squads of 6-10. Usually one has leadership skill. Use jet-packs and personal shields. May use any human weapons (except Ferrapur sniper cannon) plus one additional point per item for weapon modifications."
   },
   {
@@ -63,6 +65,8 @@
     "movement": { "road": 7, "openGround": 6, "lightWoods": 5, "difficultGround": 4, "veryDifficult": 3 },
     "trainingClass": "VETERAN",
     "isVehicle": false,
+    "squadMin": 3,
+    "squadMax": 6,
     "notes": "Light armoured, advanced laser rifle, advanced grenade pack, veteran troop class. Fielded in units of 3-6. Hero skill of Gun Skill (with advanced laser rifle) giving +3 bonus to hit."
   },
   {
@@ -250,6 +254,7 @@
     "movement": { "road": 4, "openGround": 3, "lightWoods": 2, "difficultGround": 2, "veryDifficult": 1 },
     "trainingClass": "HERO",
     "isVehicle": false,
+    "isUnique": true,
     "notes": "Grey alien in form fitting suit equivalent to assault dreadnought. Null shield fitted. Ambidextrous — carries spherical P-beam and paralysis rod. Has laser painter. Acts independently. Hero skills of agile, constitution and leadership. Coordinates all hostile action/skirmish."
   },
   {
@@ -283,6 +288,11 @@
     "movement": { "road": 7, "openGround": 5, "lightWoods": 5, "difficultGround": 4, "veryDifficult": 3 },
     "trainingClass": "REGULAR",
     "isVehicle": false,
+    "naturalAttacks": [
+      { "name": "Claws", "description": "No combat modifier, straight 1d10 rolled" }
+    ],
+    "squadMin": 4,
+    "squadMax": 10,
     "notes": "Small dog-sized beetle with hard armoured shell. Razor sharp pincers and fast movement. Claws count as melee weapon (no combat modifier, straight 1d10 rolled). Counts as fanatic trooper. Glancing Hit results ignored. Fielded in units of 4-10. No ranged attack."
   },
   {
@@ -294,6 +304,9 @@
     "movement": { "road": 5, "openGround": 5, "lightWoods": 5, "difficultGround": 4, "veryDifficult": 2 },
     "trainingClass": "REGULAR",
     "isVehicle": false,
+    "naturalAttacks": [
+      { "name": "Claws & Jaws", "description": "+3 H2H (power sword equivalent)" }
+    ],
     "notes": "4-6ft tall, chitinous humanoid type hunting alien. Uses stealth and cunning. Has a level of cover one higher than normal. Can engage in close combat if within 4 inches. Fearsome claws and jaws count as power sword. Counts as fanatic trooper. Glancing Hit ignored. Acts independently."
   },
   {
@@ -305,6 +318,12 @@
     "movement": { "road": 6, "openGround": 5, "lightWoods": 5, "difficultGround": 4, "veryDifficult": 3 },
     "trainingClass": "REGULAR",
     "isVehicle": false,
+    "naturalAttacks": [
+      { "name": "Claws & Tail", "description": "+3 H2H (power sword equivalent)" },
+      { "name": "Acid Spit", "description": "STANDARD damage, template 2, 7+ to hit, 4\" max range" }
+    ],
+    "squadMin": 3,
+    "squadMax": 8,
     "notes": "6-8ft tall, heavily armoured and deadly in close combat. Claws and tail count as power sword in melee. May also spit venom/acid for ranged STANDARD damage attack using template 2 (7+ to hit, 4 inch max range). Fanatic trooper. Glancing Hit ignored. Fielded in units of 3-8."
   },
   {
@@ -316,6 +335,10 @@
     "movement": { "road": 14, "openGround": 12, "lightWoods": 12, "difficultGround": 10, "veryDifficult": 7 },
     "trainingClass": "REGULAR",
     "isVehicle": false,
+    "naturalAttacks": [
+      { "name": "Claws & Tail", "description": "+3 H2H (power sword equivalent)" },
+      { "name": "Acid Spit", "description": "STANDARD damage, template 2, 7+ to hit, 4\" max range" }
+    ],
     "notes": "Same as Terror class but with rudimentary leathery wings allowing limited flight and gliding. Improved movement allowance. Harder to hit than Terror. Otherwise per Terror class."
   },
   {
@@ -327,6 +350,10 @@
     "movement": { "road": 3, "openGround": 2, "lightWoods": 2, "difficultGround": 1, "veryDifficult": 1 },
     "trainingClass": "ELITE",
     "isVehicle": false,
+    "naturalAttacks": [
+      { "name": "Barb Shooter", "description": "As SMG, template 2, base to-hit 7" },
+      { "name": "Swallow Your Soul", "description": "3+ on 1d6 against figures detected above while burrowed" }
+    ],
     "notes": "20ft long slug-like leader alien with telepathic leadership skill. Poor ground movement but can burrow at 6\"/move through any non-concreted/metal-clad terrain. Ranged attack is barb shooter (as SMG, template 2, base 7). Special: Swallow Your Soul attack (3+ on 1d6 against figures it detects above it while burrowed)."
   },
   {
@@ -338,6 +365,10 @@
     "movement": { "road": 6, "openGround": 5, "lightWoods": 5, "difficultGround": 4, "veryDifficult": 3 },
     "trainingClass": "ELITE",
     "isVehicle": false,
+    "naturalAttacks": [
+      { "name": "Claws & Tail", "description": "Counts as Terror for combat (+3 H2H)" }
+    ],
+    "isUnique": true,
     "notes": "Occasionally mutates from large Terror bugs. Has leadership skill. Counts as a terror for combat. Only 1 fielded per army. May lay 1 egg cluster per turn if 4-6 rolled on 1d6. Will fight if guards have been killed."
   },
   {
@@ -349,6 +380,10 @@
     "movement": { "road": 9, "openGround": 7, "lightWoods": 6, "difficultGround": 5, "veryDifficult": 3 },
     "trainingClass": "VETERAN",
     "isVehicle": false,
+    "naturalAttacks": [
+      { "name": "Power Claws", "description": "+5 H2H (power axe equivalent)" },
+      { "name": "Poison Barb Shooters ×2", "description": "Two shooters, may fire at different targets" }
+    ],
     "notes": "Large 12-15ft tall humanoid walking nightmare. Classed as hull class 3. Tail attacks and two poison barb shooters may be fired at different targets (+5 H2H bonus equivalent to power axe). Fanatic trooper. Glancing Hit ignored. May act independently. Range 4 inches close combat."
   },
   {
@@ -371,6 +406,8 @@
     "movement": { "road": 4, "openGround": 3, "lightWoods": 2, "difficultGround": 2, "veryDifficult": 2 },
     "trainingClass": "REGULAR",
     "isVehicle": false,
+    "squadMin": 4,
+    "squadMax": 10,
     "notes": "Base model Replican attack trooper. Fielded in squads of 4-10 figures."
   },
   {
@@ -404,6 +441,7 @@
     "movement": { "road": 0, "openGround": 0, "lightWoods": 0, "difficultGround": 0, "veryDifficult": 0 },
     "trainingClass": "VETERAN",
     "isVehicle": false,
+    "isUnique": true,
     "notes": "Humanoid shaped Replican android with biological skin layer. Moves as unit it's camouflaged within. Up to 3 Mimicks per battle. Activated at start of Replican fire phase — roll 1d6, 5-6 activates and joins a random enemy squad. Gets first shot then revealed. Cannot be placed in enemy Replican, Grey or Hibevor armies. Has built-in palm flamer and power glove."
   },
   {

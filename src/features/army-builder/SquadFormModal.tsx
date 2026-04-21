@@ -15,6 +15,7 @@ import {
   weaponsMelee,
   grenades,
   allWeapons,
+  aliensTroops,
 } from '@data/index'
 import type { SquadSelection, TrooperLine, WeaponLoadout } from '@types-bs/squad'
 import type { TrainingClass, ArmourType, RaceType, SkillType, VehicleHullType, VehicleArmourClass } from '@types-bs/enums'
@@ -500,6 +501,14 @@ function SquadForm({ initial, onSave, onCancel }: {
   onCancel: () => void
 }) {
   const [draft, setDraft] = useState<SquadDraft>(initial)
+  const [casteId, setCasteId] = useState('')
+
+  type AlienTroop = typeof aliensTroops[number]
+  const raceCastes = useMemo(
+    () => (aliensTroops as AlienTroop[]).filter(t => t.race === draft.race && !t.isVehicle),
+    [draft.race],
+  )
+  const selectedCaste = raceCastes.find(t => t.id === casteId) ?? null
 
   function set<K extends keyof SquadDraft>(key: K, val: SquadDraft[K]) {
     setDraft(prev => ({ ...prev, [key]: val }))
@@ -554,7 +563,7 @@ function SquadForm({ initial, onSave, onCancel }: {
             <select
               className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
               value={draft.race}
-              onChange={e => set('race', e.target.value as RaceType)}
+              onChange={e => { set('race', e.target.value as RaceType); setCasteId('') }}
             >
               {races.map(r => <option key={r.id} value={r.id}>{(r as { name: string }).name}</option>)}
             </select>
@@ -573,6 +582,62 @@ function SquadForm({ initial, onSave, onCancel }: {
             </div>
           </div>
         </div>
+
+        {/* Caste / Troop Type selector */}
+        {!draft.isVehicle && raceCastes.length > 0 && (
+          <div className="space-y-1">
+            <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Troop Type</label>
+            <select
+              className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+              value={casteId}
+              onChange={e => {
+                const id = e.target.value
+                setCasteId(id)
+                if (id) {
+                  const caste = (aliensTroops as AlienTroop[]).find(t => t.id === id)
+                  if (caste) {
+                    set('troopers', draft.troopers.map((line, i) => i === 0
+                      ? { ...line, trainingClass: caste.trainingClass as TrainingClass, armourType: armourIdToEnum(caste.armour) }
+                      : line
+                    ))
+                  }
+                }
+              }}
+            >
+              <option value="">— Custom / No type —</option>
+              {raceCastes.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+            </select>
+          </div>
+        )}
+
+        {/* Natural attacks panel */}
+        {selectedCaste?.naturalAttacks && selectedCaste.naturalAttacks.length > 0 && (
+          <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 space-y-2">
+            <p className="text-xs font-semibold text-amber-400">Natural Attacks — auto-included, no extra cost</p>
+            <div className="space-y-1">
+              {(selectedCaste.naturalAttacks as { name: string; description: string }[]).map((a, i) => (
+                <div key={i} className="text-xs leading-relaxed">
+                  <span className="font-medium">{a.name}</span>
+                  <span className="text-[var(--muted-foreground)] ml-1.5">{a.description}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Unique troop warning */}
+        {selectedCaste?.isUnique && (
+          <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/5 px-3 py-2 text-xs text-yellow-600 dark:text-yellow-400">
+            Non-standard: typically only 1 {selectedCaste.name} per army.
+          </div>
+        )}
+
+        {/* Squad size hint */}
+        {selectedCaste?.squadMin !== undefined && (
+          <p className="text-xs text-[var(--muted-foreground)]">
+            Typical squad size for this troop type: {selectedCaste.squadMin}–{selectedCaste.squadMax}.
+          </p>
+        )}
 
         {/* Race special rules panel (non-human only) */}
         {(() => {

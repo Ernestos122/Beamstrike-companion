@@ -246,8 +246,10 @@ function WeaponPicker({
 // ── Per-figure cost breakdown ──────────────────────────────────────────────────
 function perFigureCost(line: TrooperLine): number {
   const armId = armourEnumToId(line.armourType)
-  return getTrainingCost(line.trainingClass)
-    + getArmourCost(armId)
+  const base = line.troopBaseCost !== undefined
+    ? line.troopBaseCost
+    : getTrainingCost(line.trainingClass) + getArmourCost(armId)
+  return base
     + line.weapons.reduce((s, id) => s + getWeaponCost(id), 0)
     + line.equipment.reduce((s, id) => s + getEquipCost(id), 0)
     + line.skills.reduce((s, id) => s + getSkillCost(id), 0)
@@ -392,8 +394,16 @@ function TrooperLineCard({
 
           {/* Per-figure cost summary */}
           <p className="text-[10px] text-[var(--muted-foreground)]">
-            {pfCost}pts/figure × {line.count} = <strong className="text-[var(--foreground)]">{linePts}pts</strong>
-            <span className="ml-2">{lineMorale} morale</span>
+            {(() => {
+              const basePts = line.troopBaseCost ?? (getTrainingCost(line.trainingClass) + getArmourCost(armId))
+              const extrasPts = pfCost - basePts
+              return <>
+                {basePts}pts base
+                {extrasPts > 0 && <> + {extrasPts}pts extras</>}
+                {' '}× {line.count} = <strong className="text-[var(--foreground)]">{linePts}pts</strong>
+                <span className="ml-2">{lineMorale} morale</span>
+              </>
+            })()}
           </p>
 
           {/* Sub-tabs */}
@@ -515,7 +525,10 @@ function SquadForm({ initial, onSave, onCancel }: {
   }
 
   function addLine() {
-    set('troopers', [...draft.troopers, defaultLine()])
+    const newLine = selectedCaste
+      ? { ...defaultLine(), trainingClass: selectedCaste.trainingClass as TrainingClass, armourType: armourIdToEnum(selectedCaste.armour), troopBaseCost: selectedCaste.pointsCost }
+      : defaultLine()
+    set('troopers', [...draft.troopers, newLine])
   }
 
   function updateLine(idx: number, updated: TrooperLine) {
@@ -597,10 +610,12 @@ function SquadForm({ initial, onSave, onCancel }: {
                   const caste = (aliensTroops as AlienTroop[]).find(t => t.id === id)
                   if (caste) {
                     set('troopers', draft.troopers.map((line, i) => i === 0
-                      ? { ...line, trainingClass: caste.trainingClass as TrainingClass, armourType: armourIdToEnum(caste.armour) }
-                      : line
+                      ? { ...line, trainingClass: caste.trainingClass as TrainingClass, armourType: armourIdToEnum(caste.armour), troopBaseCost: caste.pointsCost }
+                      : { ...line, troopBaseCost: caste.pointsCost }
                     ))
                   }
+                } else {
+                  set('troopers', draft.troopers.map(line => ({ ...line, troopBaseCost: undefined })))
                 }
               }}
             >

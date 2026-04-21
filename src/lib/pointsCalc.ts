@@ -16,9 +16,12 @@ function getTrainingCost(trainingClass: string | undefined): number {
 }
 
 // Cost for a single TrooperLine (count × per-figure total).
-// Per-figure = training + armour + sum(all weapon costs) + sum(all equip costs) + sum(all skill costs).
+// Per-figure = base + weapons + equip + skills.
+// base = troopBaseCost when set (alien troop type with all-in supplement cost), else armour+training.
 export function calcTrooperLinePoints(line: TrooperLine): number {
-  const base = getTrainingCost(line.trainingClass) + getArmourCost(line.armourType)
+  const base = line.troopBaseCost !== undefined
+    ? line.troopBaseCost
+    : getTrainingCost(line.trainingClass) + getArmourCost(line.armourType)
 
   const weaponPts = line.weapons.reduce((sum, wId) => {
     const w = allWeapons.find(w => w.id === wId)

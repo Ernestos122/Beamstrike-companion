@@ -12,6 +12,7 @@ export interface TrooperLine {
   weapons: string[]     // weapon IDs — every figure in the line carries all of these
   equipment: string[]   // equipment IDs — every figure has all of these
   skills: SkillType[]   // skill IDs — every figure has all of these
+  troopBaseCost?: number // when set (alien troop type selected), replaces armour+training in cost calc
 }
 
 // Legacy shape used only by the v2→v3 migration.

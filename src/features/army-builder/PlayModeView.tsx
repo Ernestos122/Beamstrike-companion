@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, Minus, Plus, RotateCcw, Skull, Zap, Dice6 } from 'lucide-react'
-import { armourTypes, troopTraining, allWeapons, skills as allSkills, equipment as equipmentData } from '@data/index'
+import { armourTypes, troopTraining, allWeapons, skills as allSkills, equipment as equipmentData, aliensTroops, races } from '@data/index'
 import type { ArmyList } from '@types-bs/army'
 import type { SquadSelection, TrooperLine } from '@types-bs/squad'
 import { cn } from '@lib/utils'
@@ -117,7 +117,15 @@ function TrooperLineSection({ line, casualties, onCasualtiesChange }: {
     name: string; hitModifier: number; troopRoll: number; h2hModifier: number; eligibleTargets: string
   } | undefined
 
-  const movRates = MOVEMENT[armour?.movementClass ?? 'FI_LA'] ?? MOVEMENT['FI_LA']
+  type AlienTroop = typeof aliensTroops[number]
+  const caste = line.casteId
+    ? (aliensTroops as AlienTroop[]).find(t => t.id === line.casteId)
+    : undefined
+  const naturalAttacks = (caste as { naturalAttacks?: { name: string; description: string }[] } | undefined)?.naturalAttacks ?? []
+
+  const movRates: [string, string, string, string, string] = caste
+    ? [`${caste.movement.road}"`, `${caste.movement.openGround}"`, `${caste.movement.lightWoods}"`, `${caste.movement.difficultGround}"`, `${caste.movement.veryDifficult}"`]
+    : MOVEMENT[armour?.movementClass ?? 'FI_LA'] ?? MOVEMENT['FI_LA']
   const alive = line.count - casualties
 
   const weapons = line.weapons.map(wId => allWeapons.find(w => w.id === wId)).filter(Boolean) as typeof allWeapons
@@ -263,6 +271,19 @@ function TrooperLineSection({ line, casualties, onCasualtiesChange }: {
           </div>
         )}
 
+        {/* Natural attacks */}
+        {naturalAttacks.length > 0 && (
+          <div className="space-y-1">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400">Natural Attacks</p>
+            {naturalAttacks.map((a, i) => (
+              <div key={i} className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-2.5 py-1.5">
+                <p className="text-xs font-semibold text-amber-300">{a.name}</p>
+                <p className="text-[10px] text-amber-300/70 mt-0.5 leading-snug">{a.description}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* Casualty pips */}
         <div>
           <div className="flex items-center justify-between mb-1">
@@ -313,6 +334,19 @@ function SquadPlayCard({ squad, casualties, onCasualtiesChange }: {
 
       {open && (
         <div className="border-t border-[var(--border)] p-3 space-y-3">
+          {(() => {
+            const raceInfo = races.find(r => r.id === squad.race) as { special?: string[] } | undefined
+            const specials = raceInfo?.special ?? []
+            if (specials.length === 0) return null
+            return (
+              <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-2.5 space-y-1">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-blue-400">Race Special Rules</p>
+                {specials.map((rule, i) => (
+                  <p key={i} className="text-[10px] text-blue-300/80 leading-relaxed pl-2 border-l border-blue-500/20">{rule}</p>
+                ))}
+              </div>
+            )
+          })()}
           {squad.troopers.map(line => (
             <TrooperLineSection
               key={line.id}

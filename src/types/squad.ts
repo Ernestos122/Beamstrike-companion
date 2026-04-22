@@ -13,6 +13,7 @@ export interface TrooperLine {
   equipment: string[]   // equipment IDs — every figure has all of these
   skills: SkillType[]   // skill IDs — every figure has all of these
   troopBaseCost?: number // when set (alien troop type selected), replaces armour+training in cost calc
+  casteId?: string       // aliens-troops.json entry id — drives natural attacks and correct movement in views
 }
 
 // Legacy shape used only by the v2→v3 migration.

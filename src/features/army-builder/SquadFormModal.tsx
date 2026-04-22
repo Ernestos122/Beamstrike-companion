@@ -526,7 +526,7 @@ function SquadForm({ initial, onSave, onCancel }: {
 
   function addLine() {
     const newLine = selectedCaste
-      ? { ...defaultLine(), trainingClass: selectedCaste.trainingClass as TrainingClass, armourType: armourIdToEnum(selectedCaste.armour), troopBaseCost: selectedCaste.pointsCost }
+      ? { ...defaultLine(), trainingClass: selectedCaste.trainingClass as TrainingClass, armourType: armourIdToEnum(selectedCaste.armour), troopBaseCost: selectedCaste.pointsCost, casteId: selectedCaste.id }
       : defaultLine()
     set('troopers', [...draft.troopers, newLine])
   }
@@ -610,12 +610,12 @@ function SquadForm({ initial, onSave, onCancel }: {
                   const caste = (aliensTroops as AlienTroop[]).find(t => t.id === id)
                   if (caste) {
                     set('troopers', draft.troopers.map((line, i) => i === 0
-                      ? { ...line, trainingClass: caste.trainingClass as TrainingClass, armourType: armourIdToEnum(caste.armour), troopBaseCost: caste.pointsCost }
-                      : { ...line, troopBaseCost: caste.pointsCost }
+                      ? { ...line, trainingClass: caste.trainingClass as TrainingClass, armourType: armourIdToEnum(caste.armour), troopBaseCost: caste.pointsCost, casteId: id }
+                      : { ...line, troopBaseCost: caste.pointsCost, casteId: id }
                     ))
                   }
                 } else {
-                  set('troopers', draft.troopers.map(line => ({ ...line, troopBaseCost: undefined })))
+                  set('troopers', draft.troopers.map(line => ({ ...line, troopBaseCost: undefined, casteId: undefined })))
                 }
               }}
             >

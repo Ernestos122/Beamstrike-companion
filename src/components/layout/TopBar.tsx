@@ -1,7 +1,8 @@
-import { Crosshair, Search, Wifi, WifiOff } from 'lucide-react'
+import { Crosshair, Moon, Search, Sun, Wifi, WifiOff } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { cn } from '@lib/utils'
+import { useTheme } from '@lib/useTheme'
 
 interface TopBarProps {
   onSearchOpen?: () => void
@@ -9,6 +10,7 @@ interface TopBarProps {
 
 export function TopBar({ onSearchOpen }: TopBarProps) {
   const [isOnline, setIsOnline] = useState(navigator.onLine)
+  const { isDark, toggleTheme } = useTheme()
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true)
@@ -42,6 +44,14 @@ export function TopBar({ onSearchOpen }: TopBarProps) {
           <Wifi size={12} />
         </div>
       )}
+
+      <button
+        onClick={toggleTheme}
+        className="rounded-md border bg-[var(--background)] p-1.5 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]"
+        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      >
+        {isDark ? <Sun size={16} /> : <Moon size={16} />}
+      </button>
 
       <button
         onClick={onSearchOpen}

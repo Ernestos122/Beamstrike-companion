@@ -384,11 +384,11 @@ export function PlayModeView({ army }: { army: ArmyList }) {
     <div className="p-4 max-w-xl mx-auto space-y-4">
       <MoraleBar army={army} moraleSpent={moraleSpent} onAdjust={adjustMorale} onReset={reset} />
       {d12Mode && (
-        <div className="flex items-start gap-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2.5">
-          <Dice6 size={15} className="text-amber-400 mt-0.5 shrink-0" />
+        <div className="flex items-start gap-2.5 rounded-xl border border-amber-500/50 bg-amber-500/10 px-3 py-2.5">
+          <Dice6 size={15} className="text-amber-500 dark:text-amber-400 mt-0.5 shrink-0" />
           <div>
-            <p className="text-xs font-bold text-amber-300">House Rule: 1d12 Mode active</p>
-            <p className="text-[10px] text-amber-200/70 leading-snug mt-0.5">Roll 1d12 instead of 2d6. All target numbers and modifiers are unchanged. A roll of 1 always misses.</p>
+            <p className="text-xs font-bold text-amber-700 dark:text-amber-300">House Rule: 1d12 Mode active</p>
+            <p className="text-[10px] text-amber-600 dark:text-amber-200 leading-snug mt-0.5">Roll 1d12 instead of 2d6. All target numbers and modifiers are unchanged. A roll of 1 always misses.</p>
           </div>
         </div>
       )}

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Plus, Pencil, Copy, Trash2, Shield, Swords, ChevronDown, ChevronUp, PlayCircle, PenSquare } from 'lucide-react'
 import { useArmyStore } from '@store/armyStore'
 import { useHouseRulesStore } from '@store/houseRulesStore'
-import { troopTraining, armourTypes, allWeapons, races, skills as skillsData, equipment as equipmentData } from '@data/index'
+import { troopTraining, armourTypes, allWeapons, races, skills as skillsData, equipment as equipmentData, aliensTroops } from '@data/index'
 import type { SquadSelection, TrooperLine } from '@types-bs/squad'
 import type { ArmyList } from '@types-bs/army'
 import { SquadFormModal } from './SquadFormModal'
@@ -64,6 +64,11 @@ function TrooperLineRow({ line }: { line: TrooperLine }) {
   const equipNames = line.equipment.map(eId => (equipmentData.find(e => e.id === eId) as { name: string } | undefined)?.name ?? eId)
   const skillNames = line.skills.map(sId => (skillsData.find(s => s.id === sId) as { name: string } | undefined)?.name ?? sId)
 
+  type AlienTroop = typeof aliensTroops[number]
+  const naturalAttacks = line.casteId
+    ? ((aliensTroops as AlienTroop[]).find(t => t.id === line.casteId) as { naturalAttacks?: { name: string; description: string }[] } | undefined)?.naturalAttacks ?? []
+    : []
+
   const linePts = calcTrooperLinePoints(line)
 
   return (
@@ -91,6 +96,11 @@ function TrooperLineRow({ line }: { line: TrooperLine }) {
       {skillNames.length > 0 && (
         <p className="text-xs text-[var(--muted-foreground)] mt-0.5">
           <span className="font-medium text-[var(--foreground)]">Skills: </span>{skillNames.join(', ')}
+        </p>
+      )}
+      {naturalAttacks.length > 0 && (
+        <p className="text-xs text-amber-400/90 mt-0.5">
+          <span className="font-medium">Natural: </span>{naturalAttacks.map(a => a.name).join(', ')}
         </p>
       )}
     </div>
@@ -181,6 +191,19 @@ function SquadCard({ squad, onEdit, onDuplicate, onRemove }: {
               ))}
             </div>
           )}
+          {(() => {
+            const raceInfo = races.find(r => r.id === squad.race) as { special?: string[] } | undefined
+            const specials = raceInfo?.special ?? []
+            if (specials.length === 0) return null
+            return (
+              <div className="mt-2 pt-2 border-t border-[var(--border)] space-y-1">
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-blue-400">Race Special Rules</p>
+                {specials.map((rule, i) => (
+                  <p key={i} className="text-[10px] text-[var(--muted-foreground)] leading-relaxed pl-2 border-l border-blue-500/20">{rule}</p>
+                ))}
+              </div>
+            )
+          })()}
           {squad.notes && (
             <p className="text-xs text-[var(--muted-foreground)] mt-2 pt-2 border-t border-[var(--border)]">{squad.notes}</p>
           )}

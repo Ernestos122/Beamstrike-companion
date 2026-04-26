@@ -247,50 +247,79 @@ Roll **2D6** and add the firing figure's **To-Hit Bonus** (from Training). Apply
 | Support weapon at Band 1 (point blank) | −2 |
 | Aimed shot (firer spends both actions to shoot the same target) | +2 |
 
-### Damage Roll
+### Damage Roll — Infantry Damage Table
 
-When a shot hits, roll **1D6** and calculate the net result:
+When a shot hits, roll **1D6** and cross-reference the weapon's **Impact section** with the target's **Armour column** on the Infantry Damage Table. This is the same table used in the main Beamstrike game.
 
-**Net = 1D6 + Damage Type Bonus + Armour Modifier**
+**Results:**
 
-| Net Result | Effect |
+| Result | Skirmish Effect |
 |---|---|
-| 4 or more | **Out of Action (OOA)** |
-| 1–3 | **Suppressed** |
-| 0 or less | **No Effect** |
+| **NE** (No Effect) | No effect on the target |
+| **Stun** | Place a **Suppressed** marker; if already Suppressed → add a Wound counter |
+| **GH** (Glancing Hit) | Add a **Wound counter** + place Suppressed if not already |
+| **Kill** | Figure goes **Out of Action** immediately |
 
-**Damage Type Bonuses:**
+**Impact sections** match the weapon's `impact` type: STUN, LOW, STANDARD, HIGH, POWER, TOTAL 1, TOTAL 2, TOTAL 3. Use the main Beamstrike weapon reference charts.
 
-| Type | Bonus | Typical Weapons |
-|---|---|---|
-| Light [L] | +0 | Pistols, knives (ranged) |
-| Standard [S] | +1 | Carbines, assault rifles, sniper rifles |
-| Heavy [H] | +2 | Support weapons, heavy guns |
-| Blast [B] | +2 | Grenades, mortars, rockets |
+### Infantry Damage Table (Skirmish — UA, FI, LA, PA, AD columns)
 
-**Armour Modifiers:**
+| D6 | UA | FI | LA | PA | AD |
+|---|---|---|---|---|---|
+| **STUN** | | | | | |
+| 1 | GH | NE | NE | NE | NE |
+| 2 | Stun | GH | NE | NE | NE |
+| 3 | Stun | Stun | NE | NE | NE |
+| 4 | Stun | Stun | GH | NE | NE |
+| 5 | Stun | Stun | Stun | NE | NE |
+| 6 | Stun | Stun | Stun | GH | NE |
+| **LOW** | | | | | |
+| 1 | GH | NE | NE | NE | NE |
+| 2 | Kill | GH | NE | NE | NE |
+| 3 | Kill | Kill | NE | NE | NE |
+| 4 | Kill | Kill | GH | NE | NE |
+| 5 | Kill | Kill | Kill | NE | NE |
+| 6 | Kill | Kill | Kill | GH | NE |
+| **STANDARD** | | | | | |
+| 1 | Kill | GH | NE | NE | NE |
+| 2 | Kill | Kill | NE | NE | NE |
+| 3 | Kill | Kill | GH | NE | NE |
+| 4 | Kill | Kill | Kill | NE | NE |
+| 5 | Kill | Kill | Kill | GH | NE |
+| 6 | Kill | Kill | Kill | Kill | GH |
+| **HIGH** | | | | | |
+| 1 | Kill | Kill | NE | NE | NE |
+| 2 | Kill | Kill | GH | NE | NE |
+| 3 | Kill | Kill | Kill | NE | NE |
+| 4 | Kill | Kill | Kill | GH | NE |
+| 5 | Kill | Kill | Kill | Kill | GH |
+| 6 | Kill | Kill | Kill | Kill | Kill |
+| **POWER** | | | | | |
+| 1 | Kill | Kill | GH | NE | NE |
+| 2 | Kill | Kill | Kill | NE | NE |
+| 3 | Kill | Kill | Kill | GH | NE |
+| 4 | Kill | Kill | Kill | Kill | GH |
+| 5–6 | Kill | Kill | Kill | Kill | Kill |
+| **TOTAL 1** | | | | | |
+| 1 | Kill | Kill | Kill | GH | NE |
+| 2 | Kill | Kill | Kill | Kill | GH |
+| 3–6 | Kill | Kill | Kill | Kill | Kill |
+| **TOTAL 2** | | | | | |
+| 1 | Kill | Kill | Kill | Kill | GH |
+| 2–6 | Kill | Kill | Kill | Kill | Kill |
+| **TOTAL 3** | Kill | Kill | Kill | Kill | Kill |
 
-| Armour | Modifier |
-|---|---|
-| UA (Unarmoured) | +0 |
-| FI (Flak Infantry) | −1 |
-| LA (Light Armour) | −2 |
-| PA (Powered Armour) | −3 |
-| AD (Advanced Defence) | −4 |
+### Wound Counters
 
-*Example: VET fires an Assault Rifle (STANDARD impact → +1) at a PA-armoured figure (−3). Net = D6 + 1 − 3 = D6 − 2. Roll of 6: net = 4 → OOA. Roll of 3: net = 1 → Suppressed. Roll of 1: net = −1 → No Effect.*
-
-### Wound Effects & Wound Stacking
-
-**Grunts (1 wound):** Any Suppressed or OOA result puts the figure Out of Action immediately.
+**Grunts (1 wound):** Any result that is not NE puts the figure Out of Action immediately.
 
 **Specialists and Leaders (2 wounds):**
-- **OOA result** → figure goes Out of Action
-- **Suppressed result** on a fresh figure → place a Suppressed marker on the figure
-- **Suppressed result** on an already-Suppressed figure → place a **wound counter** on the figure (use a die or token)
-- **Second wound counter** from any source → figure goes Out of Action
+- **Kill** → Out of Action immediately
+- **GH** → add a Wound counter; place Suppressed if not already
+- **Stun** → place Suppressed; if already Suppressed → add a Wound counter
+- **Second Wound counter** (from any source) → Out of Action
 
-*This wound stacking rule ensures that even weapons that cannot physically roll an OOA result against heavy armour (e.g. a pistol against Advanced Defence) can still accumulate suppression into eventual elimination — it just takes many more shots.*
+*Example: A VET Specialist (PA) takes a HIGH result. Roll 4 = GH: Wound counter 1, Suppressed. Next shot is STANDARD, roll 5 = GH: Wound counter 2 → Out of Action.*
 
 ### Templates and Area Weapons
 
@@ -651,11 +680,10 @@ If the carrying figure goes OOA, place the Prisoner marker at that figure's posi
 ### Shooting Summary
 
 1. Check LoS and range band (B1 0–4", B2 5–20", B3 21–40", B4 41–80", B5 81"+)
-2. Roll **2D6** + Training To-Hit Bonus ± modifiers vs weapon's band threshold (from weapon profile) = hit
-3. Map weapon's Impact to skirmish damage bonus: LOW/STUN=+0 · STANDARD=+1 · HIGH/POWER=+2 · TOTAL=+2
-4. Roll **1D6** + damage bonus + Armour Modifier (UA+0, FI−1, LA−2, PA−3, AD−4)
-5. Net 4+ = OOA; Net 1–3 = Suppressed; Net 0 or less = No Effect
-6. Suppressed result on already-Suppressed figure = wound counter; 2 wound counters = OOA
+2. Roll **2D6** + Training To-Hit Bonus ± modifiers vs weapon's band threshold = hit
+3. On a hit, roll **1D6** → cross-reference weapon's Impact section × target's Armour column on the Infantry Damage Table
+4. Apply result: NE = nothing · Stun = Suppressed · GH = Wound counter (+Suppressed) · Kill = OOA
+5. Grunts: any non-NE = OOA. Specs/Leaders: 2 Wound counters = OOA; Kill = immediate OOA
 
 ### Melee Summary
 
@@ -690,11 +718,11 @@ If the carrying figure goes OOA, place the Prisoner marker at that figure's posi
 
 ### Damage Quick Reference
 
-**Damage Type Bonuses:** [L]+0 · [S]+1 · [H]+2 · [B]+2
+Roll 1D6 → Infantry Damage Table (Impact section × Armour column): **NE** · **Stun** · **GH** · **Kill**
 
-**Armour Modifiers:** UA+0 · FI−1 · LA−2 · PA−3 · AD−4
+**Stun** = Suppressed (if Suppressed → Wound counter) · **GH** = Wound counter + Suppressed · **Kill** = OOA
 
-**Net = 1D6 + Type Bonus + Armour Mod → 4+ OOA | 1–3 Suppressed | 0 or less No Effect**
+See Section 7 for the full table.
 
 ### Training Reference
 

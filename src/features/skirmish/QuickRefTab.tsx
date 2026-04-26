@@ -67,33 +67,8 @@ export function QuickRefTab() {
         />
       </Card>
 
-      <Card title="Damage Roll — Net = 1D6 + Type + Armour">
-        <p className="text-xs mb-2 text-[var(--muted-foreground)]">Net 4+ = OOA &nbsp;|&nbsp; Net 1–3 = Suppressed &nbsp;|&nbsp; Net 0 or less = No Effect</p>
-        <Table
-          headers={['Damage Type', 'Bonus', 'Examples']}
-          rows={[
-            ['Light [L]',    '+0', 'Pistols'],
-            ['Standard [S]', '+1', 'Carbines, rifles'],
-            ['Heavy [H]',    '+2', 'Support weapons'],
-            ['Blast [B]',    '+2', 'Grenades, mortars'],
-          ]}
-        />
-        <p className="text-xs font-semibold mt-3 mb-1 text-[var(--muted-foreground)] uppercase tracking-wide">Armour Modifiers</p>
-        <Table
-          headers={['Armour', 'Pts', 'Mod']}
-          rows={[
-            ['UA (Unarmoured)',     2,  '+0'],
-            ['FI (Flak Infantry)',  5,  '−1'],
-            ['LA (Light Armour)',   8,  '−2'],
-            ['PA (Powered Armour)', 18, '−3'],
-            ['AD (Adv. Defence)',   27, '−4'],
-          ]}
-        />
-        <p className="text-xs mt-2 text-[var(--muted-foreground)] italic">Suppressed result on already-Suppressed figure = wound counter. 2 wound counters = OOA.</p>
-      </Card>
-
       <Card title="To-Hit: Roll 2D6 + Training Bonus vs Weapon's Band Threshold">
-        <p className="text-xs mb-2 text-[var(--muted-foreground)]">Each weapon has its own 2D6 threshold per range band. CNF = cannot fire. — = out of range.</p>
+        <p className="text-xs mb-2 text-[var(--muted-foreground)]">Each weapon has its own 2D6 threshold per range band (from the main Beamstrike weapon charts). CNF = cannot fire.</p>
         <Table
           headers={['Band', 'Range']}
           rows={[
@@ -112,24 +87,50 @@ export function QuickRefTab() {
             ['Target in Heavy Cover',       '−2'],
             ['Firer moved this activation', '−1'],
             ['Target is Suppressed',        '+2'],
-            ['Support weapon at B1',        '−2 (or CNF)'],
+            ['Support weapon at B1',        '−2 (or CNF per profile)'],
             ['Aimed shot (both actions)',   '+2'],
           ]}
         />
       </Card>
 
-      <Card title="Weapon Impact → Skirmish Damage Bonus">
+      <Card title="Damage: Roll 1D6 — Infantry Damage Table">
+        <p className="text-xs mb-2 text-[var(--muted-foreground)]">Same table as main Beamstrike. Cross-reference weapon's Impact with target's Armour column.</p>
         <Table
-          headers={['Main Game Impact', 'Skirmish Type', 'Damage Bonus']}
+          headers={['Result', 'Skirmish Effect']}
           rows={[
-            ['LOW / STUN',    '[L] Light',    '+0'],
-            ['STANDARD',      '[S] Standard', '+1'],
-            ['HIGH',          '[H] Heavy',    '+2'],
-            ['POWER',         '[H] Heavy',    '+2'],
-            ['TOTAL (1/2/3)', '[B] Blast',    '+2'],
+            ['NE',   'No effect'],
+            ['Stun', 'Suppressed (if already Suppressed → Wound counter)'],
+            ['GH',   'Wound counter + Suppressed if not already'],
+            ['Kill', 'Out of Action immediately'],
           ]}
         />
-        <p className="text-xs mt-2 text-[var(--muted-foreground)] italic">SPECIAL/VARIES weapons default to [S]+1.</p>
+        <p className="text-xs font-semibold mt-3 mb-1 text-[var(--muted-foreground)] uppercase tracking-wide">Wounds</p>
+        <p className="text-xs text-[var(--muted-foreground)] mb-3">Grunts (1W): any non-NE = OOA. Specialists/Leaders (2W): 2 Wound counters = OOA; Kill = immediate OOA.</p>
+        <p className="text-xs font-semibold mb-1 text-[var(--muted-foreground)] uppercase tracking-wide">STANDARD impact</p>
+        <Table
+          headers={['D6', 'UA', 'FI', 'LA', 'PA', 'AD']}
+          rows={[
+            [1, 'Kill', 'GH',   'NE',   'NE',   'NE'],
+            [2, 'Kill', 'Kill', 'NE',   'NE',   'NE'],
+            [3, 'Kill', 'Kill', 'GH',   'NE',   'NE'],
+            [4, 'Kill', 'Kill', 'Kill', 'NE',   'NE'],
+            [5, 'Kill', 'Kill', 'Kill', 'GH',   'NE'],
+            [6, 'Kill', 'Kill', 'Kill', 'Kill', 'GH'],
+          ]}
+        />
+        <p className="text-xs font-semibold mt-3 mb-1 text-[var(--muted-foreground)] uppercase tracking-wide">HIGH impact</p>
+        <Table
+          headers={['D6', 'UA', 'FI', 'LA', 'PA', 'AD']}
+          rows={[
+            [1, 'Kill', 'Kill', 'NE',   'NE',   'NE'],
+            [2, 'Kill', 'Kill', 'GH',   'NE',   'NE'],
+            [3, 'Kill', 'Kill', 'Kill', 'NE',   'NE'],
+            [4, 'Kill', 'Kill', 'Kill', 'GH',   'NE'],
+            [5, 'Kill', 'Kill', 'Kill', 'Kill', 'GH'],
+            [6, 'Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+          ]}
+        />
+        <p className="text-xs mt-2 text-[var(--muted-foreground)] italic">Full table (all 8 sections) in Rules tab → Shooting → Damage Table.</p>
       </Card>
 
       <Card title="Bottle Test">

@@ -1,6 +1,95 @@
 import type { SkirmishTraining, SkirmishArmour, SkirmishFigure } from '@types-bs/skirmish'
 import { allWeapons } from '@data/index'
 
+// ── Damage Table ──────────────────────────────────────────────────────────────
+// Rows = D6 rolls 1-6. Columns = [UA, FI, LA, PA, AD].
+// Matches the main Beamstrike Infantry Damage Table exactly.
+export type SkirmishDamageResult = 'NE' | 'Stun' | 'GH' | 'Kill'
+
+const ARMOUR_COL: Record<SkirmishArmour, number> = { UA: 0, FI: 1, LA: 2, PA: 3, AD: 4 }
+
+// Each entry: 6 rows (roll 1..6), each row: [UA, FI, LA, PA, AD]
+const DAMAGE_TABLE: Record<string, SkirmishDamageResult[][]> = {
+  'STUN':    [
+    ['GH',   'NE',   'NE',   'NE',   'NE'],
+    ['Stun', 'GH',   'NE',   'NE',   'NE'],
+    ['Stun', 'Stun', 'NE',   'NE',   'NE'],
+    ['Stun', 'Stun', 'GH',   'NE',   'NE'],
+    ['Stun', 'Stun', 'Stun', 'NE',   'NE'],
+    ['Stun', 'Stun', 'Stun', 'GH',   'NE'],
+  ],
+  'LOW':     [
+    ['GH',   'NE',   'NE',   'NE',   'NE'],
+    ['Kill', 'GH',   'NE',   'NE',   'NE'],
+    ['Kill', 'Kill', 'NE',   'NE',   'NE'],
+    ['Kill', 'Kill', 'GH',   'NE',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'NE',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'GH',   'NE'],
+  ],
+  'STANDARD': [
+    ['Kill', 'GH',   'NE',   'NE',   'NE'],
+    ['Kill', 'Kill', 'NE',   'NE',   'NE'],
+    ['Kill', 'Kill', 'GH',   'NE',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'NE',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'GH',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'GH'],
+  ],
+  'HIGH':    [
+    ['Kill', 'Kill', 'NE',   'NE',   'NE'],
+    ['Kill', 'Kill', 'GH',   'NE',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'NE',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'GH',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'GH'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+  ],
+  'POWER':   [
+    ['Kill', 'Kill', 'GH',   'NE',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'NE',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'GH',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'GH'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+  ],
+  'TOTAL_1': [
+    ['Kill', 'Kill', 'Kill', 'GH',   'NE'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'GH'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+  ],
+  'TOTAL_2': [
+    ['Kill', 'Kill', 'Kill', 'Kill', 'GH'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+  ],
+  'TOTAL_3': [
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+    ['Kill', 'Kill', 'Kill', 'Kill', 'Kill'],
+  ],
+}
+
+/** Map a weapon's impact string to the damage table key. SPECIAL/VARIES → STANDARD. */
+export function impactToTableKey(impact: string): string {
+  if (impact === 'SPECIAL' || impact === 'VARIES') return 'STANDARD'
+  return impact.replace(' ', '_')
+}
+
+/** Roll 1D6, look up result in the Infantry Damage Table. */
+export function lookupDamage(impact: string, roll: number, armour: SkirmishArmour): SkirmishDamageResult {
+  const key = impactToTableKey(impact)
+  const rows = DAMAGE_TABLE[key]
+  if (!rows) return 'NE'
+  return rows[roll - 1][ARMOUR_COL[armour]]
+}
+
 const TRAINING_COST: Record<SkirmishTraining, number> = {
   CIV: 0, REG: 2, VET: 5, ELITE: 10, HERO: 20,
 }

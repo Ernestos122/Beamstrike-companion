@@ -270,6 +270,13 @@ function FigureRow({ figure, onEdit, onDelete }: { figure: SkirmishFigure; onEdi
           <span className={cn('rounded px-1.5 py-0.5 text-[10px] font-bold', TYPE_COLORS[figure.type])}>{figure.type}</span>
           <span className={cn('rounded px-1.5 py-0.5 text-[10px] font-bold', TRAINING_COLORS[figure.training])}>{figure.training}</span>
           <span className="text-[var(--muted-foreground)]">{figure.armour}</span>
+          {figure.status !== 'ACTIVE' && (
+            <span className={cn('rounded px-1.5 py-0.5 text-[10px] font-bold',
+              figure.status === 'DEAD' ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400'
+            )}>
+              {figure.status}
+            </span>
+          )}
         </div>
         {figure.weapons.length > 0 && (
           <p className="text-[var(--muted-foreground)] mt-0.5 truncate">
@@ -291,6 +298,7 @@ function WarbandCard({ warband }: { warband: SkirmishWarband }) {
   const { addFigure, updateFigure, removeFigure, deleteWarband } = useWarbandStore()
 
   const over = warband.totalPoints > 200
+  const underMin = warband.figures.length < 5
   const race = skirmishRaces.find(r => r.id === warband.race)
 
   return (
@@ -325,6 +333,11 @@ function WarbandCard({ warband }: { warband: SkirmishWarband }) {
                 onDelete={() => removeFigure(warband.id, f.id)}
               />
             ))
+          )}
+          {underMin && (
+            <p className="px-4 py-2 text-xs text-amber-400">
+              Need at least 5 figures to deploy ({5 - warband.figures.length} more required).
+            </p>
           )}
           {warband.figures.length < 15 && (
             <button

@@ -116,8 +116,9 @@ Standard Move values for each race are listed in Section 11 — Race Special Rul
 
 ### Dice
 
-- **D10:** Used for To-Hit rolls, initiative, and Melee. Roll one D10, apply modifiers, compare to the target number. Equal to or higher than the target = success.
-- **D6:** Used for Armour Saves, Injury rolls, Bottle Tests, and Scrip. Roll one D6, apply modifiers.
+- **2D6:** Roll two D6 dice, add them together. Used for To-Hit rolls. The sum produces a natural bell curve — extreme results (very low or very high) are rare, making mid-range bands the most decisive.
+- **D10:** Used for Initiative and Melee. Roll one D10, apply modifiers, compare to the target number. Equal to or higher = success.
+- **D6:** Used for the Damage Roll, Injury rolls, Bottle Tests, and Scrip. Roll one D6, apply modifiers.
 
 ### Line of Sight
 
@@ -220,20 +221,21 @@ To make a shooting attack, the figure must:
 
 ### Range Bands
 
-All weapons in Beamstrike Skirmish use five range bands. The weapon profile lists a **base to-hit number** for each band. Closer range bands have lower (easier) to-hit numbers; extreme range bands have higher (harder) numbers.
+All weapons use five range bands. Measure base to base. Each weapon profile lists its maximum effective band — it cannot shoot beyond that band.
 
-The five bands are defined on each weapon's profile:
-- **Band 1** — Point Blank (0–4")
-- **Band 2** — Short (5–8")
-- **Band 3** — Effective (9–16")
-- **Band 4** — Long (17–24")
-- **Band 5** — Extreme (25"–max range)
+| Band | Distance | 2D6 Threshold |
+|---|---|---|
+| B1 — Point Blank | 0–4" | 5+ |
+| B2 — Short | 5–8" | 7+ |
+| B3 — Effective | 9–16" | 8+ |
+| B4 — Long | 17–24" | 10+ |
+| B5 — Extreme | 25"+ | 12+ |
 
 ### Making the To-Hit Roll
 
-Roll 1D10 and add the firing figure's **To-Hit Bonus** (from Training). Apply any modifiers below. If the result equals or exceeds the weapon's band to-hit number, the shot hits.
+Roll **2D6** and add the firing figure's **To-Hit Bonus** (from Training). Apply any modifiers below. If the result equals or exceeds the band's threshold, the shot hits. The 2D6 bell curve means mid-range modifiers have the most impact — a single +1 near threshold 8 shifts hit probability far more than the same +1 near an extreme.
 
-**To-Hit Modifiers:**
+**To-Hit Modifiers (applied to the 2D6 roll):**
 
 | Situation | Modifier |
 |---|---|
@@ -241,30 +243,53 @@ Roll 1D10 and add the firing figure's **To-Hit Bonus** (from Training). Apply an
 | Target in Heavy Cover | −2 |
 | Firer moved this activation | −1 |
 | Target is Suppressed | +2 |
-| Firing at point-blank (Band 1) with a support weapon | −2 |
-| Aimed shot (firer spends both actions to make a single shot at the same target) | +2 |
+| Support weapon at Band 1 (point blank) | −2 |
+| Aimed shot (firer spends both actions to shoot the same target) | +2 |
 
-### Damage
+### Damage Roll
 
-When a shot hits, the target attempts an **Armour Save**:
+When a shot hits, roll **1D6** and calculate the net result:
 
-Roll 1D6. If the result equals or exceeds the armour's Save value, the hit is deflected. If the roll fails (or the figure is Unarmoured), the hit causes a **wound**.
+**Net = 1D6 + Damage Type Bonus + Armour Modifier**
 
-| Armour | Save |
+| Net Result | Effect |
 |---|---|
-| UA | No save — automatic wound |
-| FI | 6+ |
-| LA | 5+ |
-| PA | 4+ |
-| AD | 3+ |
+| 4 or more | **Out of Action (OOA)** |
+| 1–3 | **Suppressed** |
+| 0 or less | **No Effect** |
 
-**Armour-Piercing (AP):** Some weapons are marked AP. AP weapons add +1 to the difficulty of the save (FI becomes no save, LA becomes 6+, PA becomes 5+, AD becomes 4+).
+**Damage Type Bonuses:**
 
-### Wound Effects
+| Type | Bonus | Typical Weapons |
+|---|---|---|
+| Light [L] | +0 | Pistols, knives (ranged) |
+| Standard [S] | +1 | Carbines, assault rifles, sniper rifles |
+| Heavy [H] | +2 | Support weapons, heavy guns |
+| Blast [B] | +2 | Grenades, mortars, rockets |
 
-- **1-wound figure:** Any wound = OOA. Lay the figure on its side.
-- **2-wound figure, first wound:** Figure becomes **Suppressed** (see Section 10).
-- **2-wound figure, second wound:** Figure goes OOA.
+**Armour Modifiers:**
+
+| Armour | Modifier |
+|---|---|
+| UA (Unarmoured) | +0 |
+| FI (Flak Infantry) | −1 |
+| LA (Light Armour) | −2 |
+| PA (Powered Armour) | −3 |
+| AD (Advanced Defence) | −4 |
+
+*Example: VET fires an Assault Rifle [S] at a PA-armoured figure. Net = D6 + 1 (Standard) − 3 (PA). On a roll of 6: net = 4 → OOA. On a roll of 3: net = 1 → Suppressed. On a roll of 1: net = −1 → No Effect.*
+
+### Wound Effects & Wound Stacking
+
+**Grunts (1 wound):** Any Suppressed or OOA result puts the figure Out of Action immediately.
+
+**Specialists and Leaders (2 wounds):**
+- **OOA result** → figure goes Out of Action
+- **Suppressed result** on a fresh figure → place a Suppressed marker on the figure
+- **Suppressed result** on an already-Suppressed figure → place a **wound counter** on the figure (use a die or token)
+- **Second wound counter** from any source → figure goes Out of Action
+
+*This wound stacking rule ensures that even weapons that cannot physically roll an OOA result against heavy armour (e.g. a pistol against Advanced Defence) can still accumulate suppression into eventual elimination — it just takes many more shots.*
 
 ### Templates and Area Weapons
 
@@ -486,7 +511,7 @@ When a figure earns a skill, choose from the Beamstrike Skirmish Skill List:
 | **Marksman** | Ignores cover penalties at Band 4 and Band 5 |
 | **Sharpshooter** | If both actions this activation are Shoot at the same target, +3 To-Hit instead of +2 |
 | **Agile** | Ignores difficult terrain movement penalties |
-| **Martial Arts** | Unarmed Melee bonus is +2 instead of −3; may attack twice in Melee (roll twice, use higher result) |
+| **Martial Arts** | Unarmed Melee bonus is +2 instead of −1; may attack twice in Melee (roll twice, use higher result) |
 
 #### 6. Spend Scrip
 
@@ -625,9 +650,10 @@ If the carrying figure goes OOA, place the Prisoner marker at that figure's posi
 ### Shooting Summary
 
 1. Check LoS and range
-2. Roll D10 + Training To-Hit Bonus ± modifiers
-3. Equal or beat weapon's band to-hit number = hit
-4. Target rolls D6 Armour Save — fail = wound
+2. Roll **2D6** + Training To-Hit Bonus ± modifiers vs band threshold (B1=5+, B2=7+, B3=8+, B4=10+, B5=12+) = hit
+3. Roll **1D6** + Damage Type Bonus ([L]+0, [S]+1, [H]+2, [B]+2) + Armour Modifier (UA+0, FI−1, LA−2, PA−3, AD−4)
+4. Net 4+ = OOA; Net 1–3 = Suppressed; Net 0 or less = No Effect
+5. Suppressed result on already-Suppressed figure = wound counter; 2 wound counters = OOA
 
 ### Melee Summary
 
@@ -660,15 +686,13 @@ If the carrying figure goes OOA, place the Prisoner marker at that figure's posi
 | 5 | Shaken Nerve | −1 Nerve |
 | 6 | Battle-Scarred | +1 free Skill Slot |
 
-### Armour Saves
+### Damage Quick Reference
 
-| Armour | Save | With AP Weapon |
-|---|---|---|
-| UA | No save | No save |
-| FI | 6+ | No save |
-| LA | 5+ | 6+ |
-| PA | 4+ | 5+ |
-| AD | 3+ | 4+ |
+**Damage Type Bonuses:** [L]+0 · [S]+1 · [H]+2 · [B]+2
+
+**Armour Modifiers:** UA+0 · FI−1 · LA−2 · PA−3 · AD−4
+
+**Net = 1D6 + Type Bonus + Armour Mod → 4+ OOA | 1–3 Suppressed | 0 or less No Effect**
 
 ### Training Reference
 

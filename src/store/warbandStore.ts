@@ -31,6 +31,7 @@ interface WarbandStore {
   updateFigure: (warbandId: string, figureId: string, draft: FigureDraft) => void
   removeFigure: (warbandId: string, figureId: string) => void
   addScrip: (warbandId: string, amount: number) => void
+  recordGame: (warbandId: string, won: boolean) => void
   addXp: (warbandId: string, figureId: string, amount: number) => void
   addSkill: (warbandId: string, figureId: string, skillId: string) => void
   addInjury: (warbandId: string, figureId: string, injury: SkirmishFigure['injuries'][number]) => void
@@ -89,6 +90,14 @@ export const useWarbandStore = create<WarbandStore>()(
         }),
       })),
 
+      recordGame: (warbandId, won) => set(s => ({
+        warbands: s.warbands.map(w =>
+          w.id === warbandId
+            ? { ...w, gamesPlayed: w.gamesPlayed + 1, wins: won ? w.wins + 1 : w.wins, updatedAt: new Date().toISOString() }
+            : w
+        ),
+      })),
+
       addScrip: (warbandId, amount) => set(s => ({
         warbands: s.warbands.map(w =>
           w.id === warbandId ? { ...w, scrip: Math.max(0, w.scrip + amount), updatedAt: new Date().toISOString() } : w
@@ -115,7 +124,7 @@ export const useWarbandStore = create<WarbandStore>()(
             ...w,
             figures: w.figures.map(f => {
               if (f.id !== figureId) return f
-              if (f.skillIds.includes(skillId) || f.skillIds.length >= 3) return f
+              if (f.skillIds.includes(skillId) || f.skillIds.length >= 3 || f.xp < 4) return f
               return { ...f, skillIds: [...f.skillIds, skillId], xp: f.xp - 4 }
             }),
             updatedAt: new Date().toISOString(),

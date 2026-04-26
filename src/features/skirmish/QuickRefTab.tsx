@@ -67,20 +67,43 @@ export function QuickRefTab() {
         />
       </Card>
 
-      <Card title="Armour Saves">
+      <Card title="Damage Roll — Net = 1D6 + Type + Armour">
+        <p className="text-xs mb-2 text-[var(--muted-foreground)]">Net 4+ = OOA &nbsp;|&nbsp; Net 1–3 = Suppressed &nbsp;|&nbsp; Net 0 or less = No Effect</p>
         <Table
-          headers={['Armour', 'Pts', 'Save', 'vs AP']}
+          headers={['Damage Type', 'Bonus', 'Examples']}
           rows={[
-            ['UA', 2,  'No save', 'No save'],
-            ['FI', 5,  '6+',      'No save'],
-            ['LA', 8,  '5+',      '6+'],
-            ['PA', 18, '4+',      '5+'],
-            ['AD', 27, '3+',      '4+'],
+            ['Light [L]',    '+0', 'Pistols'],
+            ['Standard [S]', '+1', 'Carbines, rifles'],
+            ['Heavy [H]',    '+2', 'Support weapons'],
+            ['Blast [B]',    '+2', 'Grenades, mortars'],
           ]}
         />
+        <p className="text-xs font-semibold mt-3 mb-1 text-[var(--muted-foreground)] uppercase tracking-wide">Armour Modifiers</p>
+        <Table
+          headers={['Armour', 'Pts', 'Mod']}
+          rows={[
+            ['UA (Unarmoured)',     2,  '+0'],
+            ['FI (Flak Infantry)',  5,  '−1'],
+            ['LA (Light Armour)',   8,  '−2'],
+            ['PA (Powered Armour)', 18, '−3'],
+            ['AD (Adv. Defence)',   27, '−4'],
+          ]}
+        />
+        <p className="text-xs mt-2 text-[var(--muted-foreground)] italic">Suppressed result on already-Suppressed figure = wound counter. 2 wound counters = OOA.</p>
       </Card>
 
-      <Card title="To-Hit Modifiers">
+      <Card title="To-Hit: Roll 2D6 + Training Bonus vs Band Threshold">
+        <Table
+          headers={['Band', 'Range', 'Threshold']}
+          rows={[
+            ['B1 Point Blank', '0–4"',  '5+'],
+            ['B2 Short',       '5–8"',  '7+'],
+            ['B3 Effective',   '9–16"', '8+'],
+            ['B4 Long',        '17–24"','10+'],
+            ['B5 Extreme',     '25"+',  '12+'],
+          ]}
+        />
+        <p className="text-xs font-semibold mt-3 mb-1 text-[var(--muted-foreground)] uppercase tracking-wide">Modifiers to Roll</p>
         <Table
           headers={['Situation', 'Mod']}
           rows={[

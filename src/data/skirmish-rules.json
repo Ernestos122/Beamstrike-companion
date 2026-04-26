@@ -26,7 +26,33 @@
       {
         "id": "wounds",
         "title": "Wounds",
-        "content": "**Grunts** have 1 wound — any failed Armour Save puts them Out of Action immediately.\n\n**Specialists and Leaders** have 2 wounds:\n- First wound → figure becomes **Suppressed**\n- Second wound → figure goes **Out of Action**"
+        "content": "**Grunts** have 1 wound — any Suppressed or OOA damage result puts them Out of Action immediately.\n\n**Specialists and Leaders** have 2 wounds. See the Shooting section (Wounds & Wound Stacking) for the full damage resolution rules."
+      }
+    ]
+  },
+  {
+    "id": "core-rules",
+    "title": "Core Rules",
+    "entries": [
+      {
+        "id": "line-of-sight",
+        "title": "Line of Sight",
+        "content": "Line of sight (LoS) is determined by drawing an imaginary line from the torso of the firing figure to any part of the target figure's body. If the line is blocked entirely by solid terrain (walls, buildings, dense forest), there is no LoS and no shot is possible.\n\nTerrain the line passes through may grant **cover** but does not block LoS unless it is solid and opaque. When in doubt, use true LoS — if you can see part of the target miniature, LoS exists."
+      },
+      {
+        "id": "cover",
+        "title": "Cover",
+        "content": "Cover applies a modifier to the attacker's 2D6 to-hit roll:\n\n| Cover Type | Modifier to Roll |\n|---|---|\n| Light Cover (low wall, hedge, crates) | −1 |\n| Heavy Cover (solid wall, fortification, wreck) | −2 |\n\nA figure benefits from cover if at least half of its body is obscured by the terrain from the attacker's perspective. If the line of sight passes through cover terrain but the target is in the open beyond it, no cover applies."
+      },
+      {
+        "id": "measuring",
+        "title": "Measuring",
+        "content": "All distances are measured in inches, from base edge to base edge. You may measure any distance at any time — there is no hidden measuring in Beamstrike Skirmish."
+      },
+      {
+        "id": "rounding",
+        "title": "Rounding",
+        "content": "Whenever a rule produces a fractional result, **always round up** to the nearest whole number (e.g. a figure with Move 4\" moving through difficult ground halves to 2\" — no rounding needed; but 5\" halved = 3\")."
       }
     ]
   },
@@ -37,7 +63,7 @@
       {
         "id": "initiative",
         "title": "Initiative",
-        "content": "Both players roll 1D10. Add your Leader's Nerve value if your Leader is active (not OOA). The higher result wins initiative and chooses who activates first. On a tie, the player who lost initiative last round goes first."
+        "content": "Both players roll 1D10. Add your Leader's Nerve value if your Leader is active (not OOA). The higher result wins initiative and chooses who activates first. On a tie, the player who lost initiative last round goes first. **On the first round**, if tied, both players roll again until one is higher."
       },
       {
         "id": "activation",
@@ -84,22 +110,22 @@
       {
         "id": "to-hit",
         "title": "Making the To-Hit Roll",
-        "content": "Roll 1D10 and add the firing figure's **To-Hit Bonus** (from Training). If the result equals or exceeds the weapon's band to-hit number, the shot hits.\n\n**To-Hit Modifiers:**\n\n| Situation | Modifier |\n|---|---|\n| Target in Light Cover | −1 |\n| Target in Heavy Cover | −2 |\n| Firer moved this activation | −1 |\n| Target is Suppressed | +2 |\n| Point-blank with a support weapon | −2 |\n| Aimed shot (both actions used to shoot same target) | +2 |"
+        "content": "Roll **2D6** and add the firing figure's **To-Hit Bonus** (from Training). If the result equals or exceeds the weapon's **band threshold**, the shot hits.\n\n**To-Hit Modifiers (applied to the roll):**\n\n| Situation | Modifier |\n|---|---|\n| Target in Light Cover | −1 to roll |\n| Target in Heavy Cover | −2 to roll |\n| Firer moved this activation | −1 to roll |\n| Target is Suppressed | +2 to roll |\n| Support weapon at Band 1 | −2 to roll |\n| Aimed shot (both actions on same target) | +2 to roll |"
       },
       {
         "id": "range-bands",
         "title": "Range Bands",
-        "content": "All weapons use five range bands. The weapon profile lists a base to-hit number for each band:\n\n- **Band 1** — Point Blank (0–4\")\n- **Band 2** — Short (5–8\")\n- **Band 3** — Effective (9–16\")\n- **Band 4** — Long (17–24\")\n- **Band 5** — Extreme (25\"–max range)"
+        "content": "All weapons use five range bands. Measure from base to base. The **2D6 threshold** must be met or exceeded to hit:\n\n| Band | Distance | 2D6 Threshold |\n|---|---|---|\n| B1 — Point Blank | 0–4\" | 5+ |\n| B2 — Short | 5–8\" | 7+ |\n| B3 — Effective | 9–16\" | 8+ |\n| B4 — Long | 17–24\" | 10+ |\n| B5 — Extreme | 25\"+ | 12+ |\n\nEach weapon profile lists its **maximum effective band** (e.g. a Blast Carbine is a B3 weapon — it cannot shoot beyond 16\")."
       },
       {
-        "id": "armour-saves",
-        "title": "Armour Saves & Damage",
-        "content": "When a shot hits, the target rolls 1D6 for an Armour Save:\n\n| Armour | Save | With AP Weapon |\n|---|---|---|\n| UA | No save | No save |\n| FI | 6+ | No save |\n| LA | 5+ | 6+ |\n| PA | 4+ | 5+ |\n| AD | 3+ | 4+ |\n\nOn a failed save (or UA), the figure takes a **wound**."
+        "id": "damage-roll",
+        "title": "Damage Roll",
+        "content": "When a shot hits, roll **1D6** and apply modifiers:\n\n**Net = 1D6 + Damage Type Bonus + Armour Modifier**\n\n| Net Result | Effect |\n|---|---|\n| 4 or more | **Out of Action (OOA)** |\n| 1–3 | **Suppressed** |\n| 0 or less | **No Effect** |\n\n**Damage Type Bonuses:**\n\n| Type | Bonus | Examples |\n|---|---|---|\n| Light \\[L\\] | +0 | Pistols |\n| Standard \\[S\\] | +1 | Carbines, rifles |\n| Heavy \\[H\\] | +2 | Support weapons |\n| Blast \\[B\\] | +2 | Grenades, mortars |\n\n**Armour Modifiers:**\n\n| Armour | Modifier |\n|---|---|\n| UA (Unarmoured) | +0 |\n| FI (Flak Infantry) | −1 |\n| LA (Light Armour) | −2 |\n| PA (Powered Armour) | −3 |\n| AD (Advanced Defence) | −4 |"
       },
       {
-        "id": "templates",
-        "title": "Templates & Area Weapons",
-        "content": "Flame weapons and grenades use a template or area burst. Figures fully under the template are hit automatically. Figures partially under the template are hit on 4+ (roll 1D6)."
+        "id": "wound-stacking",
+        "title": "Wounds & Wound Stacking",
+        "content": "**Grunts (1 wound):** Any Suppressed or OOA result puts the figure Out of Action immediately.\n\n**Specialists & Leaders (2 wounds):**\n- **OOA result** → figure goes Out of Action\n- **Suppressed result** on a fresh figure → place a Suppressed marker\n- **Suppressed result** on an already-Suppressed figure → **wound counter** (track with a die or token)\n- **Second wound counter** from any source → figure goes Out of Action\n\n*Wound stacking means even weapons that can never roll an outright OOA result (e.g. a pistol against advanced armour) can eventually bring down a resilient target through accumulated suppression.*"
       }
     ]
   },
@@ -189,6 +215,22 @@
         "id": "xp-advancement",
         "title": "XP & Advancement",
         "content": "Figures earn XP individually:\n\n| Action | XP |\n|---|---|\n| Taking an enemy OOA | 1 XP |\n| Completing a scenario objective | 1 XP per participating figure |\n| Last figure standing when enemy bottles | 1 XP (Leader only) |\n\nSpend **4 XP** to gain a skill. Maximum **3 skills** per figure.\n\n**Roster limit:** You may not have more than 15 figures available to deploy. Figures on \"Miss Next Game\" do not count — their slot may be filled. If a recovering figure returns and would push you over 15, drop a figure from your roster."
+      }
+    ]
+  },
+  {
+    "id": "race-special-rules",
+    "title": "Race Special Rules",
+    "entries": [
+      {
+        "id": "race-rules-overview",
+        "title": "Overview",
+        "content": "Each race has a unique special rule that applies to all figures of that race in your warband. Race special rules are listed on the warband roster for reference."
+      },
+      {
+        "id": "race-rules-list",
+        "title": "Race Special Rules Reference",
+        "content": "| Race | Special Rule | Effect |\n|---|---|---|\n| Human | Adaptable | Once per game, re-roll any one die result |\n| Growwlan | Berserker | +1 Melee when charging; −1 Melee when defending |\n| Thuntra | Resilient | Ignore the first Suppressed result per game |\n| Spug | Sneaky | +1 to all Cover modifiers (treated as one grade better) |\n| Ferrapur | Pack Hunters | +1 Melee for each friendly Ferrapur in base contact |\n| Hibevor | Lumbering | −1\" Move; +1 to Damage Roll when using Heavy or Blast weapons |\n| Centaling | Swift | Move +2\"; may move through friendly figures freely |\n| Replican | Mechanical | Immune to Suppressed; cannot benefit from Rally |\n| K'Kree | Herd Animal | Must stay within 6\" of another friendly figure at end of each activation |\n| Grey | Stealthy | May not be targeted by Overwatch unless the Grey has taken an action this round |"
       }
     ]
   }

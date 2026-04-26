@@ -134,7 +134,7 @@ function FigureXpPanel({ warbandId, figure }: { warbandId: string; figure: Skirm
 // ── Warband Campaign Panel ───────────────────────────────────────────────────
 
 function WarbandCampaignPanel({ warbandId }: { warbandId: string }) {
-  const { warbands, addScrip, updateWarband } = useWarbandStore()
+  const { warbands, addScrip, recordGame } = useWarbandStore()
   const warband = warbands.find(w => w.id === warbandId)
   const [section, setSection] = useState<'injuries' | 'xp' | 'scrip'>('injuries')
   const [open, setOpen] = useState(true)
@@ -150,7 +150,7 @@ function WarbandCampaignPanel({ warbandId }: { warbandId: string }) {
         <div className="flex-1">
           <p className="font-semibold text-sm">{warband.name}</p>
           <p className="text-xs text-[var(--muted-foreground)]">
-            {activeFigs.length} active · {warband.scrip} scrip · Game {warband.gamesPlayed + 1}
+            {activeFigs.length} active · {warband.scrip} scrip · {warband.wins}W / {warband.gamesPlayed}G
           </p>
         </div>
       </button>
@@ -212,12 +212,20 @@ function WarbandCampaignPanel({ warbandId }: { warbandId: string }) {
                   </div>
                 ))}
               </div>
-              <button
-                onClick={() => updateWarband(warband.id, { gamesPlayed: warband.gamesPlayed + 1 })}
-                className="w-full rounded border py-2 text-xs text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-              >
-                Record game played (Game {warband.gamesPlayed + 1} → {warband.gamesPlayed + 2})
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => recordGame(warband.id, true)}
+                  className="flex-1 rounded border border-green-500/40 py-2 text-xs text-green-400 hover:bg-green-500/10 transition-colors"
+                >
+                  Record Win ({warband.wins + 1}W)
+                </button>
+                <button
+                  onClick={() => recordGame(warband.id, false)}
+                  className="flex-1 rounded border py-2 text-xs text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+                >
+                  Record Loss
+                </button>
+              </div>
             </div>
           )}
         </div>

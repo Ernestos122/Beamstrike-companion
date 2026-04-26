@@ -1,0 +1,195 @@
+[
+  {
+    "id": "warband-creation",
+    "title": "Warband Creation",
+    "entries": [
+      {
+        "id": "figure-types",
+        "title": "Figure Types",
+        "content": "A warband consists of three figure types:\n\n| Type | Training | Count |\n|---|---|---|\n| **Leader** | HERO or ELITE | Exactly 1 (required) |\n| **Specialist** | VET or ELITE | 0–3 |\n| **Grunt** | REG or CIV | Any remaining |\n\n**Warband size:** Minimum 5, maximum 15 figures total.\n\n**Points limit:** 200 points. All figures, weapons, and equipment must fit within this limit."
+      },
+      {
+        "id": "training",
+        "title": "Training",
+        "content": "| Training | Cost | To-Hit Bonus | Melee Bonus | Nerve |\n|---|---|---|---|---|\n| Civilian (CIV) | 0 pts | +0 | −1 | 2 |\n| Regular (REG) | 2 pts | +1 | +0 | 3 |\n| Veteran (VET) | 5 pts | +2 | +1 | 4 |\n| Elite (ELITE) | 10 pts | +3 | +2 | 5 |\n| Hero (HERO) | 20 pts | +4 | +3 | 6 |"
+      },
+      {
+        "id": "armour",
+        "title": "Armour",
+        "content": "| Armour | Cost | Save |\n|---|---|---|\n| Unarmoured (UA) | 2 pts | No save |\n| Flak Infantry (FI) | 5 pts | 6+ |\n| Light Armour (LA) | 8 pts | 5+ |\n| Powered Armour (PA) | 18 pts | 4+ |\n| Advanced Defence (AD) | 27 pts | 3+ |"
+      },
+      {
+        "id": "weapons-carry",
+        "title": "Weapons & Carry Limits",
+        "content": "Each figure may carry up to 2 weapons (1 primary + 1 sidearm or melee weapon). Weapon costs are listed on the weapon reference sheets.\n\n- **Support weapons** may only be carried by Specialists or the Leader\n- **Heavy weapons** may only be carried by the Leader\n- Weapons marked **[Reload]** require a Reload action between shots"
+      },
+      {
+        "id": "wounds",
+        "title": "Wounds",
+        "content": "**Grunts** have 1 wound — any failed Armour Save puts them Out of Action immediately.\n\n**Specialists and Leaders** have 2 wounds:\n- First wound → figure becomes **Suppressed**\n- Second wound → figure goes **Out of Action**"
+      }
+    ]
+  },
+  {
+    "id": "turn-structure",
+    "title": "Turn Structure",
+    "entries": [
+      {
+        "id": "initiative",
+        "title": "Initiative",
+        "content": "Both players roll 1D10. Add your Leader's Nerve value if your Leader is active (not OOA). The higher result wins initiative and chooses who activates first. On a tie, the player who lost initiative last round goes first."
+      },
+      {
+        "id": "activation",
+        "title": "Alternating Activation",
+        "content": "Players alternate activating one figure at a time. **Each figure may only be activated once per round.** Each figure takes **2 actions** from the Action List before the next player activates a figure. Interrupt effects (such as Overwatch fire) are not activations.\n\nWhen one player has activated all figures and the other has not, the remaining player activates all their figures consecutively."
+      },
+      {
+        "id": "actions",
+        "title": "Action List",
+        "content": "| Action | Notes |\n|---|---|\n| **Move** | Move up to the figure's Move value in inches |\n| **Shoot** | Make a shooting attack (\\[Reload\\] weapons must be reloaded first) |\n| **Reload** | Ready a \\[Reload\\] weapon to fire again |\n| **Charge** | Move into melee — costs both actions |\n| **Overwatch** | Place Overwatch marker — must be stationary, must be last action |\n| **Stand Up** | Remove Suppressed status from this figure |\n| **Use Equipment** | Use a carried item (grenade, med-kit, loot pickup, etc.) |\n| **Rally** | Roll 1D6 + your To-Hit Bonus; on 6+ remove Suppressed from a friendly within 3\" |\n\n**Restrictions:** Charge costs both actions. Overwatch must be the final action. Suppressed figures may only Stand Up."
+      }
+    ]
+  },
+  {
+    "id": "movement",
+    "title": "Movement",
+    "entries": [
+      {
+        "id": "standard-move",
+        "title": "Standard Move",
+        "content": "A figure may move up to its Move value in any direction. Movement may be split: move partway, take another action, then move the remainder — total distance must not exceed the Move value."
+      },
+      {
+        "id": "terrain-movement",
+        "title": "Terrain",
+        "content": "| Terrain | Cost |\n|---|---|\n| Open ground | Normal |\n| Rough / difficult ground | Half Move |\n| Climbing / ascending | 1\" vertical = 1\" Move |\n| Jumping down ≤ 3\" | Free |\n| Jumping down > 3\" | Take a Falling Hit |"
+      },
+      {
+        "id": "engagement",
+        "title": "Engagement Range",
+        "content": "A figure within 1\" of an enemy is in **engagement range** and may not voluntarily move away unless it breaks off. To break off: use a Move action — the enemy immediately makes one free Shoot (point-blank) or Melee attack as a reaction. If the breaking figure survives, it completes its move."
+      },
+      {
+        "id": "falling",
+        "title": "Falling",
+        "content": "If a figure is forced off a height of more than 3\", it takes a hit. Roll an Armour Save — on a fail, the figure takes a wound as normal."
+      }
+    ]
+  },
+  {
+    "id": "shooting",
+    "title": "Shooting",
+    "entries": [
+      {
+        "id": "to-hit",
+        "title": "Making the To-Hit Roll",
+        "content": "Roll 1D10 and add the firing figure's **To-Hit Bonus** (from Training). If the result equals or exceeds the weapon's band to-hit number, the shot hits.\n\n**To-Hit Modifiers:**\n\n| Situation | Modifier |\n|---|---|\n| Target in Light Cover | −1 |\n| Target in Heavy Cover | −2 |\n| Firer moved this activation | −1 |\n| Target is Suppressed | +2 |\n| Point-blank with a support weapon | −2 |\n| Aimed shot (both actions used to shoot same target) | +2 |"
+      },
+      {
+        "id": "range-bands",
+        "title": "Range Bands",
+        "content": "All weapons use five range bands. The weapon profile lists a base to-hit number for each band:\n\n- **Band 1** — Point Blank (0–4\")\n- **Band 2** — Short (5–8\")\n- **Band 3** — Effective (9–16\")\n- **Band 4** — Long (17–24\")\n- **Band 5** — Extreme (25\"–max range)"
+      },
+      {
+        "id": "armour-saves",
+        "title": "Armour Saves & Damage",
+        "content": "When a shot hits, the target rolls 1D6 for an Armour Save:\n\n| Armour | Save | With AP Weapon |\n|---|---|---|\n| UA | No save | No save |\n| FI | 6+ | No save |\n| LA | 5+ | 6+ |\n| PA | 4+ | 5+ |\n| AD | 3+ | 4+ |\n\nOn a failed save (or UA), the figure takes a **wound**."
+      },
+      {
+        "id": "templates",
+        "title": "Templates & Area Weapons",
+        "content": "Flame weapons and grenades use a template or area burst. Figures fully under the template are hit automatically. Figures partially under the template are hit on 4+ (roll 1D6)."
+      }
+    ]
+  },
+  {
+    "id": "overwatch",
+    "title": "Overwatch",
+    "entries": [
+      {
+        "id": "declaring-overwatch",
+        "title": "Declaring Overwatch",
+        "content": "A figure may go on Overwatch as an action, provided it has not moved this activation. Place an Overwatch marker on the figure. The figure watches a nominated 180° forward arc."
+      },
+      {
+        "id": "mid-move-interrupt",
+        "title": "Mid-Move Interrupt",
+        "content": "When an enemy figure's movement enters the Overwatch figure's line of sight and range, the move **freezes immediately at that point**:\n\n1. The Overwatch figure fires (follow standard shooting rules)\n2. Resolve wound, Suppressed, or OOA results\n3. Remove the Overwatch marker regardless of outcome\n4. The moving figure (if still active) may complete its remaining movement\n\nA figure on Overwatch that has not fired keeps its marker until the start of its next activation, then the marker is removed without firing."
+      },
+      {
+        "id": "overwatch-limits",
+        "title": "Limits",
+        "content": "- A figure may only be on Overwatch once per round\n- Overwatch cannot interrupt a Charge — melee charges resolve fully before any reaction\n- **Grey figures (Stealthy):** The Overwatch figure must pass a Spot check (5+ on 1D6) before the interrupt fires. On a fail the marker remains — try again each time a Grey triggers it this round"
+      }
+    ]
+  },
+  {
+    "id": "melee",
+    "title": "Melee",
+    "entries": [
+      {
+        "id": "charging",
+        "title": "Charging",
+        "content": "A Charge costs **both** actions. The figure moves directly toward the target up to Move +2\". Rough terrain applies normally — halve the total charge distance through difficult ground. The charge must end in base contact.\n\nIf the charging figure cannot reach the target, the charge fails — it moves its full charge distance toward the target but no combat occurs."
+      },
+      {
+        "id": "resolving-melee",
+        "title": "Resolving Melee",
+        "content": "1. Both players roll 1D10\n2. Each adds their **Melee Modifier**: Training Melee Bonus + Weapon Melee Bonus\n3. Higher total wins — **ties go to the defender**\n4. Loser takes a wound (roll Armour Save normally)\n5. Winner may push the loser back up to 1\"\n\n**Multiple attackers:** −1 to Melee roll per additional attacker beyond the first.\n\n**Melee Bonuses by Training:**\n\n| Training | Melee Bonus |\n|---|---|\n| CIV | −1 |\n| REG | +0 |\n| VET | +1 |\n| ELITE | +2 |\n| HERO | +3 |"
+      }
+    ]
+  },
+  {
+    "id": "morale",
+    "title": "Morale & Bottle Tests",
+    "entries": [
+      {
+        "id": "triggers",
+        "title": "Bottle Test Triggers",
+        "content": "A warband must make a Bottle Test on two separate triggers — each is its own test:\n\n1. **Leader Down:** When your Leader goes OOA\n2. **Heavy Casualties:** When your active figure count drops to 50% or fewer of your starting count\n\nIf both triggers occur simultaneously, make both tests."
+      },
+      {
+        "id": "making-bottle-test",
+        "title": "Making the Bottle Test",
+        "content": "Roll 1D6 and add the **highest Nerve value** among your remaining active figures. Compare to **8**:\n\n- **8 or higher:** Warband holds — continue playing\n- **7 or lower:** Warband bottles out — immediately withdraws. Remaining figures are safe (not OOA) for Injury Table purposes, but you lose the game\n\n**Note:** If your Leader is OOA, you lose their Nerve bonus on all subsequent tests."
+      },
+      {
+        "id": "suppressed",
+        "title": "Suppressed Status",
+        "content": "A Suppressed figure:\n- May only take the **Stand Up** action\n- Cannot benefit from Overwatch\n- Attackers gain +2 To-Hit against it\n\nTo recover: use Stand Up on the figure's activation, or have a friendly within 3\" use the Rally action (roll 1D6 + Rallying figure's To-Hit Bonus; 6+ succeeds)."
+      }
+    ]
+  },
+  {
+    "id": "campaign",
+    "title": "Campaign Rules",
+    "entries": [
+      {
+        "id": "campaign-overview",
+        "title": "Campaign Overview",
+        "content": "A standard campaign consists of **5 linked games** followed by a **Showdown** — a climactic final battle. The player with the most wins chooses sides in the Showdown."
+      },
+      {
+        "id": "post-game",
+        "title": "Post-Game Sequence",
+        "content": "After each game, both players carry out these steps in order:\n\n1. **Determine Winner** — count VP per scenario\n2. **Roll Injuries** — for every OOA figure (see Injury Table)\n3. **Earn Scrip** — base 1D6 + bonuses\n4. **Award XP** — per figure\n5. **Spend XP** — buy skills (4 XP each, max 3 skills per figure)\n6. **Spend Scrip** — recruit, buy equipment, heal injuries"
+      },
+      {
+        "id": "injury-table",
+        "title": "Injury Table",
+        "content": "Roll 1D6 per OOA figure after the game:\n\n| Roll | Result |\n|---|---|\n| 1–2 | **Full Recovery** — returns next game with no penalty |\n| 3 | **Miss Next Game** — unavailable for next game only |\n| 4–5 | **Permanent Injury** — roll on sub-table |\n| 6 | **Death** — removed from roster permanently |\n\n**Permanent Injury Sub-table (1D6):**\n\n| Roll | Injury | Effect |\n|---|---|---|\n| 1 | Old Wound | −1\" Move (minimum 2\") |\n| 2 | Arm Injury | −1 to all shooting To-Hit rolls |\n| 3 | Leg Wound | −2\" Move; cannot Charge |\n| 4 | Eye Damage | Cannot use Band 5 (max range reduced one band) |\n| 5 | Shaken Nerve | −1 Nerve |\n| 6 | Battle-Scarred | Survives intact; gains 1 free Skill Slot |"
+      },
+      {
+        "id": "scrip",
+        "title": "Scrip Income & Spending",
+        "content": "**Earning scrip after each game:**\n- Base income: 1D6 scrip\n- +1 per scenario objective achieved\n- +1 if your warband won\n- +1 if your Leader was not OOA at game end\n\n**Spending scrip:**\n\n| Purchase | Cost |\n|---|---|\n| Recruit a new figure | Equal to figure's point cost |\n| Buy weapon or equipment | Equal to point cost |\n| Remove a Miss Next Game early | 3 scrip |\n| Remove a Permanent Injury | 5 scrip |"
+      },
+      {
+        "id": "xp-advancement",
+        "title": "XP & Advancement",
+        "content": "Figures earn XP individually:\n\n| Action | XP |\n|---|---|\n| Taking an enemy OOA | 1 XP |\n| Completing a scenario objective | 1 XP per participating figure |\n| Last figure standing when enemy bottles | 1 XP (Leader only) |\n\nSpend **4 XP** to gain a skill. Maximum **3 skills** per figure.\n\n**Roster limit:** You may not have more than 15 figures available to deploy. Figures on \"Miss Next Game\" do not count — their slot may be filled. If a recovering figure returns and would push you over 15, drop a figure from your roster."
+      }
+    ]
+  }
+]

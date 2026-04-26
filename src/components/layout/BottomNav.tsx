@@ -1,14 +1,14 @@
 import { NavLink } from 'react-router-dom'
-import { Shield, BookOpen, Table2, Dices, Compass, Zap } from 'lucide-react'
+import { Shield, BookOpen, Table2, Dices, Zap, Swords } from 'lucide-react'
 import { cn } from '@lib/utils'
 
 const tabs = [
-  { to: '/army', icon: Shield, label: 'Army' },
-  { to: '/rules', icon: BookOpen, label: 'Rules' },
-  { to: '/charts', icon: Table2, label: 'Charts' },
-  { to: '/helpers', icon: Dices, label: 'Helpers' },
-  { to: '/era1', icon: Compass, label: 'ERA 1' },
-  { to: '/aliens', icon: Zap, label: 'Aliens' },
+  { to: '/army',     icon: Shield,   label: 'Army'     },
+  { to: '/rules',    icon: BookOpen, label: 'Rules'    },
+  { to: '/charts',   icon: Table2,   label: 'Charts'   },
+  { to: '/helpers',  icon: Dices,    label: 'Helpers'  },
+  { to: '/aliens',   icon: Zap,      label: 'Aliens'   },
+  { to: '/skirmish', icon: Swords,   label: 'Skirmish' },
 ]
 
 export function BottomNav() {

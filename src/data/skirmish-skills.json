@@ -1,0 +1,16 @@
+[
+  { "id": "DODGE",          "name": "Dodge",           "xpCost": 4, "effect": "Once per game, re-roll one failed Armour Save." },
+  { "id": "NOS",            "name": "Nerves of Steel",  "xpCost": 4, "effect": "Immune to the Suppressed result on the first wound." },
+  { "id": "AMBIDEXTROUS",   "name": "Ambidextrous",     "xpCost": 4, "effect": "May shoot two sidearms in one Shoot action (resolve both, −1 To-Hit on each)." },
+  { "id": "CONSTITUTION",   "name": "Constitution",     "xpCost": 4, "effect": "Gains +1 Wound (maximum 3 wounds total)." },
+  { "id": "FORTUNE",        "name": "Fortune",          "xpCost": 4, "effect": "Once per game, re-roll any single dice roll before the result is applied." },
+  { "id": "QUICK_FIRE",     "name": "Quick Fire",       "xpCost": 4, "effect": "May Shoot as a free action after a Move action once per activation." },
+  { "id": "GUN_SKILL",      "name": "Gun Skill",        "xpCost": 4, "effect": "+1 To-Hit with all ranged weapons." },
+  { "id": "AGGRESSIVE",     "name": "Aggressive",       "xpCost": 4, "effect": "+1 to Melee rolls; may re-roll a losing Melee result once per game." },
+  { "id": "INITIATIVE",     "name": "Initiative",       "xpCost": 4, "effect": "Always activates first in the round when initiative is tied." },
+  { "id": "ARTILLERIST",    "name": "Artillerist",      "xpCost": 4, "effect": "May use support weapons without the −2 point-blank penalty." },
+  { "id": "MARKSMAN",       "name": "Marksman",         "xpCost": 4, "effect": "Ignores cover penalties at Band 4 and Band 5." },
+  { "id": "SHARPSHOOTER",   "name": "Sharpshooter",     "xpCost": 4, "effect": "Aimed shot gives +3 To-Hit instead of +2." },
+  { "id": "AGILE",          "name": "Agile",            "xpCost": 4, "effect": "Ignores difficult terrain movement penalties." },
+  { "id": "MARTIAL_ARTS",   "name": "Martial Arts",     "xpCost": 4, "effect": "Unarmed Melee bonus is +2 instead of −1; may roll Melee twice per combat and use the higher result." }
+]

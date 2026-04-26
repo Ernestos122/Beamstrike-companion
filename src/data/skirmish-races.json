@@ -1,0 +1,72 @@
+[
+  {
+    "id": "HUMAN",
+    "name": "Human (ERA factions)",
+    "move": 4,
+    "specialRule": null,
+    "specialRuleText": "No special rules — standard rules apply in full."
+  },
+  {
+    "id": "GROWWLAN",
+    "name": "Growwlan",
+    "move": 5,
+    "specialRule": "Fearsome + Melee",
+    "specialRuleText": "Fearsome: enemies within 6\" suffer −1 to Bottle Test rolls. Skilled melee fighters: +1 to all Melee rolls."
+  },
+  {
+    "id": "THUNTRA",
+    "name": "Thuntra",
+    "move": 4,
+    "specialRule": "Marksmen",
+    "specialRuleText": "Marksmen: +1 to To-Hit rolls at Band 3 and beyond."
+  },
+  {
+    "id": "SPUG",
+    "name": "SPUG",
+    "move": 4,
+    "specialRule": "Tough",
+    "specialRuleText": "Tough: FI armour counts as LA; LA armour counts as PA. PA and AD are unaffected."
+  },
+  {
+    "id": "FERRAPUR",
+    "name": "Ferrapur",
+    "move": 4,
+    "specialRule": "Grenadiers",
+    "specialRuleText": "Grenadiers: may carry one additional grenade beyond normal carry limits; grenades cost 1 pt less."
+  },
+  {
+    "id": "HIBEVOR",
+    "name": "Hibevor",
+    "move": 4,
+    "specialRule": "PSP Specialists",
+    "specialRuleText": "PSP Specialists: may field Power-Sphere-Projectors as standard infantry weapons, not support weapons."
+  },
+  {
+    "id": "CENTALING",
+    "name": "Centaling",
+    "move": 3,
+    "specialRule": "Heavy Build",
+    "specialRuleText": "Heavy Build: all Centaling figures count as 2-wound regardless of type. −1 to all To-Hit rolls against them at Band 4+."
+  },
+  {
+    "id": "REPLICAN",
+    "name": "Replican",
+    "move": 4,
+    "specialRule": "Shock Troops",
+    "specialRuleText": "Shock Troops: may re-roll one failed To-Hit roll per activation."
+  },
+  {
+    "id": "K_KREE",
+    "name": "K'Kree",
+    "move": 5,
+    "specialRule": "Swarm Tactics",
+    "specialRuleText": "Swarm Tactics: for each additional friendly K'Kree figure within 3\" of the attacker (up to 2), gain +1 to Melee rolls."
+  },
+  {
+    "id": "GREY",
+    "name": "Grey",
+    "move": 4,
+    "specialRule": "Stealthy",
+    "specialRuleText": "Stealthy: when a Grey figure's movement would trigger an Overwatch interrupt, the Overwatch figure must first pass a Spot check (5+ on 1D6). On a fail the Overwatch does not fire but the marker remains — try again each time a Grey triggers it this round."
+  }
+]

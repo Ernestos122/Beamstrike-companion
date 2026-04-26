@@ -1,0 +1,74 @@
+[
+  {
+    "id": "last-stand",
+    "number": 1,
+    "name": "Last Stand",
+    "tagline": "Two warbands clash in open territory. No quarter given.",
+    "gameLength": null,
+    "setup": "Players deploy on opposite table edges. Deployment zone: within 6\" of your table edge. Roll off for who deploys first; both players deploy fully before the game begins.",
+    "objectives": "Destroy the enemy warband. There are no markers or objectives to capture.",
+    "victoryConditions": "The warband that forces the enemy to Bottle Out, or eliminates all enemy figures, wins. Score **1 VP per enemy figure taken OOA**.",
+    "specialRules": "None. This is the default scenario for learning the rules.",
+    "notes": "Best for a first game — no scenario rules to track, pure tactics."
+  },
+  {
+    "id": "raid",
+    "number": 2,
+    "name": "Raid",
+    "tagline": "Destroy key objectives in the enemy's territory before time runs out.",
+    "gameLength": "8 rounds",
+    "setup": "Determine Attacker and Defender (roll off; winner chooses). Defender places 3 Objective markers anywhere in their half of the table, each at least 6\" apart. Attacker deploys within 6\" of their table edge. Defender deploys within 6\" of their table edge.",
+    "objectives": "**Attacker:** Destroy Objective markers. A figure in base contact with a marker may spend both actions to destroy it.\n**Defender:** Protect the markers. Eliminate attackers.",
+    "victoryConditions": "- Attacker scores **3 VP per Objective destroyed**\n- Defender scores **2 VP per attacking figure taken OOA**\n- Defender scores **3 VP per Objective intact at game end**\n- Most VP at end of 8 rounds wins. If Attacker forces the Defender to Bottle Out, Attacker wins immediately.",
+    "specialRules": null,
+    "notes": null
+  },
+  {
+    "id": "hold-the-line",
+    "number": 3,
+    "name": "Hold the Line",
+    "tagline": "Control the center of the battlefield longer than your opponent.",
+    "gameLength": "8 rounds",
+    "setup": "Place 3 Control Zone markers in a line across the center of the table, evenly spaced. Players deploy within 6\" of their respective table edges.",
+    "objectives": "Control zones by having more active figures within 3\" of a marker than your opponent at the end of each round. Tied zones are contested — no VP scored.",
+    "victoryConditions": "Score **1 VP per zone controlled at end of each round**. First player to reach **10 VP** wins immediately. Otherwise, most VP after 8 rounds wins.",
+    "specialRules": null,
+    "notes": "With 3 zones available per round, the first player to 10 VP needs to dominate at least 4 rounds."
+  },
+  {
+    "id": "rescue",
+    "number": 4,
+    "name": "Rescue",
+    "tagline": "Extract a prisoner from enemy territory before it's too late.",
+    "gameLength": null,
+    "setup": "Determine Attacker and Defender (roll off; winner chooses). The Defender places a **Prisoner marker** anywhere in their deployment zone (within 6\" of their table edge). Both players deploy within 6\" of their respective table edges.",
+    "objectives": "**Attacker:** Get a figure into base contact with the Prisoner marker to free them. Escort the prisoner off your own table edge.\n**Defender:** Kill the prisoner, or force the Attacker to Bottle Out.",
+    "victoryConditions": "- Attacker wins if the prisoner exits via the Attacker's table edge: **10 VP**\n- Attacker scores **1 VP per defending figure taken OOA** regardless of outcome\n- Defender wins if the prisoner is killed or the Attacker Bottles Out",
+    "specialRules": "**Prisoner:** Once freed, the prisoner moves attached to the freeing figure at half Move. The prisoner is 1-wound, Unarmoured, and does not contribute to Bottle Tests.\n\n**If the carrying figure goes OOA:** Place the Prisoner marker at that figure's position. Any Attacker figure may move into base contact to pick them up again. Any Defender figure may move into base contact to recapture them — return the marker to the Defender's deployment zone.",
+    "notes": null
+  },
+  {
+    "id": "ambush",
+    "number": 5,
+    "name": "Ambush",
+    "tagline": "One force has set a trap. The other must fight through it.",
+    "gameLength": "10 rounds",
+    "setup": "The **Quarry** (player who lost the roll-off) deploys all figures within 8\" of the table center. The **Ambusher** places numbered face-down tokens anywhere outside the center 14\" × 14\" zone — equal to their figure count + 3 dummy tokens. Tokens are not revealed yet.",
+    "objectives": "**Quarry:** Move all surviving figures off the Ambusher's table edge.\n**Ambusher:** Eliminate the Quarry before they escape.",
+    "victoryConditions": "- Quarry scores **2 VP per figure that exits via the Ambusher's table edge**\n- Ambusher scores **2 VP per Quarry figure taken OOA**\n- Most VP after 10 rounds (or when all Quarry figures are OOA or have exited) wins.",
+    "specialRules": "**Revealing tokens:** When a Quarry figure moves within 6\" of a face-down token, flip it. On a figure token: place the corresponding Ambusher figure immediately — it may act normally from the round it is revealed. On a dummy: remove the token.",
+    "notes": "Figures are 15mm scale. The 14\" × 14\" exclusion zone and 8\" Quarry deployment are calibrated for a 2'–3' table."
+  },
+  {
+    "id": "treasure-hunt",
+    "number": 6,
+    "name": "Treasure Hunt",
+    "tagline": "Valuable cargo is scattered across the battlefield. Take what you can carry.",
+    "gameLength": "8 rounds",
+    "setup": "Roll 1D6 + 2 to determine the number of **Loot Tokens** (3–8 tokens). Place them randomly across the center of the table, at least 6\" from any table edge and at least 4\" apart. Players deploy within 6\" of their table edges.",
+    "objectives": "Collect Loot Tokens and carry them off your own table edge.",
+    "victoryConditions": "**3 VP per Loot Token extracted off your own table edge.** Most VP at end of 8 rounds wins. If a player Bottles Out, they forfeit all Loot currently being carried.",
+    "specialRules": "**Carrying Loot:** A figure in base contact with a Loot Token may pick it up with a Use Equipment action. A figure carrying Loot moves at half speed and cannot Charge or go on Overwatch. If the carrying figure goes OOA, drop the Loot at their position.\n\n**Extracting Loot:** A figure carrying Loot that exits via their own table edge scores it. Extracted Loot cannot be recovered.",
+    "notes": null
+  }
+]

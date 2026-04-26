@@ -110,12 +110,12 @@
       {
         "id": "to-hit",
         "title": "Making the To-Hit Roll",
-        "content": "Roll **2D6** and add the firing figure's **To-Hit Bonus** (from Training). If the result equals or exceeds the weapon's **band threshold**, the shot hits.\n\n**To-Hit Modifiers (applied to the roll):**\n\n| Situation | Modifier |\n|---|---|\n| Target in Light Cover | −1 to roll |\n| Target in Heavy Cover | −2 to roll |\n| Firer moved this activation | −1 to roll |\n| Target is Suppressed | +2 to roll |\n| Support weapon at Band 1 | −2 to roll |\n| Aimed shot (both actions on same target) | +2 to roll |"
+        "content": "Roll **2D6** and add the firing figure's **To-Hit Bonus** (from Training). If the result equals or exceeds the weapon's **band threshold** (from the weapon profile), the shot hits.\n\nEach weapon has its own threshold per band — see the weapon profile or the main Beamstrike weapon charts.\n\n**To-Hit Modifiers (applied to the roll):**\n\n| Situation | Modifier |\n|---|---|\n| Target in Light Cover | −1 to roll |\n| Target in Heavy Cover | −2 to roll |\n| Firer moved this activation | −1 to roll |\n| Target is Suppressed | +2 to roll |\n| Support weapon at B1 (point blank) | −2 to roll (or CNF per profile) |\n| Aimed shot (both actions on same target) | +2 to roll |"
       },
       {
         "id": "range-bands",
         "title": "Range Bands",
-        "content": "All weapons use five range bands. Measure from base to base. The **2D6 threshold** must be met or exceeded to hit:\n\n| Band | Distance | 2D6 Threshold |\n|---|---|---|\n| B1 — Point Blank | 0–4\" | 5+ |\n| B2 — Short | 5–8\" | 7+ |\n| B3 — Effective | 9–16\" | 8+ |\n| B4 — Long | 17–24\" | 10+ |\n| B5 — Extreme | 25\"+ | 12+ |\n\nEach weapon profile lists its **maximum effective band** (e.g. a Blast Carbine is a B3 weapon — it cannot shoot beyond 16\")."
+        "content": "All weapons use the same five range bands as the main Beamstrike game:\n\n| Band | Distance |\n|---|---|\n| B1 — Point Blank | 0–4\" |\n| B2 — Short | 5–20\" |\n| B3 — Effective | 21–40\" |\n| B4 — Long | 41–80\" |\n| B5 — Extreme | 81\"+ |\n\nEach weapon profile lists its own **2D6 to-hit threshold per band**. The threshold is the number you must equal or beat on your 2D6 roll (before Training bonus). A band marked **CNF** means the weapon cannot fire at that range. A band marked **—** (null) means the weapon's maximum range has been exceeded.\n\nBecause Beamstrike Skirmish uses the same weapon data as the parent game, you can use the main Beamstrike weapon reference charts directly."
       },
       {
         "id": "damage-roll",

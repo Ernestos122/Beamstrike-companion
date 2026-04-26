@@ -92,15 +92,16 @@ export function QuickRefTab() {
         <p className="text-xs mt-2 text-[var(--muted-foreground)] italic">Suppressed result on already-Suppressed figure = wound counter. 2 wound counters = OOA.</p>
       </Card>
 
-      <Card title="To-Hit: Roll 2D6 + Training Bonus vs Band Threshold">
+      <Card title="To-Hit: Roll 2D6 + Training Bonus vs Weapon's Band Threshold">
+        <p className="text-xs mb-2 text-[var(--muted-foreground)]">Each weapon has its own 2D6 threshold per range band. CNF = cannot fire. — = out of range.</p>
         <Table
-          headers={['Band', 'Range', 'Threshold']}
+          headers={['Band', 'Range']}
           rows={[
-            ['B1 Point Blank', '0–4"',  '5+'],
-            ['B2 Short',       '5–8"',  '7+'],
-            ['B3 Effective',   '9–16"', '8+'],
-            ['B4 Long',        '17–24"','10+'],
-            ['B5 Extreme',     '25"+',  '12+'],
+            ['B1 — Point Blank', '0–4"'],
+            ['B2 — Short',       '5–20"'],
+            ['B3 — Effective',   '21–40"'],
+            ['B4 — Long',        '41–80"'],
+            ['B5 — Extreme',     '81"+'],
           ]}
         />
         <p className="text-xs font-semibold mt-3 mb-1 text-[var(--muted-foreground)] uppercase tracking-wide">Modifiers to Roll</p>
@@ -111,10 +112,24 @@ export function QuickRefTab() {
             ['Target in Heavy Cover',       '−2'],
             ['Firer moved this activation', '−1'],
             ['Target is Suppressed',        '+2'],
-            ['Support weapon at Band 1',    '−2'],
+            ['Support weapon at B1',        '−2 (or CNF)'],
             ['Aimed shot (both actions)',   '+2'],
           ]}
         />
+      </Card>
+
+      <Card title="Weapon Impact → Skirmish Damage Bonus">
+        <Table
+          headers={['Main Game Impact', 'Skirmish Type', 'Damage Bonus']}
+          rows={[
+            ['LOW / STUN',    '[L] Light',    '+0'],
+            ['STANDARD',      '[S] Standard', '+1'],
+            ['HIGH',          '[H] Heavy',    '+2'],
+            ['POWER',         '[H] Heavy',    '+2'],
+            ['TOTAL (1/2/3)', '[B] Blast',    '+2'],
+          ]}
+        />
+        <p className="text-xs mt-2 text-[var(--muted-foreground)] italic">SPECIAL/VARIES weapons default to [S]+1.</p>
       </Card>
 
       <Card title="Bottle Test">

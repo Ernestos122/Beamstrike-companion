@@ -77,10 +77,13 @@ function FigureFormModal({ open, onClose, onSave, initial, warband }: FigureForm
 
   const pts = calcFigurePoints(training, armour, weapons)
 
-  const filteredWeapons = allWeapons.filter(w =>
-    (!w.racesAllowed || w.racesAllowed.length === 0 || (w.racesAllowed as string[]).includes(warband.race)) &&
-    (weaponSearch === '' || w.name.toLowerCase().includes(weaponSearch.toLowerCase()))
-  ).slice(0, 20)
+  const filteredWeapons = allWeapons.filter(w => {
+    if (w.category === 'VEHICLE_MOUNTED' || w.category === 'HEAVY') return false
+    if (w.category === 'SUPPORT' && type === 'GRUNT') return false
+    if (w.racesAllowed && w.racesAllowed.length > 0 && !(w.racesAllowed as string[]).includes(warband.race)) return false
+    if (weaponSearch && !w.name.toLowerCase().includes(weaponSearch.toLowerCase())) return false
+    return true
+  })
 
   function toggleWeapon(id: string) {
     setWeapons(prev =>

@@ -72,12 +72,11 @@ Each figure wears one armour type:
 
 ### Step 5 — Assign Weapons and Equipment
 
-Each figure may carry weapons and equipment from the Beamstrike Skirmish weapon and equipment lists. Weapon costs are listed on the reference sheets. All weapon restrictions (race availability, carry limits) from the standard Beamstrike weapon lists apply.
+Beamstrike Skirmish uses the **same weapon list** as the main Beamstrike game. Use the standard weapon reference charts for point costs, to-hit values, and impact types. Vehicle-mounted and Heavy weapons are not available in Skirmish.
 
 **Carry limits:**
 - Each figure may carry up to 2 weapons (1 primary + 1 sidearm/melee)
-- Support weapons (deployed weapons) may only be carried by Specialists or the Leader
-- Heavy weapons may only be carried by the Leader
+- Support weapons may only be carried by Specialists or the Leader
 
 ### Step 6 — Record Your Roster
 
@@ -221,15 +220,17 @@ To make a shooting attack, the figure must:
 
 ### Range Bands
 
-All weapons use five range bands. Measure base to base. Each weapon profile lists its maximum effective band — it cannot shoot beyond that band.
+Beamstrike Skirmish uses the same five range bands as the main game. Measure base to base.
 
-| Band | Distance | 2D6 Threshold |
-|---|---|---|
-| B1 — Point Blank | 0–4" | 5+ |
-| B2 — Short | 5–8" | 7+ |
-| B3 — Effective | 9–16" | 8+ |
-| B4 — Long | 17–24" | 10+ |
-| B5 — Extreme | 25"+ | 12+ |
+| Band | Distance |
+|---|---|
+| B1 — Point Blank | 0–4" |
+| B2 — Short | 5–20" |
+| B3 — Effective | 21–40" |
+| B4 — Long | 41–80" |
+| B5 — Extreme | 81"+ |
+
+Each weapon has its own **2D6 to-hit threshold per band** — see the weapon profile in the main Beamstrike weapon reference. A band marked **CNF** means the weapon cannot fire at that range. A band marked **—** means the weapon is out of range.
 
 ### Making the To-Hit Roll
 
@@ -277,7 +278,7 @@ When a shot hits, roll **1D6** and calculate the net result:
 | PA (Powered Armour) | −3 |
 | AD (Advanced Defence) | −4 |
 
-*Example: VET fires an Assault Rifle [S] at a PA-armoured figure. Net = D6 + 1 (Standard) − 3 (PA). On a roll of 6: net = 4 → OOA. On a roll of 3: net = 1 → Suppressed. On a roll of 1: net = −1 → No Effect.*
+*Example: VET fires an Assault Rifle (STANDARD impact → +1) at a PA-armoured figure (−3). Net = D6 + 1 − 3 = D6 − 2. Roll of 6: net = 4 → OOA. Roll of 3: net = 1 → Suppressed. Roll of 1: net = −1 → No Effect.*
 
 ### Wound Effects & Wound Stacking
 
@@ -649,11 +650,12 @@ If the carrying figure goes OOA, place the Prisoner marker at that figure's posi
 
 ### Shooting Summary
 
-1. Check LoS and range
-2. Roll **2D6** + Training To-Hit Bonus ± modifiers vs band threshold (B1=5+, B2=7+, B3=8+, B4=10+, B5=12+) = hit
-3. Roll **1D6** + Damage Type Bonus ([L]+0, [S]+1, [H]+2, [B]+2) + Armour Modifier (UA+0, FI−1, LA−2, PA−3, AD−4)
-4. Net 4+ = OOA; Net 1–3 = Suppressed; Net 0 or less = No Effect
-5. Suppressed result on already-Suppressed figure = wound counter; 2 wound counters = OOA
+1. Check LoS and range band (B1 0–4", B2 5–20", B3 21–40", B4 41–80", B5 81"+)
+2. Roll **2D6** + Training To-Hit Bonus ± modifiers vs weapon's band threshold (from weapon profile) = hit
+3. Map weapon's Impact to skirmish damage bonus: LOW/STUN=+0 · STANDARD=+1 · HIGH/POWER=+2 · TOTAL=+2
+4. Roll **1D6** + damage bonus + Armour Modifier (UA+0, FI−1, LA−2, PA−3, AD−4)
+5. Net 4+ = OOA; Net 1–3 = Suppressed; Net 0 or less = No Effect
+6. Suppressed result on already-Suppressed figure = wound counter; 2 wound counters = OOA
 
 ### Melee Summary
 

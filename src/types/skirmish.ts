@@ -20,6 +20,7 @@ export interface SkirmishFigure {
   training: SkirmishTraining
   armour: SkirmishArmour
   weapons: string[]
+  equipment: string[]
   skillIds: string[]
   xp: number
   injuries: SkirmishInjury[]

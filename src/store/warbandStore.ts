@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import type { SkirmishWarband, SkirmishFigure, SkirmishRaceId } from '@types-bs/skirmish'
 import { generateId } from '@lib/utils'
 import { calcFigurePoints, calcWarbandPoints } from '@lib/warbandCalc'
+import skirmishSkills from '@data/skirmish-skills.json'
 
 type FigureDraft = Omit<SkirmishFigure, 'id' | 'points'>
 
@@ -10,7 +11,7 @@ function materializeFigure(id: string, draft: FigureDraft): SkirmishFigure {
   return {
     ...draft,
     id,
-    points: calcFigurePoints(draft.training, draft.armour, draft.weapons),
+    points: calcFigurePoints(draft.training, draft.armour, draft.weapons, draft.equipment ?? []),
   }
 }
 
@@ -124,8 +125,10 @@ export const useWarbandStore = create<WarbandStore>()(
             ...w,
             figures: w.figures.map(f => {
               if (f.id !== figureId) return f
-              if (f.skillIds.includes(skillId) || f.skillIds.length >= 3 || f.xp < 4) return f
-              return { ...f, skillIds: [...f.skillIds, skillId], xp: f.xp - 4 }
+              const skill = (skirmishSkills as { id: string; xpCost: number }[]).find(sk => sk.id === skillId)
+              const cost = skill?.xpCost ?? 4
+              if (f.skillIds.includes(skillId) || f.skillIds.length >= 3 || f.xp < cost) return f
+              return { ...f, skillIds: [...f.skillIds, skillId], xp: f.xp - cost }
             }),
             updatedAt: new Date().toISOString(),
           }

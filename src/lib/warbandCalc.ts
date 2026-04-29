@@ -1,5 +1,5 @@
 import type { SkirmishTraining, SkirmishArmour, SkirmishFigure } from '@types-bs/skirmish'
-import { allWeapons } from '@data/index'
+import { allWeapons, equipment as equipmentData } from '@data/index'
 
 // ── Damage Table ──────────────────────────────────────────────────────────────
 // Rows = D6 rolls 1-6. Columns = [UA, FI, LA, PA, AD].
@@ -110,17 +110,32 @@ export const TRAINING_NERVE: Record<SkirmishTraining, number> = {
   CIV: 2, REG: 3, VET: 4, ELITE: 5, HERO: 6,
 }
 
+/** Max skills a figure may have allocated during warband building (by training). */
+export const SKILL_LIMIT: Record<SkirmishTraining, number> = {
+  CIV: 0, REG: 0, VET: 1, ELITE: 2, HERO: 3,
+}
+
+/** Armour save labels for display. */
+export const ARMOUR_SAVE: Record<SkirmishArmour, string> = {
+  UA: 'No save', FI: '6+', LA: '5+', PA: '4+', AD: '3+',
+}
+
 export function calcFigurePoints(
   training: SkirmishTraining,
   armour: SkirmishArmour,
   weaponIds: string[],
+  equipmentIds: string[] = [],
 ): number {
   const base = TRAINING_COST[training] + ARMOUR_COST[armour]
   const weaponTotal = weaponIds.reduce((sum, id) => {
     const w = allWeapons.find(w => w.id === id)
     return sum + (w ? (w.pointsCost ?? 0) : 0)
   }, 0)
-  return base + weaponTotal
+  const equipTotal = equipmentIds.reduce((sum, id) => {
+    const e = (equipmentData as { id: string; pointsCost: number }[]).find(e => e.id === id)
+    return sum + (e?.pointsCost ?? 0)
+  }, 0)
+  return base + weaponTotal + equipTotal
 }
 
 export function calcWarbandPoints(figures: SkirmishFigure[]): number {

@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { Plus, Trash2, Edit2, ChevronDown, ChevronRight, Swords } from 'lucide-react'
+import { Plus, Trash2, Edit2, ChevronDown, ChevronRight, Swords, Play, Square } from 'lucide-react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { cn } from '@lib/utils'
 import { useWarbandStore } from '@store/warbandStore'
-import { calcFigurePoints } from '@lib/warbandCalc'
-import { allWeapons } from '@data/index'
+import { calcFigurePoints, SKILL_LIMIT } from '@lib/warbandCalc'
+import { allWeapons, equipment as equipmentData } from '@data/index'
 import skirmishRaces from '@data/skirmish-races.json'
+import skirmishSkills from '@data/skirmish-skills.json'
 import type { SkirmishWarband, SkirmishFigure, SkirmishRaceId, SkirmishTraining, SkirmishArmour, SkirmishFigureType } from '@types-bs/skirmish'
+import { WarbandPlayMode } from './WarbandPlayMode'
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -19,11 +21,11 @@ const TRAINING_OPTIONS: { value: SkirmishTraining; label: string; cost: number }
 ]
 
 const ARMOUR_OPTIONS: { value: SkirmishArmour; label: string; cost: number; save: string }[] = [
-  { value: 'UA', label: 'Unarmoured (UA)', cost: 2,  save: 'No save' },
-  { value: 'FI', label: 'Flak Infantry (FI)', cost: 5,  save: '6+'      },
-  { value: 'LA', label: 'Light Armour (LA)', cost: 8,  save: '5+'      },
-  { value: 'PA', label: 'Powered Armour (PA)', cost: 18, save: '4+'     },
-  { value: 'AD', label: 'Advanced Defence (AD)', cost: 27, save: '3+'   },
+  { value: 'UA', label: 'Unarmoured (UA)',       cost: 2,  save: 'No save' },
+  { value: 'FI', label: 'Flak Infantry (FI)',    cost: 5,  save: '6+'      },
+  { value: 'LA', label: 'Light Armour (LA)',     cost: 8,  save: '5+'      },
+  { value: 'PA', label: 'Powered Armour (PA)',   cost: 18, save: '4+'      },
+  { value: 'AD', label: 'Advanced Defence (AD)', cost: 27, save: '3+'      },
 ]
 
 const FIGURE_TYPE_OPTIONS: { value: SkirmishFigureType; label: string; trainingAllowed: SkirmishTraining[] }[] = [
@@ -46,6 +48,13 @@ const TYPE_COLORS: Record<SkirmishFigureType, string> = {
   GRUNT:      'bg-gray-500/20 text-gray-400',
 }
 
+// Infantry-usable equipment only
+const SKIRMISH_EQUIP = (equipmentData as { id: string; name: string; pointsCost: number; isVehicleOnly: boolean }[])
+  .filter(e => !e.isVehicleOnly)
+
+type SkillEntry = { id: string; name: string; xpCost: number; effect: string }
+const SKILLS = skirmishSkills as SkillEntry[]
+
 // ── Figure Form Modal ────────────────────────────────────────────────────────
 
 interface FigureFormProps {
@@ -61,11 +70,29 @@ function FigureFormModal({ open, onClose, onSave, initial, warband }: FigureForm
   const [type,     setType]     = useState<SkirmishFigureType>(initial?.type     ?? 'GRUNT')
   const [training, setTraining] = useState<SkirmishTraining>(initial?.training ?? 'REG')
   const [armour,   setArmour]   = useState<SkirmishArmour>(initial?.armour   ?? 'FI')
-  const [weapons,  setWeapons]  = useState<string[]>(initial?.weapons  ?? [])
+  const [tab,      setTab]      = useState<'weapons' | 'equip-skills'>('weapons')
+
+  // Split existing weapons into ranged and melee on init
+  const [rangedWeapons, setRangedWeapons] = useState<string[]>(() =>
+    (initial?.weapons ?? []).filter(id => {
+      const w = allWeapons.find(w => w.id === id)
+      return w?.category !== 'MELEE'
+    })
+  )
+  const [meleeWeapon, setMeleeWeapon] = useState<string | null>(() => {
+    const found = (initial?.weapons ?? []).find(id => {
+      const w = allWeapons.find(w => w.id === id)
+      return w?.category === 'MELEE'
+    })
+    return found ?? null
+  })
+  const [equipment,    setEquipment]    = useState<string[]>(initial?.equipment ?? [])
+  const [skills,       setSkills]       = useState<string[]>(initial?.skillIds ?? [])
   const [weaponSearch, setWeaponSearch] = useState('')
 
   const typeOpts = FIGURE_TYPE_OPTIONS.find(o => o.value === type)
   const validTrainings = typeOpts?.trainingAllowed ?? []
+  const maxSkills = SKILL_LIMIT[training]
 
   function handleTypeChange(t: SkirmishFigureType) {
     setType(t)
@@ -75,27 +102,59 @@ function FigureFormModal({ open, onClose, onSave, initial, warband }: FigureForm
     }
   }
 
-  const pts = calcFigurePoints(training, armour, weapons)
+  function handleTrainingChange(t: SkirmishTraining) {
+    setTraining(t)
+    const newMax = SKILL_LIMIT[t]
+    if (skills.length > newMax) setSkills(skills.slice(0, newMax))
+  }
 
-  const filteredWeapons = allWeapons.filter(w => {
+  const allWeaponsInFigure = [...rangedWeapons, ...(meleeWeapon ? [meleeWeapon] : [])]
+  const pts = calcFigurePoints(training, armour, allWeaponsInFigure, equipment)
+
+  // Weapon pools: separate ranged and melee
+  const rangedPool = allWeapons.filter(w => {
     if (w.category === 'VEHICLE_MOUNTED' || w.category === 'HEAVY') return false
+    if (w.category === 'MELEE') return false
     if (w.category === 'SUPPORT' && type === 'GRUNT') return false
     if (w.racesAllowed && w.racesAllowed.length > 0 && !(w.racesAllowed as string[]).includes(warband.race)) return false
     if (weaponSearch && !w.name.toLowerCase().includes(weaponSearch.toLowerCase())) return false
     return true
   })
+  const meleePool = allWeapons.filter(w => {
+    if (w.category !== 'MELEE') return false
+    if (w.racesAllowed && w.racesAllowed.length > 0 && !(w.racesAllowed as string[]).includes(warband.race)) return false
+    if (weaponSearch && !w.name.toLowerCase().includes(weaponSearch.toLowerCase())) return false
+    return true
+  })
 
-  function toggleWeapon(id: string) {
-    setWeapons(prev =>
-      prev.includes(id) ? prev.filter(w => w !== id) : [...prev, id].slice(0, 2)
+  function toggleRanged(id: string) {
+    setRangedWeapons(prev =>
+      prev.includes(id) ? prev.filter(w => w !== id) : prev.length < 2 ? [...prev, id] : prev
+    )
+  }
+
+  function toggleEquip(id: string) {
+    setEquipment(prev =>
+      prev.includes(id) ? prev.filter(e => e !== id) : prev.length < 3 ? [...prev, id] : prev
+    )
+  }
+
+  function toggleSkill(id: string) {
+    setSkills(prev =>
+      prev.includes(id) ? prev.filter(s => s !== id) : prev.length < maxSkills ? [...prev, id] : prev
     )
   }
 
   function handleSave() {
     if (!name.trim()) return
     onSave({
-      name: name.trim(), type, training, armour, weapons,
-      skillIds: initial?.skillIds ?? [],
+      name: name.trim(),
+      type,
+      training,
+      armour,
+      weapons: allWeaponsInFigure,
+      equipment,
+      skillIds: skills,
       xp: initial?.xp ?? 0,
       injuries: initial?.injuries ?? [],
       status: initial?.status ?? 'ACTIVE',
@@ -163,7 +222,7 @@ function FigureFormModal({ open, onClose, onSave, initial, warband }: FigureForm
                 {TRAINING_OPTIONS.filter(o => validTrainings.includes(o.value)).map(o => (
                   <button
                     key={o.value}
-                    onClick={() => setTraining(o.value)}
+                    onClick={() => handleTrainingChange(o.value)}
                     className={cn(
                       'rounded border px-3 py-1 text-xs font-medium transition-colors',
                       training === o.value
@@ -198,48 +257,181 @@ function FigureFormModal({ open, onClose, onSave, initial, warband }: FigureForm
               </div>
             </div>
 
-            {/* Weapons */}
-            <div>
-              <label className="block text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide mb-1">Weapons (max 2)</label>
-              {weapons.length > 0 && (
-                <div className="flex flex-wrap gap-1 mb-2">
-                  {weapons.map(id => {
-                    const w = allWeapons.find(w => w.id === id)
-                    return w ? (
-                      <span key={id} className="flex items-center gap-1 rounded bg-[var(--accent)] px-2 py-0.5 text-xs">
-                        {w.name}
-                        <button onClick={() => toggleWeapon(id)} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">×</button>
-                      </span>
-                    ) : null
-                  })}
-                </div>
-              )}
-              <input
-                className="w-full rounded border bg-[var(--card)] px-3 py-1.5 text-xs mb-1"
-                placeholder="Search weapons…"
-                value={weaponSearch}
-                onChange={e => setWeaponSearch(e.target.value)}
-              />
-              <div className="max-h-32 overflow-y-auto rounded border divide-y">
-                {filteredWeapons.map(w => (
-                  <button
-                    key={w.id}
-                    onClick={() => toggleWeapon(w.id)}
-                    disabled={weapons.length >= 2 && !weapons.includes(w.id)}
-                    className={cn(
-                      'flex w-full items-center justify-between px-3 py-1.5 text-xs transition-colors',
-                      weapons.includes(w.id)
-                        ? 'bg-[var(--accent)] text-[var(--foreground)]'
-                        : 'hover:bg-[var(--accent)] text-[var(--foreground)]',
-                      weapons.length >= 2 && !weapons.includes(w.id) && 'opacity-40'
-                    )}
-                  >
-                    <span>{w.name}</span>
-                    <span className="text-[var(--muted-foreground)]">{w.pointsCost ?? 0}pts</span>
-                  </button>
-                ))}
-              </div>
+            {/* Tabs: Weapons / Equip & Skills */}
+            <div className="flex rounded-lg border border-[var(--border)] overflow-hidden text-xs font-medium">
+              <button type="button" onClick={() => setTab('weapons')}
+                className={cn('flex-1 py-1.5 transition-colors',
+                  tab === 'weapons' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]'
+                )}>
+                Weapons {allWeaponsInFigure.length > 0 && `(${allWeaponsInFigure.length})`}
+              </button>
+              <button type="button" onClick={() => setTab('equip-skills')}
+                className={cn('flex-1 py-1.5 transition-colors',
+                  tab === 'equip-skills' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]'
+                )}>
+                Equip & Skills {(equipment.length + skills.length) > 0 && `(${equipment.length + skills.length})`}
+              </button>
             </div>
+
+            {/* Weapons tab */}
+            {tab === 'weapons' && (
+              <div className="space-y-3">
+                <input
+                  className="w-full rounded border bg-[var(--card)] px-3 py-1.5 text-xs"
+                  placeholder="Search weapons…"
+                  value={weaponSearch}
+                  onChange={e => setWeaponSearch(e.target.value)}
+                />
+
+                {/* Ranged weapons (max 2) */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted-foreground)] mb-1">
+                    Ranged — {rangedWeapons.length}/2
+                  </p>
+                  {rangedWeapons.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-1.5">
+                      {rangedWeapons.map(id => {
+                        const w = allWeapons.find(w => w.id === id)
+                        return w ? (
+                          <span key={id} className="flex items-center gap-1 rounded bg-[var(--accent)] px-2 py-0.5 text-xs">
+                            {w.name}
+                            <button onClick={() => toggleRanged(id)} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">×</button>
+                          </span>
+                        ) : null
+                      })}
+                    </div>
+                  )}
+                  <div className="max-h-32 overflow-y-auto rounded border divide-y">
+                    {rangedPool.map(w => (
+                      <button
+                        key={w.id}
+                        onClick={() => toggleRanged(w.id)}
+                        disabled={rangedWeapons.length >= 2 && !rangedWeapons.includes(w.id)}
+                        className={cn(
+                          'flex w-full items-center justify-between px-3 py-1.5 text-xs transition-colors',
+                          rangedWeapons.includes(w.id)
+                            ? 'bg-[var(--accent)] text-[var(--foreground)]'
+                            : 'hover:bg-[var(--accent)] text-[var(--foreground)]',
+                          rangedWeapons.length >= 2 && !rangedWeapons.includes(w.id) && 'opacity-40'
+                        )}
+                      >
+                        <span>{w.name}</span>
+                        <span className="text-[var(--muted-foreground)]">{w.pointsCost ?? 0}pts</span>
+                      </button>
+                    ))}
+                    {rangedPool.length === 0 && (
+                      <p className="px-3 py-2 text-xs text-[var(--muted-foreground)] italic">No ranged weapons match.</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Melee weapon (max 1) */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted-foreground)] mb-1">
+                    Melee — {meleeWeapon ? '1' : '0'}/1
+                  </p>
+                  {meleeWeapon && (() => {
+                    const w = allWeapons.find(w => w.id === meleeWeapon)
+                    return w ? (
+                      <div className="flex flex-wrap gap-1 mb-1.5">
+                        <span className="flex items-center gap-1 rounded bg-[var(--accent)] px-2 py-0.5 text-xs">
+                          {w.name}
+                          <button onClick={() => setMeleeWeapon(null)} className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">×</button>
+                        </span>
+                      </div>
+                    ) : null
+                  })()}
+                  <div className="max-h-28 overflow-y-auto rounded border divide-y">
+                    {meleePool.map(w => (
+                      <button
+                        key={w.id}
+                        onClick={() => setMeleeWeapon(meleeWeapon === w.id ? null : w.id)}
+                        disabled={meleeWeapon !== null && meleeWeapon !== w.id}
+                        className={cn(
+                          'flex w-full items-center justify-between px-3 py-1.5 text-xs transition-colors',
+                          meleeWeapon === w.id
+                            ? 'bg-[var(--accent)] text-[var(--foreground)]'
+                            : 'hover:bg-[var(--accent)] text-[var(--foreground)]',
+                          meleeWeapon !== null && meleeWeapon !== w.id && 'opacity-40'
+                        )}
+                      >
+                        <span>{w.name}</span>
+                        <span className="text-[var(--muted-foreground)]">{w.pointsCost ?? 0}pts</span>
+                      </button>
+                    ))}
+                    {meleePool.length === 0 && (
+                      <p className="px-3 py-2 text-xs text-[var(--muted-foreground)] italic">No melee weapons match.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Equip & Skills tab */}
+            {tab === 'equip-skills' && (
+              <div className="space-y-4">
+                {/* Equipment (max 3) */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted-foreground)] mb-1">
+                    Equipment — {equipment.length}/3
+                  </p>
+                  <div className="space-y-1">
+                    {SKIRMISH_EQUIP.map(e => {
+                      const on = equipment.includes(e.id)
+                      const disabled = !on && equipment.length >= 3
+                      return (
+                        <button key={e.id} type="button" onClick={() => !disabled && toggleEquip(e.id)}
+                          className={cn(
+                            'w-full flex items-center gap-2 rounded border px-2.5 py-1.5 text-xs text-left transition-colors',
+                            on ? 'border-[var(--primary)] bg-[var(--primary)]/10' : 'border-[var(--border)] hover:bg-[var(--accent)]',
+                            disabled && 'opacity-40 cursor-not-allowed'
+                          )}>
+                          <span className={cn('w-3.5 h-3.5 rounded border shrink-0 flex items-center justify-center text-[10px]',
+                            on ? 'border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)]' : 'border-[var(--border)]'
+                          )}>
+                            {on && '✓'}
+                          </span>
+                          <span className="flex-1">{e.name}</span>
+                          <span className="text-[var(--muted-foreground)]">{e.pointsCost}pts</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Skills */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted-foreground)] mb-1">
+                    Skills — {skills.length}/{maxSkills}
+                    {maxSkills === 0 && <span className="ml-1 text-[var(--muted-foreground)] normal-case font-normal">(VET+ only)</span>}
+                  </p>
+                  {maxSkills === 0 ? (
+                    <p className="text-xs text-[var(--muted-foreground)] italic">Increase training to Veteran or above to allocate skills.</p>
+                  ) : (
+                    <div className="space-y-1">
+                      {SKILLS.map(sk => {
+                        const on = skills.includes(sk.id)
+                        const disabled = !on && skills.length >= maxSkills
+                        return (
+                          <button key={sk.id} type="button" onClick={() => !disabled && toggleSkill(sk.id)}
+                            className={cn(
+                              'w-full rounded border px-2.5 py-2 text-xs text-left transition-colors',
+                              on ? 'border-[var(--primary)] bg-[var(--primary)]/10' : 'border-[var(--border)] hover:bg-[var(--accent)]',
+                              disabled && 'opacity-40 cursor-not-allowed'
+                            )}>
+                            <div className="flex items-center justify-between">
+                              <span className="font-semibold">{sk.name}</span>
+                              <span className="text-[var(--muted-foreground)]">{sk.xpCost} XP</span>
+                            </div>
+                            <p className="text-[var(--muted-foreground)] mt-0.5 leading-relaxed">{sk.effect}</p>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Footer */}
@@ -262,9 +454,17 @@ function FigureFormModal({ open, onClose, onSave, initial, warband }: FigureForm
   )
 }
 
-// ── Warband Card ─────────────────────────────────────────────────────────────
+// ── Figure Row ────────────────────────────────────────────────────────────────
 
 function FigureRow({ figure, onEdit, onDelete }: { figure: SkirmishFigure; onEdit: () => void; onDelete: () => void }) {
+  const equipNames = (figure.equipment ?? []).map(id => {
+    const e = (equipmentData as { id: string; name: string }[]).find(e => e.id === id)
+    return e?.name ?? id
+  })
+  const skillNames = (figure.skillIds ?? []).map(id => {
+    const sk = SKILLS.find(s => s.id === id)
+    return sk?.name ?? id
+  })
   return (
     <div className="flex items-center gap-2 px-3 py-2 border-b last:border-0 text-xs">
       <div className="flex-1 min-w-0">
@@ -283,7 +483,14 @@ function FigureRow({ figure, onEdit, onDelete }: { figure: SkirmishFigure; onEdi
         </div>
         {figure.weapons.length > 0 && (
           <p className="text-[var(--muted-foreground)] mt-0.5 truncate">
-            {figure.weapons.map(id => allWeapons.find(w => w.id === id)?.name ?? id).join(', ')}
+            ⚔ {figure.weapons.map(id => allWeapons.find(w => w.id === id)?.name ?? id).join(', ')}
+          </p>
+        )}
+        {(equipNames.length > 0 || skillNames.length > 0) && (
+          <p className="text-[var(--muted-foreground)] truncate">
+            {equipNames.length > 0 && `📦 ${equipNames.join(', ')}`}
+            {equipNames.length > 0 && skillNames.length > 0 && '  '}
+            {skillNames.length > 0 && `★ ${skillNames.join(', ')}`}
           </p>
         )}
       </div>
@@ -294,10 +501,13 @@ function FigureRow({ figure, onEdit, onDelete }: { figure: SkirmishFigure; onEdi
   )
 }
 
+// ── Warband Card ─────────────────────────────────────────────────────────────
+
 function WarbandCard({ warband }: { warband: SkirmishWarband }) {
-  const [open, setOpen] = useState(false)
-  const [addOpen, setAddOpen] = useState(false)
-  const [editFigure, setEditFigure] = useState<SkirmishFigure | null>(null)
+  const [open,        setOpen]        = useState(false)
+  const [playMode,    setPlayMode]    = useState(false)
+  const [addOpen,     setAddOpen]     = useState(false)
+  const [editFigure,  setEditFigure]  = useState<SkirmishFigure | null>(null)
   const { addFigure, updateFigure, removeFigure, deleteWarband } = useWarbandStore()
 
   const over = warband.totalPoints > 200
@@ -307,48 +517,62 @@ function WarbandCard({ warband }: { warband: SkirmishWarband }) {
   return (
     <div className="border rounded-lg overflow-hidden mb-3">
       <div className="flex items-center justify-between px-3 py-2.5 bg-[var(--card)]">
-        <button onClick={() => setOpen(o => !o)} className="flex items-center gap-2 flex-1 text-left">
+        <button onClick={() => { setOpen(o => !o); setPlayMode(false) }} className="flex items-center gap-2 flex-1 text-left">
           {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
           <div>
             <p className="font-semibold text-sm">{warband.name}</p>
             <p className="text-xs text-[var(--muted-foreground)]">{warband.player} · {race?.name ?? warband.race} · {warband.figures.length}/15 figs</p>
           </div>
         </button>
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 shrink-0">
           <span className={cn('text-sm font-bold', over ? 'text-red-400' : 'text-[var(--foreground)]')}>
-            {warband.totalPoints}/200
-            {over && ' OVER'}
+            {warband.totalPoints}/200{over && ' OVER'}
           </span>
+          {open && (
+            <button
+              onClick={() => setPlayMode(p => !p)}
+              title={playMode ? 'Exit play mode' : 'Play mode'}
+              className={cn('p-1.5 rounded transition-colors', playMode ? 'text-green-400 hover:text-green-300' : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]')}
+            >
+              {playMode ? <Square size={14} /> : <Play size={14} />}
+            </button>
+          )}
           <button onClick={() => deleteWarband(warband.id)} className="text-[var(--muted-foreground)] hover:text-red-400 p-1"><Trash2 size={14} /></button>
         </div>
       </div>
 
       {open && (
         <div className="bg-[var(--background)]">
-          {warband.figures.length === 0 ? (
-            <p className="px-4 py-3 text-xs text-[var(--muted-foreground)] italic">No figures yet.</p>
+          {playMode ? (
+            <WarbandPlayMode warband={warband} />
           ) : (
-            warband.figures.map(f => (
-              <FigureRow
-                key={f.id}
-                figure={f}
-                onEdit={() => setEditFigure(f)}
-                onDelete={() => removeFigure(warband.id, f.id)}
-              />
-            ))
-          )}
-          {underMin && (
-            <p className="px-4 py-2 text-xs text-amber-400">
-              Need at least 5 figures to deploy ({5 - warband.figures.length} more required).
-            </p>
-          )}
-          {warband.figures.length < 15 && (
-            <button
-              onClick={() => setAddOpen(true)}
-              className="flex w-full items-center gap-2 px-4 py-2.5 text-xs text-[var(--muted-foreground)] hover:bg-[var(--accent)] transition-colors"
-            >
-              <Plus size={12} /> Add figure
-            </button>
+            <>
+              {warband.figures.length === 0 ? (
+                <p className="px-4 py-3 text-xs text-[var(--muted-foreground)] italic">No figures yet.</p>
+              ) : (
+                warband.figures.map(f => (
+                  <FigureRow
+                    key={f.id}
+                    figure={f}
+                    onEdit={() => setEditFigure(f)}
+                    onDelete={() => removeFigure(warband.id, f.id)}
+                  />
+                ))
+              )}
+              {underMin && (
+                <p className="px-4 py-2 text-xs text-amber-400">
+                  Need at least 5 figures to deploy ({5 - warband.figures.length} more required).
+                </p>
+              )}
+              {warband.figures.length < 15 && (
+                <button
+                  onClick={() => setAddOpen(true)}
+                  className="flex w-full items-center gap-2 px-4 py-2.5 text-xs text-[var(--muted-foreground)] hover:bg-[var(--accent)] transition-colors"
+                >
+                  <Plus size={12} /> Add figure
+                </button>
+              )}
+            </>
           )}
         </div>
       )}

@@ -110,7 +110,7 @@ function FigurePlayCard({ figure }: { figure: SkirmishFigure }) {
       {(rangedWeapons.length > 0 || meleeWeapons.length > 0) && (
         <div className="border-t divide-y">
           {rangedWeapons.map(w => {
-            const toHitVals = w.toHit as Record<string, number | string>
+            const toHitVals = w.toHit as unknown as Record<string, number | string>
             return (
               <div key={w.id} className="px-3 py-1.5 text-xs">
                 <div className="flex items-center justify-between">
@@ -140,8 +140,8 @@ function FigurePlayCard({ figure }: { figure: SkirmishFigure }) {
                 <span className="text-[10px] text-[var(--muted-foreground)] uppercase">MELEE</span>
               </div>
               <p className="text-[10px] text-[var(--muted-foreground)] mt-0.5">
-                H2H bonus: {(w as { h2hBonus?: number }).h2hBonus !== undefined
-                  ? `${(w as { h2hBonus: number }).h2hBonus >= 0 ? '+' : ''}${(w as { h2hBonus: number }).h2hBonus}`
+                H2H bonus: {(w as unknown as { h2hBonus?: number }).h2hBonus !== undefined
+                  ? `${(w as unknown as { h2hBonus: number }).h2hBonus >= 0 ? '+' : ''}${(w as unknown as { h2hBonus: number }).h2hBonus}`
                   : '—'}
               </p>
             </div>

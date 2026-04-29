@@ -8,11 +8,15 @@ A full-featured **offline-capable Progressive Web App** (PWA) for the **Beamstri
 
 | Feature | Description |
 |---|---|
-| **Army Builder** | Build/save armies in Squad\|Troops\|Training\|Armour\|Weapons\|Equip\|Points format matching the official Beamstrike Army Sheet |
-| **Rules Reference** | Searchable, browsable game rules organized by chapter |
-| **Charts Reference** | All 33 game charts (damage tables, movement, hit modifiers, etc.) instantly accessible |
+| **Army Builder** | Build/save armies in Squad\|Troops\|Training\|Armour\|Weapons\|Equip\|Points format matching the official Beamstrike Army Sheet. Race-aware weapon pools, alien restrictions, play mode with wound trackers. |
+| **Skirmish Module** | Full Beamstrike Skirmish companion — warband builder (2 ranged + 1 melee + 3 equipment, skills by training), play mode with wound tracking and D12 house rule, rules/scenarios/campaign/quick-ref tabs. |
+| **Rules Reference** | Searchable, browsable game rules organized by chapter with inline cross-references |
+| **Charts Reference** | All 30+ game charts (damage tables, movement, hit modifiers, etc.) instantly accessible |
 | **Ordered Rulebook** | Complete digital rulebook with collapsible TOC and anchor navigation |
-| **Helpers** | Dice roller (D6/D10/D20), Game Session Tracker (digital turn monitor), Status Counter tracker, Weapon Lookup |
+| **Aliens Guide** | Race lore, special rules, and troop definitions for all 13 alien races |
+| **Era Guide** | The First Contact era setting and scenario context |
+| **Helpers** | Dice roller (D6/D10/D20/2D6/2D10), Game Session Tracker, Status Counters, Weapon Lookup |
+| **Global Search** | Fuse.js fuzzy search across rules, charts, and weapons with ⌘K shortcut |
 
 ## Source Documents (in repo root)
 
@@ -68,6 +72,8 @@ Separate mechanics: armour penetration chart (weapon power vs vehicle class 0–
 ### Races / Factions
 Human, SPUG, GREY, BUG (Runner/Hunter/Terror/Flyer/Cerebral/Queen/Colossus), Ferrapur, Centaling, Hibevor, Growwlan, Replican, Kra'vak, Orcoid, Thuntra, Warbird. Some alien weapons are race-restricted.
 
+Each race has a `weaponPool` property (`HUMAN_AND_ALIEN` / `ALIEN_ONLY` / `NONE` / `HUMAN_AND_ALL_ALIEN`), `forbidMeleeWeapons` flag, and `forbidEquipmentIds` array (`["*"]` = all equipment forbidden). These are enforced in the army builder squad form and the skirmish warband builder.
+
 ## Data Architecture
 
 All game content is in `src/data/` as TypeScript-validated JSON, imported at build time (no async loading, no network requests for data).
@@ -78,16 +84,24 @@ src/data/
   weapons-support.json     — Table 2: squad support weapons
   weapons-heavy.json       — Table 3: non-vehicle heavy weapons
   weapons-vehicle.json     — Vehicle mounted weapons (HE + AV columns)
-  weapons-alien.json       — Race-specific alien weapons
-  equipment.json           — Targeter, ADS, ECM Suite, Digimedic, Shields
-  skills.json              — Sniper, Grenadier, Scout, Swordsman, Constitution, Doper, Fanatic
-  races.json               — Race definitions + movement classes
+  weapons-alien.json       — Race-specific alien weapons with racesAllowed[]
+  weapons-melee.json       — Melee weapons with h2hBonus and racesAllowed[]
+  equipment.json           — Targeter, ADS, ECM Suite, Digimedic, Shields, etc.
+  skills.json              — Army builder troop skills with pointsCost
+  races.json               — 13 race definitions with weaponPool, forbidMeleeWeapons, forbidEquipmentIds
   troop-training.json      — Training class stats (hit mod, troop roll, eligible targets, H2H mod)
   armour-types.json        — Armour class definitions + movement rates
-  charts.json              — All 33 charts as structured JSON
+  charts.json              — All 30+ charts as structured JSON
   rules-sections.json      — Chapter/section structure
-  rules-entries.json       — Rule text (markdown) + cross-references
+  rules-entries.json       — ~55 rule text entries (markdown) + cross-references
   grenades.json            — All grenade types + missiles
+  era1-content.json        — Era Guide: The First Contact era content
+  aliens-content.json      — Aliens Guide: race lore and descriptions
+  aliens-troops.json       — Alien troop definitions for army builder
+  skirmish-rules.json      — Beamstrike Skirmish rules as collapsible sections
+  skirmish-skills.json     — 24 skirmish skills with xpCost and effect text
+  skirmish-races.json      — Skirmish race options
+  skirmish-scenarios.json  — Scenario cards for the Skirmish game
   version.json             — { version: "1.22", weaponChartVersion: "14-4" }
 ```
 
@@ -124,7 +138,7 @@ Each phase ends with a **source-material review** before proceeding.
 
 ## Deployment
 
-GitHub Pages via GitHub Actions. Uses `HashRouter` and `base: '/Beamstrike-companion/'` in vite.config.ts.
+**Vercel** — auto-deploys from `main`. Build command `npm run build`, output dir `dist`. Uses `HashRouter` and `base: '/'` in vite.config.ts (changed from `/Beamstrike-companion/` when migrated from GitHub Pages).
 
 Service worker precaches all `*.{js,css,html,ico,png,svg,json}` — the app works fully offline after first load, including all charts, army builder, dice roller, and rules lookup.
 

@@ -19,7 +19,7 @@ function EntryView({ entry }: { entry: Entry }) {
         {entry.title}
       </button>
       {open && (
-        <div className="px-4 pb-4 pt-1 prose prose-sm prose-invert max-w-none text-[var(--foreground)] [&_table]:text-xs [&_th]:py-1 [&_td]:py-1">
+        <div className="px-4 pb-4 pt-1 prose prose-sm prose-invert max-w-none text-[var(--foreground)] [&_table]:text-xs [&_table]:w-full [&_table]:border-collapse [&_table]:my-2 [&_th]:border [&_th]:border-[var(--border)] [&_th]:bg-[var(--card)] [&_th]:px-2.5 [&_th]:py-1.5 [&_th]:text-left [&_th]:font-semibold [&_td]:border [&_td]:border-[var(--border)] [&_td]:px-2.5 [&_td]:py-1.5 [&_tr:nth-child(even)_td]:bg-[var(--accent)]/30">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{entry.content}</ReactMarkdown>
         </div>
       )}

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Home, Shield, BookOpen, Table2, BookMarked, Dices, Compass, Zap, Swords } from 'lucide-react'
+import { Home, Shield, BookOpen, Table2, BookMarked, Dices, Compass, Zap, Swords, Crosshair } from 'lucide-react'
 import { cn } from '@lib/utils'
 
 const navItems = [
@@ -8,6 +8,7 @@ const navItems = [
   { to: '/rules', icon: BookOpen, label: 'Rules Reference' },
   { to: '/charts', icon: Table2, label: 'Charts' },
   { to: '/rulebook', icon: BookMarked, label: 'Rulebook' },
+  { to: '/weapons', icon: Crosshair, label: 'Weapons' },
   { to: '/helpers', icon: Dices, label: 'Helpers' },
   { to: '/era1', icon: Compass, label: 'ERA 1: Imperialist' },
   { to: '/aliens', icon: Zap, label: 'Alien Races' },

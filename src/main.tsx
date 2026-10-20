@@ -12,6 +12,7 @@ import { HelpersPage } from '@features/helpers/HelpersPage'
 import { EraGuidePage } from '@features/era-guide/EraGuidePage'
 import { AliensGuidePage } from '@features/aliens-guide/AliensGuidePage'
 import { SkirmishPage } from '@features/skirmish/SkirmishPage'
+import { WeaponsPage } from '@features/weapons/WeaponsPage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -27,6 +28,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/charts" element={<ChartsPage />} />
           <Route path="/charts/:chartId" element={<ChartsPage />} />
           <Route path="/rulebook" element={<RulebookPage />} />
+          <Route path="/weapons" element={<WeaponsPage />} />
           <Route path="/helpers" element={<HelpersPage />} />
           <Route path="/era1" element={<EraGuidePage />} />
           <Route path="/aliens" element={<AliensGuidePage />} />

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import {
-  Shield, BookOpen, Table2, Dices, Compass, Zap,
+  Shield, BookOpen, Table2, Dices, Compass, Zap, Swords,
   Target, Users, Crosshair, Heart,
 } from 'lucide-react'
 import { cn } from '@lib/utils'
@@ -66,6 +66,14 @@ const QUICK_NAV = [
     bg: 'bg-purple-500/10',
   },
   {
+    to: '/weapons',
+    icon: Crosshair,
+    label: 'Weapons',
+    desc: 'Every weapon, stats & costs',
+    colour: 'text-cyan-400',
+    bg: 'bg-cyan-500/10',
+  },
+  {
     to: '/helpers',
     icon: Dices,
     label: 'Helpers',
@@ -88,6 +96,14 @@ const QUICK_NAV = [
     desc: 'All 10 alien species',
     colour: 'text-rose-400',
     bg: 'bg-rose-500/10',
+  },
+  {
+    to: '/skirmish',
+    icon: Swords,
+    label: 'Skirmish',
+    desc: 'Warbands, scenarios & campaign',
+    colour: 'text-sky-400',
+    bg: 'bg-sky-500/10',
   },
 ]
 

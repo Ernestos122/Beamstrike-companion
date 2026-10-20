@@ -11,6 +11,7 @@ import {
   weaponsInfantry,
   weaponsSupport,
   weaponsHeavy,
+  weaponsVehicle,
   weaponsAlien,
   weaponsMelee,
   grenades,
@@ -132,11 +133,13 @@ function WeaponPicker({
   armyRace,
   onChange,
   defaultCatFilter = 'ALL',
+  forVehicle = false,
 }: {
   selectedIds: string[]
   armyRace: RaceType
   onChange: (ids: string[]) => void
   defaultCatFilter?: WeaponCatFilter
+  forVehicle?: boolean
 }) {
   const [catFilter, setCatFilter] = useState<WeaponCatFilter>(defaultCatFilter)
   const [query, setQuery] = useState('')
@@ -167,8 +170,10 @@ function WeaponPicker({
       ? (weaponsAlien as Weapon[])
       : (weaponsAlien as Weapon[]).filter(w => new Set(raceData?.alienWeaponIds ?? []).has(w.id))
 
+    // Vehicles mount vehicle weapons plus infantry/support/heavy; troopers never get vehicle guns or melee
+    if (forVehicle) return [...(weaponsVehicle as Weapon[]), ...humanWeapons, ...alienWeapons]
     return [...humanWeapons, ...meleeWeapons, ...humanGrenades, ...alienWeapons]
-  }, [armyRace])
+  }, [armyRace, forVehicle])
 
   const fuse = useMemo(() => new Fuse(pool, { keys: ['name', 'code'], threshold: 0.35 }), [pool])
 
@@ -206,7 +211,10 @@ function WeaponPicker({
 
       {/* Category pills */}
       <div className="flex gap-1 flex-wrap">
-        {WEAPON_CATEGORIES.map(c => (
+        {WEAPON_CATEGORIES.filter(c =>
+          // Only offer categories this pool actually contains
+          c.id === 'ALL' || pool.some(w => w.category === (c.id === 'VEHICLE' ? 'VEHICLE_MOUNTED' : c.id))
+        ).map(c => (
           <button key={c.id} type="button" onClick={() => setCatFilter(c.id)}
             className={cn('rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors',
               catFilter === c.id
@@ -781,6 +789,7 @@ function SquadForm({ initial, onSave, onCancel }: {
                 selectedIds={(draft.vehicleWeapons ?? []).map(w => w.weaponId)}
                 armyRace={draft.race}
                 defaultCatFilter="VEHICLE"
+                forVehicle
                 onChange={ids => set('vehicleWeapons', ids.map(id => ({
                   weaponId: id,
                   count: 1,

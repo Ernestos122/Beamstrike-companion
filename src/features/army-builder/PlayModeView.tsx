@@ -305,11 +305,127 @@ function TrooperLineSection({ line, casualties, onCasualtiesChange }: {
   )
 }
 
+// ── Vehicle section inside play card ───────────────────────────────────────────
+const VEHICLE_STATUSES = [
+  { id: 'stun',   label: 'Stunned',     hint: 'No move or fire until a 5–6 in a move phase' },
+  { id: 'imob',   label: 'Immobilised', hint: 'Cannot move; may still fire' },
+  { id: 'weapon', label: 'Weapons out', hint: 'No vehicle weapons may fire' },
+  { id: 'shield', label: 'Shield down', hint: 'Shield overloaded for the rest of the game' },
+  { id: 'ko',     label: 'Knocked out', hint: 'KO1 / KO2 / Destroyed' },
+] as const
+type VehicleStatusId = (typeof VEHICLE_STATUSES)[number]['id']
+
+function VehicleSection({ squad, statuses, onToggle }: {
+  squad: SquadSelection
+  statuses: VehicleStatusId[]
+  onToggle: (id: VehicleStatusId) => void
+}) {
+  const mounts = (squad.vehicleWeapons ?? [])
+    .map(wl => ({ count: wl.count, w: allWeapons.find(w => w.id === wl.weaponId) }))
+    .filter((m): m is { count: number; w: (typeof allWeapons)[number] } => !!m.w)
+  const equip = (squad.vehicleEquipment ?? [])
+    .map(eId => (equipmentData as { id: string; name: string }[]).find(e => e.id === eId))
+    .filter(Boolean) as { id: string; name: string }[]
+  const ko = statuses.includes('ko')
+
+  return (
+    <div className="rounded-lg border border-[var(--border)] overflow-hidden">
+      <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary)]/60">
+        <span className="text-sm font-semibold flex-1">{squad.vehicleName || 'Vehicle'}</span>
+        {squad.vehicleArmourClass !== undefined && (
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-500/20 text-slate-300">Class {squad.vehicleArmourClass}</span>
+        )}
+        <span className="text-xs text-[var(--muted-foreground)]">{squad.pointsTotal}pts</span>
+      </div>
+
+      <div className="px-3 pb-3 pt-2 space-y-3">
+        {equip.length > 0 && (
+          <p className="text-xs text-[var(--muted-foreground)]">
+            <span className="font-medium text-[var(--foreground)]">Equipment: </span>
+            {equip.map(e => e.name).join(', ')}
+          </p>
+        )}
+
+        {mounts.length > 0 ? (
+          <div className={cn('overflow-x-auto rounded-lg border border-[var(--border)]', statuses.includes('weapon') && 'opacity-40')}>
+            <table className="w-full text-xs">
+              <thead className="bg-[var(--secondary)]">
+                <tr className="text-[var(--muted-foreground)] text-[10px] uppercase">
+                  <th className="px-2 py-1 text-left font-medium">Weapon</th>
+                  <th className="px-2 py-1 text-center font-medium">0–4"</th>
+                  <th className="px-2 py-1 text-center font-medium">5–20"</th>
+                  <th className="px-2 py-1 text-center font-medium">21–40"</th>
+                  <th className="px-2 py-1 text-center font-medium">41–80"</th>
+                  <th className="px-2 py-1 text-center font-medium">81"+</th>
+                  <th className="px-2 py-1 text-center font-medium">HE / AV</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mounts.map(({ count, w }) => (
+                  <tr key={w.id} className="border-t border-[var(--border)]">
+                    <td className="px-2 py-1 font-medium">
+                      {count > 1 && <span className="text-[var(--muted-foreground)]">{count}× </span>}
+                      {w.name}
+                      {w.shotsPerPhase && w.shotsPerPhase > 1 && <span className="ml-1 text-[10px] text-sky-400">{w.shotsPerPhase}×</span>}
+                    </td>
+                    {w.toHit ? (
+                      <>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band0_4)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band5_20)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band21_40)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band41_80)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band81plus)}</td>
+                      </>
+                    ) : (
+                      <td colSpan={5} className="px-2 py-1 text-center text-[10px] text-[var(--muted-foreground)]">
+                        Blast template <span className="font-mono font-bold text-[var(--foreground)]">{w.blastTemplate ?? '—'}</span>
+                      </td>
+                    )}
+                    <td className="px-2 py-1 text-center whitespace-nowrap">
+                      {[w.heImpact ?? w.impact, w.avImpact].filter(Boolean).map((imp, i) => (
+                        <span key={i} className={cn('px-1 py-0.5 rounded text-[10px] font-bold', i > 0 && 'ml-0.5', IMPACT_COLOUR[String(imp)] ?? 'bg-gray-500/20 text-gray-400')}>
+                          {String(imp).replace('TOTAL_', 'TOT')}
+                        </span>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="text-xs text-[var(--muted-foreground)] italic">No weapons mounted.</p>
+        )}
+
+        {/* Damage status */}
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--muted-foreground)] mb-1">Damage</p>
+          <div className="flex flex-wrap gap-1.5">
+            {VEHICLE_STATUSES.map(st => {
+              const on = statuses.includes(st.id)
+              return (
+                <button key={st.id} title={st.hint} onClick={() => onToggle(st.id)}
+                  className={cn('rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors',
+                    on ? 'border-red-500 bg-red-500/20 text-red-400' : 'border-[var(--border)] text-[var(--muted-foreground)] hover:border-red-400')}>
+                  {st.label}
+                </button>
+              )
+            })}
+          </div>
+          {ko && <p className="mt-1 text-xs font-bold text-red-400 flex items-center gap-1"><Skull size={11} /> Knocked out — count 3 morale lost</p>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── Squad play card ────────────────────────────────────────────────────────────
-function SquadPlayCard({ squad, casualties, onCasualtiesChange }: {
+function SquadPlayCard({ squad, casualties, onCasualtiesChange, vehicleStatuses, onToggleVehicleStatus }: {
   squad: SquadSelection
   casualties: Record<string, number>
   onCasualtiesChange: (lineId: string, n: number) => void
+  vehicleStatuses: VehicleStatusId[]
+  onToggleVehicleStatus: (id: VehicleStatusId) => void
 }) {
   const [open, setOpen] = useState(true)
   const totalFigs = squad.troopers.reduce((s, t) => s + t.count, 0)
@@ -317,7 +433,8 @@ function SquadPlayCard({ squad, casualties, onCasualtiesChange }: {
 
   return (
     <div className={cn('rounded-xl border overflow-hidden',
-      totalCasualties >= totalFigs && !squad.isVehicle ? 'border-red-500/40 opacity-60' : 'border-[var(--border)] bg-[var(--card)]')}>
+      (squad.isVehicle ? vehicleStatuses.includes('ko') : totalCasualties >= totalFigs)
+        ? 'border-red-500/40 opacity-60' : 'border-[var(--border)] bg-[var(--card)]')}>
       <button className="w-full flex items-center gap-3 p-3 text-left hover:bg-[var(--accent)] transition-colors"
         onClick={() => setOpen(o => !o)}>
         <div className="flex-1 min-w-0">
@@ -347,7 +464,9 @@ function SquadPlayCard({ squad, casualties, onCasualtiesChange }: {
               </div>
             )
           })()}
-          {squad.troopers.map(line => (
+          {squad.isVehicle ? (
+            <VehicleSection squad={squad} statuses={vehicleStatuses} onToggle={onToggleVehicleStatus} />
+          ) : squad.troopers.map(line => (
             <TrooperLineSection
               key={line.id}
               line={line}
@@ -365,6 +484,7 @@ function SquadPlayCard({ squad, casualties, onCasualtiesChange }: {
 export function PlayModeView({ army }: { army: ArmyList }) {
   const [moraleSpent, setMoraleSpent] = useState(0)
   const [casualties, setCasualties] = useState<Record<string, number>>({})
+  const [vehicleStatus, setVehicleStatus] = useState<Record<string, VehicleStatusId[]>>({})
   const d12Mode = useHouseRulesStore(s => s.d12Mode)
 
   function adjustMorale(delta: number) {
@@ -375,9 +495,17 @@ export function PlayModeView({ army }: { army: ArmyList }) {
     setCasualties(prev => ({ ...prev, [lineId]: n }))
   }
 
+  function toggleVehicleStatus(squadId: string, id: VehicleStatusId) {
+    setVehicleStatus(prev => {
+      const cur = prev[squadId] ?? []
+      return { ...prev, [squadId]: cur.includes(id) ? cur.filter(x => x !== id) : [...cur, id] }
+    })
+  }
+
   function reset() {
     setMoraleSpent(0)
     setCasualties({})
+    setVehicleStatus({})
   }
 
   return (
@@ -401,6 +529,8 @@ export function PlayModeView({ army }: { army: ArmyList }) {
           squad={squad}
           casualties={casualties}
           onCasualtiesChange={setCasualtyForLine}
+          vehicleStatuses={vehicleStatus[squad.selectionId] ?? []}
+          onToggleVehicleStatus={id => toggleVehicleStatus(squad.selectionId, id)}
         />
       ))}
     </div>

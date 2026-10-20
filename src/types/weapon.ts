@@ -16,7 +16,7 @@ export interface Weapon {
   code: string // e.g. "AR", "SMG", "HSL"
   name: string
   category: WeaponCategory
-  toHit: RangeBands
+  toHit?: RangeBands // absent on grenades/missiles
   maxRange: number | null // in inches; null = unlimited (e.g. demolition pack 1")
   impact: ImpactType | 'SPECIAL' | 'VARIES'
   avImpact?: ImpactType // vehicle-mounted weapons: AV round impact

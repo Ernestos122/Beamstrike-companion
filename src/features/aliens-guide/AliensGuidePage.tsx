@@ -274,11 +274,11 @@ function AlienWeaponsPanel() {
         {w.name}
         <span className="ml-1 text-[10px] text-[var(--muted-foreground)]">({w.code})</span>
       </td>
-      <td className="px-2 py-2 text-center">{bandLabel(w.toHit.band0_4)}</td>
-      <td className="px-2 py-2 text-center">{bandLabel(w.toHit.band5_20)}</td>
-      <td className="px-2 py-2 text-center hidden sm:table-cell">{bandLabel(w.toHit.band21_40)}</td>
-      <td className="px-2 py-2 text-center hidden md:table-cell">{bandLabel(w.toHit.band41_80)}</td>
-      <td className="px-2 py-2 text-center hidden lg:table-cell">{bandLabel(w.toHit.band81plus)}</td>
+      <td className="px-2 py-2 text-center">{bandLabel(w.toHit?.band0_4)}</td>
+      <td className="px-2 py-2 text-center">{bandLabel(w.toHit?.band5_20)}</td>
+      <td className="px-2 py-2 text-center hidden sm:table-cell">{bandLabel(w.toHit?.band21_40)}</td>
+      <td className="px-2 py-2 text-center hidden md:table-cell">{bandLabel(w.toHit?.band41_80)}</td>
+      <td className="px-2 py-2 text-center hidden lg:table-cell">{bandLabel(w.toHit?.band81plus)}</td>
       <td className="px-2 py-2 text-center">{w.maxRange ? `${w.maxRange}"` : '—'}</td>
       <td className="px-2 py-2 text-center">
         <span className={cn('px-1.5 py-0.5 rounded text-[10px] font-bold', IMPACT_COLORS[w.impact] ?? 'bg-gray-500/20 text-gray-400')}>

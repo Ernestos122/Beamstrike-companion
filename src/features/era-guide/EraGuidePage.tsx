@@ -253,9 +253,9 @@ function EraWeaponsPanel() {
                   {w.name}
                   <span className="ml-1 text-[10px] text-[var(--muted-foreground)]">({w.code})</span>
                 </td>
-                <td className="px-3 py-2 text-center">{bandLabel(w.toHit.band0_4)}</td>
-                <td className="px-3 py-2 text-center">{bandLabel(w.toHit.band5_20)}</td>
-                <td className="px-3 py-2 text-center">{bandLabel(w.toHit.band21_40)}</td>
+                <td className="px-3 py-2 text-center">{bandLabel(w.toHit?.band0_4)}</td>
+                <td className="px-3 py-2 text-center">{bandLabel(w.toHit?.band5_20)}</td>
+                <td className="px-3 py-2 text-center">{bandLabel(w.toHit?.band21_40)}</td>
                 <td className="px-3 py-2 text-center">{w.maxRange}"</td>
                 <td className="px-3 py-2 text-center">
                   <span className={cn(

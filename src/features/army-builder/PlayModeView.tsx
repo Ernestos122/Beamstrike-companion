@@ -241,10 +241,10 @@ function TrooperLineSection({ line, casualties, onCasualtiesChange }: {
                       </>
                     ) : (
                       <>
-                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band0_4)}</td>
-                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band5_20)}</td>
-                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band21_40)}</td>
-                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit.band41_80)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit?.band0_4)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit?.band5_20)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit?.band21_40)}</td>
+                        <td className="px-2 py-1 text-center font-mono text-[var(--muted-foreground)]">{hitVal(w.toHit?.band41_80)}</td>
                       </>
                     )}
                     <td className="px-2 py-1 text-center">

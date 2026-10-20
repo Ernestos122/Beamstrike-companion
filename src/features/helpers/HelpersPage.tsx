@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import Fuse from 'fuse.js'
 import { cn } from '@lib/utils'
 import { allWeapons } from '@data/index'
-import type { Weapon } from '@types-bs/weapon'
+import type { Weapon, ToHitValue } from '@types-bs/weapon'
 
 // ── Tab types ─────────────────────────────────────────────────────────────────
 type Tab = 'dice' | 'session' | 'counters' | 'weapons'
@@ -335,7 +335,7 @@ function StatusCounters() {
 // ─────────────────────────────────────────────────────────────────────────────
 // WEAPON LOOKUP
 // ─────────────────────────────────────────────────────────────────────────────
-function toHitDisplay(v: Weapon['toHit'][keyof Weapon['toHit']]): string {
+function toHitDisplay(v: ToHitValue): string {
   if (v === null) return '—'
   if (v === 'CNF') return 'CNF'
   return String(v)

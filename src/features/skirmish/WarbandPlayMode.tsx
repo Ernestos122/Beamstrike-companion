@@ -5,7 +5,12 @@ import { allWeapons, equipment as equipmentData } from '@data/index'
 import skirmishSkills from '@data/skirmish-skills.json'
 import { useHouseRulesStore } from '@store/houseRulesStore'
 import { TRAINING_TO_HIT, TRAINING_MELEE, TRAINING_NERVE, ARMOUR_SAVE } from '@lib/warbandCalc'
+import type { RangeBands } from '@types-bs/weapon'
 import type { SkirmishWarband, SkirmishFigure, SkirmishTraining, SkirmishArmour } from '@types-bs/skirmish'
+
+const BANDS: [keyof RangeBands, string][] = [
+  ['band0_4', '0–4"'], ['band5_20', '5–20"'], ['band21_40', '21–40"'], ['band41_80', '41–80"'], ['band81plus', '81"+'],
+]
 
 type SkillEntry = { id: string; name: string; xpCost: number; effect: string }
 const SKILLS = skirmishSkills as SkillEntry[]
@@ -109,30 +114,31 @@ function FigurePlayCard({ figure }: { figure: SkirmishFigure }) {
       {/* Weapons */}
       {(rangedWeapons.length > 0 || meleeWeapons.length > 0) && (
         <div className="border-t divide-y">
-          {rangedWeapons.map(w => {
-            const toHitVals = w.toHit as unknown as Record<string, number | string>
-            return (
-              <div key={w.id} className="px-3 py-1.5 text-xs">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">{w.name}</span>
-                  <span className="text-[10px] text-[var(--muted-foreground)] uppercase">{w.category}</span>
-                </div>
-                {toHitVals && (
-                  <div className="flex gap-2 mt-0.5 flex-wrap">
-                    {['b1','b2','b3','b4','b5'].map(band => {
-                      const val = toHitVals[band]
-                      if (val === undefined) return null
-                      return (
-                        <span key={band} className={cn('text-[10px]', val === 'CNF' ? 'text-red-400' : 'text-[var(--muted-foreground)]')}>
-                          {band.toUpperCase()}: {val === 'CNF' ? '—' : val}
-                        </span>
-                      )
-                    })}
-                  </div>
-                )}
+          {rangedWeapons.map(w => (
+            <div key={w.id} className="px-3 py-1.5 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-medium">{w.name}</span>
+                <span className="text-[10px] text-[var(--muted-foreground)] uppercase">{w.category}</span>
               </div>
-            )
-          })}
+              {w.toHit ? (
+                <div className="flex gap-2 mt-0.5 flex-wrap">
+                  {BANDS.map(([key, label]) => {
+                    const val = w.toHit![key]
+                    if (val === null) return null
+                    return (
+                      <span key={key} className={cn('text-[10px]', val === 'CNF' ? 'text-red-400' : 'text-[var(--muted-foreground)]')}>
+                        {label}: <span className="font-mono">{val}</span>
+                      </span>
+                    )
+                  })}
+                </div>
+              ) : (
+                <p className="text-[10px] text-[var(--muted-foreground)] mt-0.5">
+                  Blast template {w.blastTemplate ?? '—'}
+                </p>
+              )}
+            </div>
+          ))}
           {meleeWeapons.map(w => (
             <div key={w.id} className="px-3 py-1.5 text-xs">
               <div className="flex items-center justify-between">
@@ -140,9 +146,7 @@ function FigurePlayCard({ figure }: { figure: SkirmishFigure }) {
                 <span className="text-[10px] text-[var(--muted-foreground)] uppercase">MELEE</span>
               </div>
               <p className="text-[10px] text-[var(--muted-foreground)] mt-0.5">
-                H2H bonus: {(w as unknown as { h2hBonus?: number }).h2hBonus !== undefined
-                  ? `${(w as unknown as { h2hBonus: number }).h2hBonus >= 0 ? '+' : ''}${(w as unknown as { h2hBonus: number }).h2hBonus}`
-                  : '—'}
+                H2H bonus: {w.meleeBonus !== undefined ? `${w.meleeBonus >= 0 ? '+' : ''}${w.meleeBonus}` : '—'}
               </p>
             </div>
           ))}

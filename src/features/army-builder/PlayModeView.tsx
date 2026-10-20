@@ -331,7 +331,11 @@ function VehicleSection({ squad, statuses, onToggle }: {
   const penCol = v.hullClass === undefined ? null : Math.max(1, v.hullClass)
   const effectCol = v.family ? vehicleBuilder.effectColumns[v.family] : null
 
-  const fittings: { name: string; notes?: string }[] = v.mode === 'BUILD'
+  const SHIELD_NAMES = { ES: 'Energy Shield', PS: 'Projectile Shield' } as const
+  const troops = v.hull?.troopCapacity ?? v.preset?.troops ?? 0
+  const fittings: { name: string; notes?: string }[] = v.mode === 'PRESET'
+    ? (v.preset?.shield ? [{ name: SHIELD_NAMES[v.preset.shield] }] : [])
+    : v.mode === 'BUILD'
     ? (squad.vehicleAccessories ?? []).flatMap(al => {
         const acc = getAccessory(al.id)
         return acc ? [{ name: `${al.count > 1 ? `${al.count}× ` : ''}${acc.name}`, notes: acc.notes }] : []
@@ -344,7 +348,7 @@ function VehicleSection({ squad, statuses, onToggle }: {
   return (
     <div className="rounded-lg border border-[var(--border)] overflow-hidden">
       <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary)]/60">
-        <span className="text-sm font-semibold flex-1">{squad.vehicleName || v.hull?.name || 'Vehicle'}</span>
+        <span className="text-sm font-semibold flex-1">{squad.vehicleName || v.preset?.name || v.hull?.name || 'Vehicle'}</span>
         {v.hullClass !== undefined && (
           <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-500/20 text-slate-300">Class {v.hullClass}</span>
         )}
@@ -367,11 +371,15 @@ function VehicleSection({ squad, statuses, onToggle }: {
             <p className="text-base font-bold">{v.hull ? v.hull.armourFSR.join('/') : v.crew.name}</p>
           </div>
         </div>
-        {v.hull && (
+        {(v.hull || v.preset) && (
           <p className="text-[10px] text-[var(--muted-foreground)] -mt-1.5">
-            {v.movement?.name ?? 'No'} movement{v.hull.troopCapacity > 0 && <> · carries {v.hull.troopCapacity} FI troops (LA ×0.8, PA ×0.5, AD ×0.3)</>}
-            {' '}· −1 armour when hit from behind
+            {v.preset?.movement ?? v.movement?.name ?? 'No'} movement
+            {troops > 0 && <> · carries {troops} FI troops (LA ×0.8, PA ×0.5, AD ×0.3)</>}
+            {(v.family === 'TANK' || v.family === 'WALKER') && <> · −1 armour when hit from behind</>}
           </p>
+        )}
+        {v.preset?.armament && (
+          <p className="text-[11px] -mt-1"><span className="text-[var(--muted-foreground)]">Rulebook armament: </span>{v.preset.armament}</p>
         )}
 
         {/* Movement */}
@@ -413,12 +421,13 @@ function VehicleSection({ squad, statuses, onToggle }: {
                 </tr>
               </thead>
               <tbody>
-                {v.mounts.map(({ weapon: w, count, isMainGun }) => (
-                  <tr key={w.id} className="border-t border-[var(--border)]">
+                {v.mounts.map(({ weapon: w, count, isMainGun, included }, i) => (
+                  <tr key={`${w.id}-${i}`} className="border-t border-[var(--border)]">
                     <td className="px-2 py-1 font-medium">
                       {count > 1 && <span className="text-[var(--muted-foreground)]">{count}× </span>}
                       {w.name}
                       {isMainGun && <span className="ml-1 text-[10px] text-[var(--muted-foreground)]">main</span>}
+                      {included && <span className="ml-1 text-[10px] text-[var(--muted-foreground)]">incl.</span>}
                       {w.shotsPerPhase && w.shotsPerPhase > 1 && <span className="ml-1 text-[10px] text-sky-400">{w.shotsPerPhase}×</span>}
                       {w.maxRange ? <span className="ml-1 text-[10px] text-[var(--muted-foreground)]">{w.maxRange}"</span> : null}
                     </td>

@@ -11,14 +11,23 @@ import {
   weaponsHeavy,
   weaponsVehicle,
   weaponsAlien,
+  vehiclePresets,
 } from '@data/index'
-import { summariseVehicle, isMainGun, getHull } from '@lib/vehicleCalc'
-import type { SquadSelection, WeaponLoadout, AccessoryLoadout } from '@types-bs/squad'
+import { summariseVehicle, isMainGun, getHull, getPreset } from '@lib/vehicleCalc'
+import type { VehicleSummary } from '@lib/vehicleCalc'
+import type { SquadSelection, WeaponLoadout, AccessoryLoadout, VehicleMode } from '@types-bs/squad'
+import type { VehiclePreset } from '@types-bs/vehicle'
 import type { SquadDraft } from '@store/armyStore'
 import type { Weapon } from '@types-bs/weapon'
 import type { RaceType, TrainingClass, VehicleArmourClass, VehicleHullType } from '@types-bs/enums'
 
 const { hulls, movementTypes, accessories, crewRatings } = vehicleBuilder
+
+const MODES: { id: VehicleMode; label: string; hint: string }[] = [
+  { id: 'PRESET', label: 'Ready-made', hint: 'Pick one of the rulebook’s example vehicles at its printed price.' },
+  { id: 'BUILD',  label: 'Tank builder', hint: 'Build an armoured vehicle step by step from the rulebook chart (p.32). Points are worked out for you.' },
+  { id: 'CUSTOM', label: 'Custom', hint: 'Anything else: enter the base points yourself.' },
+]
 
 const LABEL = 'text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]'
 const INPUT = 'w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]'
@@ -161,6 +170,93 @@ function VehicleWeaponPicker({ race, mounts, onChange, mainGunFree, canMountMain
   )
 }
 
+function CrewPicker({ value, onChange }: { value: TrainingClass | undefined; onChange: (c: TrainingClass) => void }) {
+  return (
+    <div className="grid grid-cols-5 gap-1">
+      {crewRatings.map(c => {
+        const on = (value ?? 'REGULAR') === c.id
+        return (
+          <button key={c.id} type="button" onClick={() => onChange(c.id)}
+            className={cn('rounded-lg border px-1 py-1.5 text-center transition-colors',
+              on ? 'border-[var(--primary)] bg-[var(--primary)]/10' : 'border-[var(--border)] hover:bg-[var(--accent)]')}>
+            <span className="block text-[11px] font-semibold">{c.name}</span>
+            <span className="block text-[10px] text-[var(--muted-foreground)]">{c.hitBonus >= 0 ? '+' : ''}{c.hitBonus} · {c.troopRoll}+</span>
+            <span className="block text-[10px] text-[var(--muted-foreground)]">{c.cost > 0 ? '+' : ''}{c.cost}pts</span>
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+function Breakdown({ summary }: { summary: VehicleSummary }) {
+  return (
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--secondary)]/50 p-3 space-y-2">
+      <p className={LABEL}>Points breakdown</p>
+      <div className="space-y-0.5">
+        {summary.breakdown.filter((l, i) => l.pts !== 0 || i === 0).map((l, i) => (
+          <div key={i} className="flex justify-between text-xs">
+            <span className="text-[var(--muted-foreground)]">{l.label}</span>
+            <span className="tabular-nums">{l.pts}</span>
+          </div>
+        ))}
+        <div className="flex justify-between text-sm font-semibold border-t border-[var(--border)] pt-1 mt-1">
+          <span>Total</span><span className="tabular-nums">{summary.total} pts</span>
+        </div>
+      </div>
+      {summary.problems.length > 0 && (
+        <div className="space-y-0.5">
+          {summary.problems.map((p, i) => (
+            <p key={i} className="flex items-start gap-1.5 text-xs text-amber-500">
+              <AlertTriangle size={12} className="mt-0.5 shrink-0" /> {p}
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+const PRESET_FACTIONS = [...new Set(vehiclePresets.map(p => p.faction))]
+
+function PresetPicker({ value, onPick }: { value: string | undefined; onPick: (p: VehiclePreset) => void }) {
+  const [faction, setFaction] = useState(() => getPreset(value)?.faction ?? PRESET_FACTIONS[0])
+  return (
+    <div className="space-y-2">
+      <div className="flex gap-1 flex-wrap">
+        {PRESET_FACTIONS.map(f => (
+          <button key={f} type="button" onClick={() => setFaction(f)}
+            className={cn('rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors',
+              faction === f ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'bg-[var(--secondary)] hover:bg-[var(--accent)]')}>
+            {f}
+          </button>
+        ))}
+      </div>
+      <div className="max-h-80 overflow-y-auto space-y-1.5">
+        {vehiclePresets.filter(p => p.faction === faction).map(p => (
+          <button key={p.id} type="button" onClick={() => onPick(p)}
+            className={cn('w-full rounded-lg border px-3 py-2 text-left transition-colors',
+              value === p.id ? 'border-[var(--primary)] bg-[var(--primary)]/10' : 'border-[var(--border)] hover:bg-[var(--accent)]')}>
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="text-sm font-semibold">{p.name}</span>
+              <span className="text-xs text-[var(--muted-foreground)] tabular-nums">{p.points}pts</span>
+            </div>
+            <p className="text-[11px] text-[var(--muted-foreground)]">
+              Class {p.hullClass} · {p.movement}{p.troops > 0 ? ` · ${p.troops} troops` : ''}{p.shield ? ` · ${p.shield} shield` : ''}
+            </p>
+            {(p.armament || p.fitments > 0) && (
+              <p className="text-[11px]">
+                {p.armament}
+                {p.fitments > 0 && <span className="text-[var(--muted-foreground)]">{p.armament ? ' · ' : ''}{p.fitments} weapon fitment{p.fitments > 1 ? 's' : ''} (weapons extra)</span>}
+              </p>
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function VehicleBuilderFields({ draft, onChange }: {
   draft: SquadDraft
   onChange: (patch: Partial<SquadDraft>) => void
@@ -190,20 +286,14 @@ export function VehicleBuilderFields({ draft, onChange }: {
       {/* Mode */}
       <div className="space-y-1">
         <div className="flex rounded-lg border border-[var(--border)] overflow-hidden text-sm font-medium">
-          <button type="button" onClick={() => onChange({ vehicleMode: 'BUILD' })}
-            className={cn('flex-1 py-2 transition-colors', mode === 'BUILD' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]')}>
-            Tank builder
-          </button>
-          <button type="button" onClick={() => onChange({ vehicleMode: 'CUSTOM' })}
-            className={cn('flex-1 py-2 transition-colors', mode === 'CUSTOM' ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]')}>
-            Custom points
-          </button>
+          {MODES.map(m => (
+            <button key={m.id} type="button" onClick={() => onChange({ vehicleMode: m.id })}
+              className={cn('flex-1 py-2 transition-colors', mode === m.id ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]')}>
+              {m.label}
+            </button>
+          ))}
         </div>
-        <p className="text-xs text-[var(--muted-foreground)]">
-          {mode === 'BUILD'
-            ? 'Build an armoured vehicle step by step using the rulebook chart (p.32). Points are worked out for you.'
-            : 'For bikes, aircraft or anything not on the builder chart: enter the base points yourself.'}
-        </p>
+        <p className="text-xs text-[var(--muted-foreground)]">{MODES.find(m => m.id === mode)?.hint}</p>
       </div>
 
       <div className="space-y-1">
@@ -212,7 +302,31 @@ export function VehicleBuilderFields({ draft, onChange }: {
           onChange={e => onChange({ vehicleName: e.target.value })} />
       </div>
 
-      {mode === 'BUILD' ? (
+      {mode === 'PRESET' ? (
+        <>
+          <Step n={1} title="Pick a vehicle" hint="rulebook pp.36–37">
+            <PresetPicker value={draft.vehiclePresetId} onPick={p => onChange({
+              vehiclePresetId: p.id,
+              vehicleWeapons: [],
+              ...(!draft.squadName.trim() ? { squadName: p.name } : {}),
+            })} />
+          </Step>
+          {summary.preset && (
+            <>
+              <Step n={2} title="Crew" hint="hit bonus · troop roll">
+                <CrewPicker value={draft.vehicleCrew} onChange={c => onChange({ vehicleCrew: c })} />
+              </Step>
+              {summary.preset.fitments > 0 && (
+                <Step n={3} title="Fit weapons" hint={`${summary.preset.fitments} spare fitment${summary.preset.fitments > 1 ? 's' : ''}, weapons cost extra`}>
+                  <VehicleWeaponPicker race={draft.race} mounts={draft.vehicleWeapons ?? []}
+                    onChange={m => onChange({ vehicleWeapons: m })} mainGunFree={0} canMountMain={false} />
+                </Step>
+              )}
+            </>
+          )}
+          <Breakdown summary={summary} />
+        </>
+      ) : mode === 'BUILD' ? (
         <>
           <Step n={1} title="Hull" hint="sets armour class and space">
             <div className="space-y-3">
@@ -259,20 +373,7 @@ export function VehicleBuilderFields({ draft, onChange }: {
               </Step>
 
               <Step n={3} title="Crew" hint="hit bonus · troop roll">
-                <div className="grid grid-cols-5 gap-1">
-                  {crewRatings.map(c => {
-                    const on = (draft.vehicleCrew ?? 'REGULAR') === c.id
-                    return (
-                      <button key={c.id} type="button" onClick={() => onChange({ vehicleCrew: c.id as TrainingClass })}
-                        className={cn('rounded-lg border px-1 py-1.5 text-center transition-colors',
-                          on ? 'border-[var(--primary)] bg-[var(--primary)]/10' : 'border-[var(--border)] hover:bg-[var(--accent)]')}>
-                        <span className="block text-[11px] font-semibold">{c.name}</span>
-                        <span className="block text-[10px] text-[var(--muted-foreground)]">{c.hitBonus >= 0 ? '+' : ''}{c.hitBonus} · {c.troopRoll}+</span>
-                        <span className="block text-[10px] text-[var(--muted-foreground)]">{c.cost > 0 ? '+' : ''}{c.cost}pts</span>
-                      </button>
-                    )
-                  })}
-                </div>
+                <CrewPicker value={draft.vehicleCrew} onChange={c => onChange({ vehicleCrew: c })} />
               </Step>
 
               <Step n={4} title="Weapons">
@@ -318,30 +419,7 @@ export function VehicleBuilderFields({ draft, onChange }: {
             </>
           )}
 
-          {/* Breakdown */}
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--secondary)]/50 p-3 space-y-2">
-            <p className={LABEL}>Points breakdown</p>
-            <div className="space-y-0.5">
-              {summary.breakdown.filter(l => l.pts !== 0 || l.label.endsWith('hull')).map((l, i) => (
-                <div key={i} className="flex justify-between text-xs">
-                  <span className="text-[var(--muted-foreground)]">{l.label}</span>
-                  <span className="tabular-nums">{l.pts}</span>
-                </div>
-              ))}
-              <div className="flex justify-between text-sm font-semibold border-t border-[var(--border)] pt-1 mt-1">
-                <span>Total</span><span className="tabular-nums">{summary.total} pts</span>
-              </div>
-            </div>
-            {summary.problems.length > 0 && (
-              <div className="space-y-0.5">
-                {summary.problems.map((p, i) => (
-                  <p key={i} className="flex items-start gap-1.5 text-xs text-amber-500">
-                    <AlertTriangle size={12} className="mt-0.5 shrink-0" /> {p}
-                  </p>
-                ))}
-              </div>
-            )}
-          </div>
+          <Breakdown summary={summary} />
         </>
       ) : (
         <>

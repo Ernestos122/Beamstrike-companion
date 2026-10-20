@@ -1,7 +1,7 @@
 import type { Weapon } from '@types-bs/weapon'
 import type { Chart } from '@types-bs/charts'
 import type { RulesSection, RulesEntry } from '@types-bs/rules'
-import type { VehicleBuilderData } from '@types-bs/vehicle'
+import type { VehicleBuilderData, VehiclePreset } from '@types-bs/vehicle'
 
 import _version from './version.json'
 import _races from './races.json'
@@ -22,6 +22,7 @@ import _rulesEntries from './rules-entries.json'
 import _aliensTroops from './aliens-troops.json'
 import _aliensContent from './aliens-content.json'
 import _vehicleBuilder from './vehicle-builder.json'
+import _vehiclePresets from './vehicle-presets.json'
 
 export const version = _version
 export const races = _races
@@ -42,6 +43,7 @@ export const rulesEntries = _rulesEntries as unknown as RulesEntry[]
 export const aliensTroops = _aliensTroops
 export const aliensContent = _aliensContent
 export const vehicleBuilder = _vehicleBuilder as unknown as VehicleBuilderData
+export const vehiclePresets = _vehiclePresets.presets as unknown as VehiclePreset[]
 
 /** All infantry + support + heavy + alien + melee + grenade weapons in a single flat array */
 export const allWeapons: Weapon[] = [

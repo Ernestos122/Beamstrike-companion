@@ -16,7 +16,7 @@ export interface TrooperLine {
   casteId?: string       // aliens-troops.json entry id — drives natural attacks and correct movement in views
 }
 
-export type VehicleMode = 'BUILD' | 'CUSTOM'
+export type VehicleMode = 'BUILD' | 'PRESET' | 'CUSTOM'
 
 export interface AccessoryLoadout {
   id: string
@@ -49,11 +49,13 @@ export interface SquadSelection {
 
   // Vehicle — kept as a flat model (vehicles don't "level up" like troopers do)
   // BUILD:  rulebook tank builder — points from hull + movement + crew + weapons + accessories
+  // PRESET: rulebook example vehicle at its printed price + crew + extra weapons in spare fitments
   // CUSTOM: hand-entered base points + weapons + equipment (all vehicles saved before BUILD existed)
   vehicleMode?: VehicleMode          // undefined = CUSTOM
   vehicleHullType?: VehicleHullType  // BUILD: id of a vehicle-builder.json hull
   vehicleArmourClass?: VehicleArmourClass // CUSTOM only; BUILD takes it from the hull
   vehicleName?: string
+  vehiclePresetId?: string           // PRESET: vehicle-presets.json id
   vehicleMovementId?: string         // BUILD: vehicle-builder.json movement type id
   vehicleCrew?: TrainingClass        // crew rating; undefined = REGULAR
   vehicleAccessories?: AccessoryLoadout[] // BUILD: vehicle-builder.json accessories

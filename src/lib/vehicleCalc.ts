@@ -1,8 +1,8 @@
-import { allWeapons, equipment as equipmentData, vehicleBuilder } from '@data/index'
-import type { SquadSelection } from '@types-bs/squad'
+import { allWeapons, equipment as equipmentData, vehicleBuilder, vehiclePresets } from '@data/index'
+import type { SquadSelection, WeaponLoadout } from '@types-bs/squad'
 import type { Weapon } from '@types-bs/weapon'
 import type { VehicleArmourClass } from '@types-bs/enums'
-import type { VehicleHull, VehicleMovementType, VehicleCrewRating, VehicleFamily } from '@types-bs/vehicle'
+import type { VehicleHull, VehicleMovementType, VehicleCrewRating, VehicleFamily, VehiclePreset } from '@types-bs/vehicle'
 
 const { hulls, movementTypes, accessories, crewRatings, gunLinkageCost } = vehicleBuilder
 
@@ -10,11 +10,13 @@ export interface VehicleMount {
   weapon: Weapon
   count: number
   isMainGun: boolean
+  included?: boolean // part of a preset's printed price
 }
 
 export interface VehicleSummary {
-  mode: 'BUILD' | 'CUSTOM'
+  mode: 'BUILD' | 'PRESET' | 'CUSTOM'
   hull?: VehicleHull
+  preset?: VehiclePreset
   movement?: VehicleMovementType
   crew: VehicleCrewRating
   hullClass?: VehicleArmourClass
@@ -39,6 +41,9 @@ export function getMovementType(id: string | undefined) {
 export function getAccessory(id: string) {
   return accessories.find(a => a.id === id)
 }
+export function getPreset(id: string | undefined) {
+  return vehiclePresets.find(p => p.id === id)
+}
 export function getCrewRating(id: string | undefined): VehicleCrewRating {
   return crewRatings.find(c => c.id === (id ?? 'REGULAR')) ?? crewRatings.find(c => c.id === 'REGULAR')!
 }
@@ -56,21 +61,48 @@ export function isMainGun(w: Weapon): boolean {
   return w.category === 'VEHICLE_MOUNTED' && typeof w.mainGunSize === 'number'
 }
 
-function resolveMounts(squad: SquadSelection): VehicleMount[] {
-  return (squad.vehicleWeapons ?? []).flatMap(wl => {
+function resolveMounts(loadout: WeaponLoadout[], included = false): VehicleMount[] {
+  return loadout.flatMap(wl => {
     const weapon = allWeapons.find(w => w.id === wl.weaponId)
-    return weapon ? [{ weapon, count: wl.count, isMainGun: isMainGun(weapon) }] : []
+    return weapon ? [{ weapon, count: wl.count, isMainGun: isMainGun(weapon), ...(included ? { included } : {}) }] : []
   })
 }
 
 export function summariseVehicle(squad: SquadSelection): VehicleSummary {
-  const mounts = resolveMounts(squad)
+  const mounts = resolveMounts(squad.vehicleWeapons ?? [])
   const crew = getCrewRating(squad.vehicleCrew)
   const weaponLines = mounts.map(m => ({
     label: `${m.count > 1 ? `${m.count}× ` : ''}${m.weapon.name}`,
     pts: m.weapon.pointsCost * m.count,
   }))
   const crewLine = crew.cost !== 0 ? [{ label: `${crew.name} crew`, pts: crew.cost }] : []
+
+  if (squad.vehicleMode === 'PRESET') {
+    const preset = getPreset(squad.vehiclePresetId)
+    const extraAux = mounts.reduce((s, m) => s + m.count, 0)
+    const fitments = preset?.fitments ?? 0
+    const breakdown = [
+      { label: preset ? `${preset.name} (rulebook price)` : 'Ready-made vehicle', pts: preset?.points ?? 0 },
+      ...crewLine,
+      ...weaponLines,
+    ]
+    const problems: string[] = []
+    if (!preset) problems.push('Choose a ready-made vehicle.')
+    else if (extraAux > fitments) {
+      problems.push(fitments === 0
+        ? `${preset.name} has no spare weapon fitments.`
+        : `${preset.name} has ${fitments} spare weapon fitment${fitments > 1 ? 's' : ''}; ${extraAux} added.`)
+    }
+    return {
+      mode: 'PRESET', preset, crew, breakdown, problems,
+      mounts: [...resolveMounts(preset?.weapons ?? [], true), ...mounts],
+      movement: getMovementType(preset?.movementId ?? undefined),
+      hullClass: preset?.hullClass,
+      family: customFamily(preset?.vehicleType),
+      total: breakdown.reduce((s, l) => s + l.pts, 0),
+      mainGunUsed: 0, mainGunSpace: 0, auxUsed: extraAux, auxSpaces: fitments, linked: false,
+    }
+  }
 
   if (squad.vehicleMode !== 'BUILD') {
     const equipLines = (squad.vehicleEquipment ?? []).map(eId => {

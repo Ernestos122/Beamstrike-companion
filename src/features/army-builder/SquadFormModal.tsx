@@ -82,7 +82,7 @@ function defaultDraft(race: RaceType): SquadDraft {
     race,
     isVehicle: false,
     troopers: [defaultLine()],
-    vehicleMode: 'BUILD',
+    vehicleMode: 'PRESET',
     vehicleHullType: undefined,
     vehicleArmourClass: undefined,
     vehicleName: undefined,
@@ -560,8 +560,8 @@ function SquadForm({ initial, onSave, onCancel }: {
               </button>
               <button type="button" onClick={() => setDraft(prev => ({
                 ...prev, isVehicle: true,
-                // squads switched over from infantry start in the builder too
-                vehicleMode: prev.vehicleMode ?? (prev.vehicleBasePoints ? 'CUSTOM' : 'BUILD'),
+                // squads switched over from infantry start on ready-made vehicles too
+                vehicleMode: prev.vehicleMode ?? (prev.vehicleBasePoints ? 'CUSTOM' : 'PRESET'),
               }))}
                 className={cn('flex-1 py-2 transition-colors', draft.isVehicle ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]')}>
                 Vehicle

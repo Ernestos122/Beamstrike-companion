@@ -1,4 +1,5 @@
 import type { TrainingClass, VehicleArmourClass, VehicleHullType } from './enums'
+import type { WeaponLoadout } from './squad'
 
 // Which column of the Vehicle Effect of Penetration chart a vehicle uses
 export type VehicleFamily = 'BIKE' | 'CAR' | 'AIRCRAFT' | 'TANK' | 'WALKER' | 'MECHA'
@@ -53,4 +54,22 @@ export interface VehicleBuilderData {
   gunLinkageCost: number
   crewRatings: VehicleCrewRating[]
   effectColumns: Record<VehicleFamily, number>
+}
+
+// Ready-to-play vehicle from rulebook pp.36-37. Points include crew, listed weapons and shield.
+export interface VehiclePreset {
+  id: string
+  faction: string
+  name: string
+  points: number
+  hullClass: VehicleArmourClass
+  vehicleType: VehicleHullType  // picks the hit-effect column
+  movement: string              // as printed in the rulebook
+  movementId: string | null     // vehicle-builder movement type, when it maps to one
+  armament: string              // as printed in the rulebook
+  weapons: WeaponLoadout[]      // the listed weapons we can map to weapon data
+  fitments: number              // spare weapon mounts; weapons fitted there cost extra
+  troops: number
+  shield: 'ES' | 'PS' | null
+  model: string | null
 }

@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, Minus, Plus, RotateCcw, Skull, Zap, Dice6 } from 'lucide-react'
-import { armourTypes, troopTraining, allWeapons, skills as allSkills, equipment as equipmentData, aliensTroops, races } from '@data/index'
+import { armourTypes, troopTraining, allWeapons, skills as allSkills, equipment as equipmentData, aliensTroops, races, charts, vehicleBuilder } from '@data/index'
 import type { ArmyList } from '@types-bs/army'
 import type { SquadSelection, TrooperLine } from '@types-bs/squad'
 import { cn } from '@lib/utils'
 import { calcTrooperLinePoints } from '@lib/pointsCalc'
+import { summariseVehicle, getAccessory } from '@lib/vehicleCalc'
 import { useHouseRulesStore } from '@store/houseRulesStore'
 
 // ── Static lookups ─────────────────────────────────────────────────────────────
@@ -315,38 +316,89 @@ const VEHICLE_STATUSES = [
 ] as const
 type VehicleStatusId = (typeof VEHICLE_STATUSES)[number]['id']
 
+// Armour penetration chart column for a hull class (classes 0 and 1 share the soft-skin column)
+const PENETRATION = (charts.find(c => c.id === 'armour-penetration')?.rows ?? []).map(r => r.cells.map(c => String(c ?? '—')))
+const HIT_EFFECTS = (charts.find(c => c.id === 'effect-of-penetration')?.rows ?? []).map(r => r.cells.map(c => String(c ?? '—')))
+
 function VehicleSection({ squad, statuses, onToggle }: {
   squad: SquadSelection
   statuses: VehicleStatusId[]
   onToggle: (id: VehicleStatusId) => void
 }) {
-  const mounts = (squad.vehicleWeapons ?? [])
-    .map(wl => ({ count: wl.count, w: allWeapons.find(w => w.id === wl.weaponId) }))
-    .filter((m): m is { count: number; w: (typeof allWeapons)[number] } => !!m.w)
-  const equip = (squad.vehicleEquipment ?? [])
-    .map(eId => (equipmentData as { id: string; name: string }[]).find(e => e.id === eId))
-    .filter(Boolean) as { id: string; name: string }[]
+  const v = summariseVehicle(squad)
   const ko = statuses.includes('ko')
+  const moveRates = v.movement?.rates
+  const penCol = v.hullClass === undefined ? null : Math.max(1, v.hullClass)
+  const effectCol = v.family ? vehicleBuilder.effectColumns[v.family] : null
+
+  const fittings: { name: string; notes?: string }[] = v.mode === 'BUILD'
+    ? (squad.vehicleAccessories ?? []).flatMap(al => {
+        const acc = getAccessory(al.id)
+        return acc ? [{ name: `${al.count > 1 ? `${al.count}× ` : ''}${acc.name}`, notes: acc.notes }] : []
+      })
+    : (squad.vehicleEquipment ?? []).flatMap(eId => {
+        const eq = (equipmentData as { id: string; name: string }[]).find(e => e.id === eId)
+        return eq ? [{ name: eq.name }] : []
+      })
 
   return (
     <div className="rounded-lg border border-[var(--border)] overflow-hidden">
       <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary)]/60">
-        <span className="text-sm font-semibold flex-1">{squad.vehicleName || 'Vehicle'}</span>
-        {squad.vehicleArmourClass !== undefined && (
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-500/20 text-slate-300">Class {squad.vehicleArmourClass}</span>
+        <span className="text-sm font-semibold flex-1">{squad.vehicleName || v.hull?.name || 'Vehicle'}</span>
+        {v.hullClass !== undefined && (
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-500/20 text-slate-300">Class {v.hullClass}</span>
         )}
         <span className="text-xs text-[var(--muted-foreground)]">{squad.pointsTotal}pts</span>
       </div>
 
       <div className="px-3 pb-3 pt-2 space-y-3">
-        {equip.length > 0 && (
-          <p className="text-xs text-[var(--muted-foreground)]">
-            <span className="font-medium text-[var(--foreground)]">Equipment: </span>
-            {equip.map(e => e.name).join(', ')}
+        {/* Core stats */}
+        <div className="rounded-lg bg-[var(--secondary)] p-2.5 grid grid-cols-3 gap-2 text-center">
+          <div>
+            <p className="text-[10px] text-[var(--muted-foreground)]">Crew hit</p>
+            <p className="text-base font-bold">{v.crew.hitBonus >= 0 ? '+' : ''}{v.crew.hitBonus}</p>
+          </div>
+          <div>
+            <p className="text-[10px] text-[var(--muted-foreground)]">Troop roll</p>
+            <p className="text-base font-bold">{v.crew.troopRoll}+</p>
+          </div>
+          <div>
+            <p className="text-[10px] text-[var(--muted-foreground)]">{v.hull ? 'Armour F/S/R' : 'Crew'}</p>
+            <p className="text-base font-bold">{v.hull ? v.hull.armourFSR.join('/') : v.crew.name}</p>
+          </div>
+        </div>
+        {v.hull && (
+          <p className="text-[10px] text-[var(--muted-foreground)] -mt-1.5">
+            {v.movement?.name ?? 'No'} movement{v.hull.troopCapacity > 0 && <> · carries {v.hull.troopCapacity} FI troops (LA ×0.8, PA ×0.5, AD ×0.3)</>}
+            {' '}· −1 armour when hit from behind
           </p>
         )}
 
-        {mounts.length > 0 ? (
+        {/* Movement */}
+        {moveRates && (
+          <div className="grid grid-cols-5 gap-1 text-center">
+            {MOVE_LABELS.map((label, i) => (
+              <div key={label} className="rounded-lg bg-[var(--secondary)] py-1 px-0.5">
+                <p className="text-[9px] text-[var(--muted-foreground)]">{label}</p>
+                <p className="text-xs font-bold">{moveRates[i] === null ? '✕' : `${moveRates[i]}"`}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Fittings */}
+        {fittings.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {fittings.map((f, i) => (
+              <span key={i} title={f.notes} className={cn('rounded bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 text-[10px] text-blue-400', f.notes && 'cursor-help')}>
+                {f.name}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Weapons */}
+        {v.mounts.length > 0 ? (
           <div className={cn('overflow-x-auto rounded-lg border border-[var(--border)]', statuses.includes('weapon') && 'opacity-40')}>
             <table className="w-full text-xs">
               <thead className="bg-[var(--secondary)]">
@@ -361,12 +413,14 @@ function VehicleSection({ squad, statuses, onToggle }: {
                 </tr>
               </thead>
               <tbody>
-                {mounts.map(({ count, w }) => (
+                {v.mounts.map(({ weapon: w, count, isMainGun }) => (
                   <tr key={w.id} className="border-t border-[var(--border)]">
                     <td className="px-2 py-1 font-medium">
                       {count > 1 && <span className="text-[var(--muted-foreground)]">{count}× </span>}
                       {w.name}
+                      {isMainGun && <span className="ml-1 text-[10px] text-[var(--muted-foreground)]">main</span>}
                       {w.shotsPerPhase && w.shotsPerPhase > 1 && <span className="ml-1 text-[10px] text-sky-400">{w.shotsPerPhase}×</span>}
+                      {w.maxRange ? <span className="ml-1 text-[10px] text-[var(--muted-foreground)]">{w.maxRange}"</span> : null}
                     </td>
                     {w.toHit ? (
                       <>
@@ -382,19 +436,65 @@ function VehicleSection({ squad, statuses, onToggle }: {
                       </td>
                     )}
                     <td className="px-2 py-1 text-center whitespace-nowrap">
-                      {[w.heImpact ?? w.impact, w.avImpact].filter(Boolean).map((imp, i) => (
+                      {[w.heImpact ?? (w.avImpact ? undefined : w.impact), w.avImpact].map((imp, i) => imp ? (
                         <span key={i} className={cn('px-1 py-0.5 rounded text-[10px] font-bold', i > 0 && 'ml-0.5', IMPACT_COLOUR[String(imp)] ?? 'bg-gray-500/20 text-gray-400')}>
                           {String(imp).replace('TOTAL_', 'TOT')}
                         </span>
-                      ))}
+                      ) : i === 0 && w.avImpact ? <span key={i} className="text-[10px] text-[var(--muted-foreground)] mr-0.5">—</span> : null)}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            <p className="px-2 py-1 text-[10px] text-[var(--muted-foreground)] border-t border-[var(--border)]">
+              Vehicle gun to-hit already includes on-board targeting. Add crew hit bonus.
+            </p>
           </div>
         ) : (
           <p className="text-xs text-[var(--muted-foreground)] italic">No weapons mounted.</p>
+        )}
+
+        {/* When this vehicle is shot at */}
+        {(penCol !== null || effectCol !== null) && (
+          <details className="rounded-lg border border-[var(--border)] group">
+            <summary className="cursor-pointer select-none px-2.5 py-1.5 text-[11px] font-semibold flex items-center justify-between">
+              When this vehicle is hit
+              <ChevronDown size={13} className="text-[var(--muted-foreground)] group-open:rotate-180 transition-transform" />
+            </summary>
+            <div className="px-2.5 pb-2.5 space-y-2.5">
+              {penCol !== null && (
+                <div>
+                  <p className="text-[10px] text-[var(--muted-foreground)] mb-1">Penetration — D10 needed vs class {v.hullClass}</p>
+                  <div className="grid grid-cols-7 gap-1 text-center">
+                    {PENETRATION.map(row => (
+                      <div key={row[0]} className="rounded bg-[var(--secondary)] py-1">
+                        <p className="text-[9px] text-[var(--muted-foreground)] leading-tight">{row[0].replace('Total ', 'T')}</p>
+                        <p className={cn('text-xs font-bold', row[penCol] === 'NE' && 'text-[var(--muted-foreground)]', row[penCol] === 'Auto' && 'text-red-400')}>
+                          {row[penCol] === 'Auto' ? 'Auto' : row[penCol] === 'NE' ? '—' : `${row[penCol]}+`}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-[var(--muted-foreground)] mt-1">+2 on a natural 12 to hit · −1 lasers/beams · −1 active shield (not vs flamers/sun guns)</p>
+                </div>
+              )}
+              {effectCol !== null && (
+                <div>
+                  <p className="text-[10px] text-[var(--muted-foreground)] mb-1">Effect of penetration — D10 (+Total number)</p>
+                  <div className="grid grid-cols-7 gap-1 text-center">
+                    {HIT_EFFECTS.map(row => (
+                      <div key={row[0]} className="rounded bg-[var(--secondary)] py-1">
+                        <p className="text-[9px] text-[var(--muted-foreground)]">{row[0]}</p>
+                        <p className={cn('text-[10px] font-bold', /KO|DESTROY/.test(row[effectCol]) && 'text-red-400', row[effectCol] === '—' && 'text-[var(--muted-foreground)]')}>
+                          {row[effectCol].replace('DESTROY', 'Dest')}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </details>
         )}
 
         {/* Damage status */}

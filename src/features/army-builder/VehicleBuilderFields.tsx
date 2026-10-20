@@ -345,6 +345,16 @@ export function VehicleBuilderFields({ draft, onChange }: {
         </>
       ) : (
         <>
+          <div className="space-y-1">
+            <label className={LABEL}>Vehicle type <span className="normal-case font-normal">(picks the hit-effect column)</span></label>
+            <select className={INPUT} value={draft.vehicleHullType ?? ''}
+              onChange={e => onChange({ vehicleHullType: (e.target.value || undefined) as VehicleHullType | undefined })}>
+              <option value="">— select —</option>
+              <option value="BIKE_TRIKE">Bike / Trike / Skimmer</option>
+              <option value="AIRCRAFT">Aircraft</option>
+              {hulls.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
+            </select>
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
               <label className={LABEL}>Armour class</label>

@@ -43,6 +43,13 @@ export function getCrewRating(id: string | undefined): VehicleCrewRating {
   return crewRatings.find(c => c.id === (id ?? 'REGULAR')) ?? crewRatings.find(c => c.id === 'REGULAR')!
 }
 
+// Custom vehicles only record a hull type label; bikes and aircraft aren't on the builder chart
+export function customFamily(hullType: string | undefined): VehicleFamily | undefined {
+  if (hullType === 'BIKE_TRIKE') return 'BIKE'
+  if (hullType === 'AIRCRAFT') return 'AIRCRAFT'
+  return getHull(hullType)?.family
+}
+
 // Guns from the vehicle main gun table with a numeric size go in the turret / arms.
 // Everything else (size 'A', no size, infantry/support/heavy weapons) uses an auxiliary space.
 export function isMainGun(w: Weapon): boolean {
@@ -77,6 +84,7 @@ export function summariseVehicle(squad: SquadSelection): VehicleSummary {
     return {
       mode: 'CUSTOM', crew, mounts, breakdown,
       hullClass: squad.vehicleArmourClass,
+      family: customFamily(squad.vehicleHullType),
       total: breakdown.reduce((s, l) => s + l.pts, 0),
       mainGunUsed: 0, mainGunSpace: 0, auxUsed: 0, auxSpaces: 0, linked: false, problems: [],
     }

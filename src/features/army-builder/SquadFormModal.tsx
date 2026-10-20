@@ -11,17 +11,17 @@ import {
   weaponsInfantry,
   weaponsSupport,
   weaponsHeavy,
-  weaponsVehicle,
   weaponsAlien,
   weaponsMelee,
   grenades,
   allWeapons,
   aliensTroops,
 } from '@data/index'
-import type { SquadSelection, TrooperLine, WeaponLoadout } from '@types-bs/squad'
-import type { TrainingClass, ArmourType, RaceType, SkillType, VehicleHullType, VehicleArmourClass } from '@types-bs/enums'
+import type { SquadSelection, TrooperLine } from '@types-bs/squad'
+import type { TrainingClass, ArmourType, RaceType, SkillType } from '@types-bs/enums'
 import type { Weapon } from '@types-bs/weapon'
 import { calcSquadPoints, calcSquadMorale } from '@lib/pointsCalc'
+import { VehicleBuilderFields } from './VehicleBuilderFields'
 import { generateId } from '@lib/utils'
 import { cn } from '@lib/utils'
 
@@ -37,43 +37,8 @@ const WEAPON_CATEGORIES = [
   { id: 'MELEE', label: 'Melee' },
   { id: 'GRENADE', label: 'Grenades' },
   { id: 'ALIEN', label: 'Alien' },
-  { id: 'VEHICLE', label: 'Vehicle' },
 ] as const
 type WeaponCatFilter = (typeof WEAPON_CATEGORIES)[number]['id']
-
-const HULL_TYPE_OPTIONS: { value: VehicleHullType; label: string }[] = [
-  { value: 'BIKE_TRIKE',        label: 'Bike / Trike' },
-  { value: 'SCOUT_CAR',         label: 'Scout Car' },
-  { value: 'APC',               label: 'APC' },
-  { value: 'GMC',               label: 'GMC (Grav Military Carrier)' },
-  { value: 'TRANSPORT',         label: 'Transport' },
-  { value: 'LIGHT_MECHA',       label: 'Light Mecha' },
-  { value: 'LIGHT_WALKER',      label: 'Light Walker' },
-  { value: 'LIGHT_TANK',        label: 'Light Tank' },
-  { value: 'MEDIUM_MECHA',      label: 'Medium Mecha' },
-  { value: 'MEDIUM_TANK',       label: 'Medium Tank' },
-  { value: 'HEAVY_MECHA',       label: 'Heavy Mecha' },
-  { value: 'HEAVY_WALKER',      label: 'Heavy Walker' },
-  { value: 'TRANSPORT_WALKER',  label: 'Transport Walker' },
-  { value: 'HEAVY_TANK',        label: 'Heavy Tank' },
-  { value: 'SUPER_HEAVY_TANK',  label: 'Super Heavy Tank' },
-  { value: 'AIRCRAFT',          label: 'Aircraft' },
-  { value: 'OTHER',             label: 'Other' },
-]
-
-const ARMOUR_CLASS_OPTIONS: { value: VehicleArmourClass; label: string }[] = [
-  { value: 0, label: 'Class 0 — Soft Skin (SS)' },
-  { value: 1, label: 'Class 1 — Very Light (SS)' },
-  { value: 2, label: 'Class 2 — Light (VL-VA)' },
-  { value: 3, label: 'Class 3 — Light Tank (L-VA)' },
-  { value: 4, label: 'Class 4 — Medium Tank (M-VA)' },
-  { value: 5, label: 'Class 5 — Heavy Tank (H-VA)' },
-  { value: 6, label: 'Class 6 — Super Heavy (VH-VA)' },
-]
-
-// Equipment items relevant for vehicles (excludes jet packs and digimedic)
-const VEHICLE_EQUIP_IDS = ['targeter', 'support-targeter', 'shield-energy', 'shield-projectile',
-  'shield-multi', 'shield-null', 'ecm-suite', 'ads', 'sensor-array', 'command-array', 'stealth-cloak', 'laser-painter']
 
 function armourIdToEnum(id: string): ArmourType {
   return (id === 'AD' ? 'DA' : id) as ArmourType
@@ -117,6 +82,7 @@ function defaultDraft(race: RaceType): SquadDraft {
     race,
     isVehicle: false,
     troopers: [defaultLine()],
+    vehicleMode: 'BUILD',
     vehicleHullType: undefined,
     vehicleArmourClass: undefined,
     vehicleName: undefined,
@@ -133,13 +99,11 @@ function WeaponPicker({
   armyRace,
   onChange,
   defaultCatFilter = 'ALL',
-  forVehicle = false,
 }: {
   selectedIds: string[]
   armyRace: RaceType
   onChange: (ids: string[]) => void
   defaultCatFilter?: WeaponCatFilter
-  forVehicle?: boolean
 }) {
   const [catFilter, setCatFilter] = useState<WeaponCatFilter>(defaultCatFilter)
   const [query, setQuery] = useState('')
@@ -170,17 +134,15 @@ function WeaponPicker({
       ? (weaponsAlien as Weapon[])
       : (weaponsAlien as Weapon[]).filter(w => new Set(raceData?.alienWeaponIds ?? []).has(w.id))
 
-    // Vehicles mount vehicle weapons plus infantry/support/heavy; troopers never get vehicle guns or melee
-    if (forVehicle) return [...(weaponsVehicle as Weapon[]), ...humanWeapons, ...alienWeapons]
     return [...humanWeapons, ...meleeWeapons, ...humanGrenades, ...alienWeapons]
-  }, [armyRace, forVehicle])
+  }, [armyRace])
 
   const fuse = useMemo(() => new Fuse(pool, { keys: ['name', 'code'], threshold: 0.35 }), [pool])
 
   const filtered = useMemo(() => {
     let items = query.trim() ? fuse.search(query.trim()).map(r => r.item) : pool
     if (catFilter !== 'ALL') {
-      items = items.filter(w => w.category === (catFilter === 'VEHICLE' ? 'VEHICLE_MOUNTED' : catFilter))
+      items = items.filter(w => w.category === catFilter)
     }
     return items.slice(0, 40)
   }, [query, catFilter, pool, fuse])
@@ -213,7 +175,7 @@ function WeaponPicker({
       <div className="flex gap-1 flex-wrap">
         {WEAPON_CATEGORIES.filter(c =>
           // Only offer categories this pool actually contains
-          c.id === 'ALL' || pool.some(w => w.category === (c.id === 'VEHICLE' ? 'VEHICLE_MOUNTED' : c.id))
+          c.id === 'ALL' || pool.some(w => w.category === c.id)
         ).map(c => (
           <button key={c.id} type="button" onClick={() => setCatFilter(c.id)}
             className={cn('rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors',
@@ -596,7 +558,11 @@ function SquadForm({ initial, onSave, onCancel }: {
                 className={cn('flex-1 py-2 transition-colors', !draft.isVehicle ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]')}>
                 Infantry
               </button>
-              <button type="button" onClick={() => set('isVehicle', true)}
+              <button type="button" onClick={() => setDraft(prev => ({
+                ...prev, isVehicle: true,
+                // squads switched over from infantry start in the builder too
+                vehicleMode: prev.vehicleMode ?? (prev.vehicleBasePoints ? 'CUSTOM' : 'BUILD'),
+              }))}
                 className={cn('flex-1 py-2 transition-colors', draft.isVehicle ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:bg-[var(--accent)]')}>
                 Vehicle
               </button>
@@ -720,84 +686,7 @@ function SquadForm({ initial, onSave, onCancel }: {
 
         {/* Vehicle fields */}
         {draft.isVehicle && (
-          <div className="space-y-3">
-            <div className="space-y-1">
-              <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Vehicle Name</label>
-              <input
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-                placeholder="e.g. Medium Battle Tank"
-                value={draft.vehicleName ?? ''}
-                onChange={e => set('vehicleName', e.target.value)}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Hull Type</label>
-                <select
-                  className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-                  value={draft.vehicleHullType ?? ''}
-                  onChange={e => set('vehicleHullType', e.target.value as VehicleHullType)}
-                >
-                  <option value="">— select —</option>
-                  {HULL_TYPE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                </select>
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Armour Class</label>
-                <select
-                  className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-                  value={draft.vehicleArmourClass ?? ''}
-                  onChange={e => set('vehicleArmourClass', Number(e.target.value) as VehicleArmourClass)}
-                >
-                  <option value="">— select —</option>
-                  {ARMOUR_CLASS_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                </select>
-              </div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Base Points <span className="normal-case font-normal text-[var(--muted-foreground)]">(hull + movement, from vehicle chart)</span></label>
-              <input type="number" min={0}
-                className="w-32 rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-                value={draft.vehicleBasePoints ?? 0}
-                onChange={e => set('vehicleBasePoints', Math.max(0, Number(e.target.value)))} />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Equipment</label>
-              <div className="space-y-1">
-                {VEHICLE_EQUIP_IDS.map(eId => {
-                  const eq = equipmentData.find(e => e.id === eId) as { id: string; name: string; pointsCost: number; vehicleCost?: number } | undefined
-                  if (!eq) return null
-                  const cost = eq.vehicleCost ?? eq.pointsCost
-                  const checked = (draft.vehicleEquipment ?? []).includes(eId)
-                  return (
-                    <label key={eId} className="flex items-center gap-2.5 rounded-lg px-3 py-2 hover:bg-[var(--accent)] cursor-pointer">
-                      <input type="checkbox" className="accent-[var(--primary)]" checked={checked}
-                        onChange={() => {
-                          const cur = draft.vehicleEquipment ?? []
-                          set('vehicleEquipment', checked ? cur.filter(x => x !== eId) : [...cur, eId])
-                        }} />
-                      <span className="flex-1 text-sm">{eq.name}</span>
-                      <span className="text-xs text-[var(--muted-foreground)]">{cost}pts</span>
-                    </label>
-                  )
-                })}
-              </div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">Weapons</label>
-              <WeaponPicker
-                selectedIds={(draft.vehicleWeapons ?? []).map(w => w.weaponId)}
-                armyRace={draft.race}
-                defaultCatFilter="VEHICLE"
-                forVehicle
-                onChange={ids => set('vehicleWeapons', ids.map(id => ({
-                  weaponId: id,
-                  count: 1,
-                } satisfies WeaponLoadout)))}
-              />
-            </div>
-            <p className="text-xs text-[var(--muted-foreground)]">Vehicles count as 3 morale points.</p>
-          </div>
+          <VehicleBuilderFields draft={draft} onChange={patch => setDraft(prev => ({ ...prev, ...patch }))} />
         )}
 
         {/* Notes */}

@@ -11,6 +11,7 @@ import type { SquadDraft } from './SquadFormModal'
 import { PlayModeView } from './PlayModeView'
 import { cn } from '@lib/utils'
 import { calcTrooperLinePoints } from '@lib/pointsCalc'
+import { summariseVehicle } from '@lib/vehicleCalc'
 
 // ── Points bar ─────────────────────────────────────────────────────────────────
 function PointsBar({ used, limit }: { used: number; limit: number }) {
@@ -129,7 +130,12 @@ function SquadCard({ squad, onEdit, onDuplicate, onRemove }: {
             <span className="font-semibold truncate">{squad.squadName}</span>
             <div className="flex gap-1 flex-wrap">
               {squad.isVehicle
-                ? <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">Vehicle</span>
+                ? <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">
+                    {(() => {
+                      const v = summariseVehicle(squad)
+                      return [v.hull?.name ?? 'Vehicle', v.hullClass !== undefined ? `Class ${v.hullClass}` : null].filter(Boolean).join(' · ')
+                    })()}
+                  </span>
                 : <>
                     <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">{totalFigures} fig{totalFigures !== 1 ? 's' : ''}</span>
                     <span className="text-xs rounded bg-[var(--secondary)] px-1.5 py-0.5">{raceName}</span>
@@ -177,12 +183,13 @@ function SquadCard({ squad, onEdit, onDuplicate, onRemove }: {
       {expanded && (
         <div className="border-t border-[var(--border)] px-3 py-2 bg-[var(--secondary)]/40">
           {squad.isVehicle ? (
-            <div className="space-y-1 text-xs">
-              <p className="font-semibold">{squad.vehicleName ?? 'Vehicle'}</p>
-              {(squad.vehicleWeapons ?? []).map(wl => {
-                const w = allWeapons.find(w => w.id === wl.weaponId)
-                return w ? <p key={wl.weaponId} className="text-[var(--muted-foreground)]">{w.name}</p> : null
-              })}
+            <div className="space-y-0.5 text-xs">
+              {squad.vehicleName && <p className="font-semibold">{squad.vehicleName}</p>}
+              {summariseVehicle(squad).breakdown.filter(l => l.pts !== 0).map((l, i) => (
+                <div key={i} className="flex justify-between text-[var(--muted-foreground)]">
+                  <span>{l.label}</span><span className="tabular-nums">{l.pts}</span>
+                </div>
+              ))}
             </div>
           ) : (
             <div>

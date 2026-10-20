@@ -1,6 +1,7 @@
 import { troopTraining, armourTypes, skills as skillsData, equipment as equipmentData, allWeapons } from '@data/index'
 import type { SquadSelection, TrooperLine } from '@types-bs/squad'
 import type { ArmourType } from '@types-bs/enums'
+import { summariseVehicle } from './vehicleCalc'
 
 function getArmourCost(armourType: ArmourType | undefined): number {
   if (!armourType) return 0
@@ -42,17 +43,7 @@ export function calcTrooperLinePoints(line: TrooperLine): number {
 }
 
 export function calcSquadPoints(squad: SquadSelection): number {
-  if (squad.isVehicle) {
-    const weaponPts = (squad.vehicleWeapons ?? []).reduce((sum, wl) => {
-      const w = allWeapons.find(w => w.id === wl.weaponId)
-      return sum + (w?.pointsCost ?? 0) * wl.count
-    }, 0)
-    const equipPts = (squad.vehicleEquipment ?? []).reduce((sum, eId) => {
-      const eq = equipmentData.find(e => e.id === eId) as { pointsCost: number; vehicleCost?: number } | undefined
-      return sum + (eq?.vehicleCost ?? eq?.pointsCost ?? 0)
-    }, 0)
-    return (squad.vehicleBasePoints ?? 0) + weaponPts + equipPts
-  }
+  if (squad.isVehicle) return summariseVehicle(squad).total
 
   return squad.troopers.reduce((sum, line) => sum + calcTrooperLinePoints(line), 0)
 }

@@ -35,6 +35,13 @@ function syncTotals(army: ArmyList): ArmyList {
   return { ...army, totalPoints, totalMoraleValue, halfMoraleThreshold, updatedAt: new Date().toISOString() }
 }
 
+// Recompute stored totals from current data, so corrections to points costs
+// (e.g. weapon chart fixes) reach armies saved before the fix.
+function recalcStoredArmy(army: ArmyList): ArmyList {
+  const squads = army.squads.map(sq => ({ ...sq, pointsTotal: calcSquadPoints(sq), moraleValue: calcSquadMorale(sq) }))
+  return { ...army, squads, ...recalcArmyTotals(squads, army.nominatedObjectiveMorale) }
+}
+
 export const useArmyStore = create<ArmyStore>()(
   persist(
     (set) => ({
@@ -177,6 +184,10 @@ export const useArmyStore = create<ArmyStore>()(
         }
 
         return state as unknown as ArmyStore
+      },
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<ArmyStore>
+        return { ...current, ...p, armies: (p.armies ?? current.armies).map(recalcStoredArmy) }
       },
     },
   ),

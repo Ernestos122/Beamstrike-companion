@@ -16,8 +16,14 @@ export interface TrooperLine {
   casteId?: string       // aliens-troops.json entry id — drives natural attacks and correct movement in views
 }
 
-// Legacy shape used only by the v2→v3 migration.
-// Do NOT use this for new code.
+export type VehicleMode = 'BUILD' | 'CUSTOM'
+
+export interface AccessoryLoadout {
+  id: string
+  count: number
+}
+
+// Weapon + how many are mounted. Used for vehicle weapons (and by the v2→v3 migration).
 export interface WeaponLoadout {
   weaponId: string
   count: number
@@ -42,12 +48,18 @@ export interface SquadSelection {
   troopers: TrooperLine[]
 
   // Vehicle — kept as a flat model (vehicles don't "level up" like troopers do)
-  vehicleHullType?: VehicleHullType
-  vehicleArmourClass?: VehicleArmourClass
+  // BUILD:  rulebook tank builder — points from hull + movement + crew + weapons + accessories
+  // CUSTOM: hand-entered base points + weapons + equipment (all vehicles saved before BUILD existed)
+  vehicleMode?: VehicleMode          // undefined = CUSTOM
+  vehicleHullType?: VehicleHullType  // BUILD: id of a vehicle-builder.json hull
+  vehicleArmourClass?: VehicleArmourClass // CUSTOM only; BUILD takes it from the hull
   vehicleName?: string
-  vehicleBasePoints?: number      // hull + movement base cost
+  vehicleMovementId?: string         // BUILD: vehicle-builder.json movement type id
+  vehicleCrew?: TrainingClass        // crew rating; undefined = REGULAR
+  vehicleAccessories?: AccessoryLoadout[] // BUILD: vehicle-builder.json accessories
+  vehicleBasePoints?: number      // CUSTOM: hull + movement base cost
   vehicleWeapons?: WeaponLoadout[] // weapons mounted on the vehicle
-  vehicleEquipment?: string[]      // equipment IDs on the vehicle
+  vehicleEquipment?: string[]      // CUSTOM: equipment.json IDs on the vehicle
 
   // Both
   pointsTotal: number   // calculated

@@ -390,11 +390,20 @@ function WeaponLookup() {
                   <td className="px-3 py-1.5 font-medium whitespace-nowrap">{w.name}</td>
                   <td className="px-2 py-1.5 text-[var(--muted-foreground)] whitespace-nowrap">{w.code}</td>
                   <td className="px-2 py-1.5 text-center">{w.pointsCost}</td>
-                  <td className="px-2 py-1.5 text-center">{toHitDisplay(w.toHit.band0_4)}</td>
-                  <td className="px-2 py-1.5 text-center">{toHitDisplay(w.toHit.band5_20)}</td>
-                  <td className="px-2 py-1.5 text-center">{toHitDisplay(w.toHit.band21_40)}</td>
-                  <td className="px-2 py-1.5 text-center">{toHitDisplay(w.toHit.band41_80)}</td>
-                  <td className="px-2 py-1.5 text-center">{toHitDisplay(w.toHit.band81plus)}</td>
+                  {w.toHit ? (
+                    <>
+                      <td className="px-2 py-1.5 text-center">{toHitDisplay(w.toHit.band0_4)}</td>
+                      <td className="px-2 py-1.5 text-center">{toHitDisplay(w.toHit.band5_20)}</td>
+                      <td className="px-2 py-1.5 text-center">{toHitDisplay(w.toHit.band21_40)}</td>
+                      <td className="px-2 py-1.5 text-center">{toHitDisplay(w.toHit.band41_80)}</td>
+                      <td className="px-2 py-1.5 text-center">{toHitDisplay(w.toHit.band81plus)}</td>
+                    </>
+                  ) : (
+                    // Grenades/missiles have no range-band table
+                    <td colSpan={5} className="px-2 py-1.5 text-center text-[var(--muted-foreground)]">
+                      Blast template {(w as unknown as { blastTemplate?: number }).blastTemplate ?? '—'}
+                    </td>
+                  )}
                   <td className="px-2 py-1.5 text-[var(--muted-foreground)] whitespace-nowrap">{w.impact}</td>
                 </tr>
               ))}

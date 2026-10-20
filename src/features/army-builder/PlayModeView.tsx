@@ -358,17 +358,25 @@ function VehicleSection({ squad, statuses, onToggle }: {
       <div className="px-3 pb-3 pt-2 space-y-3">
         {/* Core stats */}
         <div className="rounded-lg bg-[var(--secondary)] p-2.5 grid grid-cols-3 gap-2 text-center">
-          <div>
-            <p className="text-[10px] text-[var(--muted-foreground)]">Crew hit</p>
-            <p className="text-base font-bold">{v.crew.hitBonus >= 0 ? '+' : ''}{v.crew.hitBonus}</p>
-          </div>
-          <div>
-            <p className="text-[10px] text-[var(--muted-foreground)]">Troop roll</p>
-            <p className="text-base font-bold">{v.crew.troopRoll}+</p>
-          </div>
+          {v.ridersSeparate ? (
+            <div className="col-span-2 flex items-center justify-center">
+              <p className="text-[11px] text-[var(--muted-foreground)]">Rider fires with their own training</p>
+            </div>
+          ) : (
+            <>
+              <div>
+                <p className="text-[10px] text-[var(--muted-foreground)]">Crew hit</p>
+                <p className="text-base font-bold">{v.crew.hitBonus >= 0 ? '+' : ''}{v.crew.hitBonus}</p>
+              </div>
+              <div>
+                <p className="text-[10px] text-[var(--muted-foreground)]">Troop roll</p>
+                <p className="text-base font-bold">{v.crew.troopRoll}+</p>
+              </div>
+            </>
+          )}
           <div>
             <p className="text-[10px] text-[var(--muted-foreground)]">{v.hull ? 'Armour F/S/R' : 'Crew'}</p>
-            <p className="text-base font-bold">{v.hull ? v.hull.armourFSR.join('/') : v.crew.name}</p>
+            <p className="text-base font-bold">{v.hull ? v.hull.armourFSR.map(a => a + (v.hullClass! - v.hull!.hullClass)).join('/') : v.crew.name}</p>
           </div>
         </div>
         {(v.hull || v.preset) && (
@@ -377,6 +385,9 @@ function VehicleSection({ squad, statuses, onToggle }: {
             {troops > 0 && <> · carries {troops} FI troops (LA ×0.8, PA ×0.5, AD ×0.3)</>}
             {(v.family === 'TANK' || v.family === 'WALKER') && <> · −1 armour when hit from behind</>}
           </p>
+        )}
+        {v.hull?.notes && (
+          <p className="text-[10px] text-[var(--muted-foreground)] -mt-1 leading-snug">{v.hull.notes}</p>
         )}
         {v.preset?.armament && (
           <p className="text-[11px] -mt-1"><span className="text-[var(--muted-foreground)]">Rulebook armament: </span>{v.preset.armament}</p>
@@ -456,7 +467,7 @@ function VehicleSection({ squad, statuses, onToggle }: {
               </tbody>
             </table>
             <p className="px-2 py-1 text-[10px] text-[var(--muted-foreground)] border-t border-[var(--border)]">
-              Vehicle gun to-hit already includes on-board targeting. Add crew hit bonus.
+              {v.ridersSeparate ? 'Rider uses their own training hit modifier.' : 'Vehicle gun to-hit already includes on-board targeting. Add crew hit bonus.'}
             </p>
           </div>
         ) : (

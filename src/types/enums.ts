@@ -56,7 +56,12 @@ export type VehicleHullType =
   | 'TRANSPORT_WALKER'
   | 'SUPER_HEAVY_TANK'
   | 'BIKE_TRIKE'
+  | 'MOTORBIKE'
+  | 'SKIMMER'
   | 'AIRCRAFT'
+  | 'TRANSPORT_AIRCRAFT'
+  | 'DROPSHIP'
+  | 'HEAVY_DROPSHIP'
   | 'OTHER'
 
 export type MovementType =

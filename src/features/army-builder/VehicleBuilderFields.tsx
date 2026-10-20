@@ -32,8 +32,8 @@ const MODES: { id: VehicleMode; label: string; hint: string }[] = [
 const LABEL = 'text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]'
 const INPUT = 'w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]'
 
-const FAMILY_LABEL: Record<string, string> = { CAR: 'Carriers', TANK: 'Tanks', WALKER: 'Walkers', MECHA: 'Mecha' }
-const FAMILY_ORDER = ['TANK', 'CAR', 'WALKER', 'MECHA']
+const FAMILY_LABEL: Record<string, string> = { CAR: 'Carriers', TANK: 'Tanks', WALKER: 'Walkers', MECHA: 'Mecha', BIKE: 'Bikes & skimmers', AIRCRAFT: 'Aircraft' }
+const FAMILY_ORDER = ['TANK', 'CAR', 'WALKER', 'MECHA', 'BIKE', 'AIRCRAFT']
 
 // Accessories you might sensibly fit more than one of
 const MULTI_ACCESSORIES = new Set(['TUR', 'PM', 'ROC'])
@@ -339,17 +339,26 @@ export function VehicleBuilderFields({ draft, onChange }: {
                         className={cn('rounded-lg border px-2.5 py-2 text-left transition-colors',
                           draft.vehicleHullType === h.id ? 'border-[var(--primary)] bg-[var(--primary)]/10' : 'border-[var(--border)] hover:bg-[var(--accent)]')}>
                         <div className="flex items-baseline justify-between gap-1">
-                          <span className="text-xs font-semibold">{h.name}</span>
+                          <span className="text-xs font-semibold">
+                            {h.name}
+                            {h.houseRule && <span className="ml-1 text-[9px] font-medium uppercase text-amber-500">house rule</span>}
+                          </span>
                           <span className="text-[10px] text-[var(--muted-foreground)] tabular-nums">{h.cost}pts</span>
                         </div>
                         <p className="text-[10px] text-[var(--muted-foreground)]">
-                          Class {h.hullClass} · Gun {h.mainGunSpace} · Aux {h.auxSpaces}{h.troopCapacity > 0 ? ` · ${h.troopCapacity} troops` : ''}
+                          Class {h.hullClass}{h.mainGunSpace > 0 ? ` · Gun ${h.mainGunSpace}` : ''} · {h.family === 'BIKE' ? 'Weapons' : 'Aux'} {h.auxSpaces}{h.troopCapacity > 0 ? ` · ${h.troopCapacity} troops` : ''}
                         </p>
                       </button>
                     ))}
                   </div>
                 </div>
               ))}
+              {hull?.notes && (
+                <p className="rounded-lg border border-[var(--border)] bg-[var(--secondary)]/50 px-3 py-2 text-xs text-[var(--muted-foreground)]">
+                  <span className="font-semibold text-[var(--foreground)]">{hull.name}: </span>{hull.notes}
+                  {hull.houseRule && <span className="block mt-1 text-amber-500">Not on the rulebook builder chart: costs are a house rule set to match the rulebook’s example vehicles.</span>}
+                </p>
+              )}
             </div>
           </Step>
 
@@ -364,7 +373,7 @@ export function VehicleBuilderFields({ draft, onChange }: {
                       <button key={id} type="button" onClick={() => onChange({ vehicleMovementId: id })}
                         className={cn('rounded-lg border px-2.5 py-1.5 text-left transition-colors',
                           on ? 'border-[var(--primary)] bg-[var(--primary)]/10' : 'border-[var(--border)] hover:bg-[var(--accent)]')}>
-                        <span className="block text-xs font-semibold">{m.name} <span className="font-normal text-[var(--muted-foreground)]">{m.cost}pts</span></span>
+                        <span className="block text-xs font-semibold">{m.name} <span className="font-normal text-[var(--muted-foreground)]">{hull.movementCosts?.[m.id] ?? m.cost}pts</span></span>
                         {m.rates && <span className="block text-[10px] text-[var(--muted-foreground)]">{m.rates[0]}" / {m.rates[1]}"</span>}
                       </button>
                     )
@@ -373,13 +382,15 @@ export function VehicleBuilderFields({ draft, onChange }: {
               </Step>
 
               <Step n={3} title="Crew" hint="hit bonus · troop roll">
-                <CrewPicker value={draft.vehicleCrew} onChange={c => onChange({ vehicleCrew: c })} />
+                {summary.ridersSeparate
+                  ? <p className="text-xs text-[var(--muted-foreground)]">Bikes and skimmers have no built-in crew: buy the rider (and any gunner) as an infantry squad. They fire with their own training.</p>
+                  : <CrewPicker value={draft.vehicleCrew} onChange={c => onChange({ vehicleCrew: c })} />}
               </Step>
 
               <Step n={4} title="Weapons">
                 <div className="flex gap-2">
-                  <SpaceMeter label="Main gun space" used={summary.mainGunUsed} total={summary.mainGunSpace} />
-                  <SpaceMeter label="Aux spaces" used={summary.auxUsed} total={summary.auxSpaces} />
+                  {hull.mainGunSpace > 0 && <SpaceMeter label="Main gun space" used={summary.mainGunUsed} total={summary.mainGunSpace} />}
+                  <SpaceMeter label={hull.family === 'BIKE' ? 'Weapon mounts' : 'Aux spaces'} used={summary.auxUsed} total={summary.auxSpaces} />
                 </div>
                 {summary.linked && <p className="text-xs text-[var(--muted-foreground)]">More than one main gun: they are linked in the turret (+{vehicleBuilder.gunLinkageCost}pts).</p>}
                 <VehicleWeaponPicker
@@ -428,8 +439,6 @@ export function VehicleBuilderFields({ draft, onChange }: {
             <select className={INPUT} value={draft.vehicleHullType ?? ''}
               onChange={e => onChange({ vehicleHullType: (e.target.value || undefined) as VehicleHullType | undefined })}>
               <option value="">— select —</option>
-              <option value="BIKE_TRIKE">Bike / Trike / Skimmer</option>
-              <option value="AIRCRAFT">Aircraft</option>
               {hulls.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
             </select>
           </div>

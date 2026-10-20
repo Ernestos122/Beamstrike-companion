@@ -1,4 +1,4 @@
-import type { TrainingClass, VehicleArmourClass, VehicleHullType } from './enums'
+import type { TrainingClass, VehicleArmourClass, VehicleHullType, WeaponCategory } from './enums'
 import type { WeaponLoadout } from './squad'
 
 // Which column of the Vehicle Effect of Penetration chart a vehicle uses
@@ -18,6 +18,12 @@ export interface VehicleHull {
   troopCapacity: number               // in FI troops
   family: VehicleFamily
   armourPoints: number | null         // fielding cost (1 point earned per 5+ man squad)
+  movementCosts?: Record<string, number> // per-hull movement prices (bikes pay less than tanks)
+  houseRule?: boolean                 // not on the rulebook chart; calibrated against example vehicles
+  crewIncluded?: boolean              // false = riders bought separately as infantry (bikes, skimmers)
+  auxWeaponCategories?: WeaponCategory[] // weapons allowed outside a robo-turret
+  linkedWeapons?: boolean             // fixed weapons must be the same type and are linked
+  notes?: string
 }
 
 export interface VehicleMovementType {

@@ -6,6 +6,10 @@ import type { VehicleHull, VehicleMovementType, VehicleCrewRating, VehicleFamily
 
 const { hulls, movementTypes, accessories, crewRatings, gunLinkageCost } = vehicleBuilder
 
+const FAMILY_NAMES: Record<VehicleFamily, string> = {
+  BIKE: 'bikes & skimmers', CAR: 'carriers', AIRCRAFT: 'aircraft', TANK: 'tanks', WALKER: 'walkers', MECHA: 'mecha',
+}
+
 export interface VehicleMount {
   weapon: Weapon
   count: number
@@ -29,6 +33,7 @@ export interface VehicleSummary {
   auxUsed: number
   auxSpaces: number
   linked: boolean
+  ridersSeparate?: boolean // bikes/skimmers: crew rating doesn't apply, riders are infantry
   problems: string[]
 }
 
@@ -48,10 +53,8 @@ export function getCrewRating(id: string | undefined): VehicleCrewRating {
   return crewRatings.find(c => c.id === (id ?? 'REGULAR')) ?? crewRatings.find(c => c.id === 'REGULAR')!
 }
 
-// Custom vehicles only record a hull type label; bikes and aircraft aren't on the builder chart
+// Custom and preset vehicles only record a hull type label
 export function customFamily(hullType: string | undefined): VehicleFamily | undefined {
-  if (hullType === 'BIKE_TRIKE') return 'BIKE'
-  if (hullType === 'AIRCRAFT') return 'AIRCRAFT'
   return getHull(hullType)?.family
 }
 
@@ -124,6 +127,8 @@ export function summariseVehicle(squad: SquadSelection): VehicleSummary {
 
   const hull = getHull(squad.vehicleHullType)
   const movement = getMovementType(squad.vehicleMovementId)
+  const movementCost = movement ? (hull?.movementCosts?.[movement.id] ?? movement.cost) : 0
+  const ridersSeparate = hull?.crewIncluded === false
   const accLoad = (squad.vehicleAccessories ?? []).flatMap(al => {
     const acc = getAccessory(al.id)
     return acc && al.count > 0 ? [{ acc, count: al.count }] : []
@@ -143,8 +148,8 @@ export function summariseVehicle(squad: SquadSelection): VehicleSummary {
 
   const breakdown = [
     { label: hull ? `${hull.name} hull` : 'Hull', pts: hull?.cost ?? 0 },
-    { label: movement ? `${movement.name} movement` : 'Movement', pts: movement?.cost ?? 0 },
-    ...crewLine,
+    { label: movement ? `${movement.name} movement` : 'Movement', pts: movementCost },
+    ...(ridersSeparate ? [] : crewLine),
     ...weaponLines,
     ...(linked ? [{ label: 'Gun linkage', pts: gunLinkageCost }] : []),
     ...accLoad.map(({ acc, count }) => ({ label: `${count > 1 ? `${count}× ` : ''}${acc.name}`, pts: acc.cost * count })),
@@ -162,15 +167,24 @@ export function summariseVehicle(squad: SquadSelection): VehicleSummary {
       : `Main guns use ${mainGunUsed} of ${mainGunSpace} main gun space.`)
   }
   if (hull && auxUsed > auxSpaces) problems.push(`Uses ${auxUsed} of ${auxSpaces} auxiliary spaces.`)
+  if (hull?.auxWeaponCategories && roboTurrets === 0) {
+    const bad = mounts.filter(m => !hull.auxWeaponCategories!.includes(m.weapon.category))
+    if (bad.length) problems.push(`${hull.name} can only mount ${hull.auxWeaponCategories.map(c => c.toLowerCase()).join(' or ')} weapons (${bad.map(m => m.weapon.name).join(', ')}).`)
+  }
+  if (hull?.linkedWeapons && roboTurrets === 0 && new Set(mounts.map(m => m.weapon.id)).size > 1) {
+    problems.push(`${hull.name} weapons must be the same type (they fire linked).`)
+  }
   for (const { acc } of accLoad) {
-    if (hull && acc.families && !acc.families.includes(hull.family)) problems.push(`${acc.name} is for mecha only.`)
+    if (hull && acc.families && !acc.families.includes(hull.family)) problems.push(`${acc.name} is for ${acc.families.map(f => FAMILY_NAMES[f]).join(' / ')} only.`)
     if (hull && acc.minHullClass !== undefined && hull.hullClass < acc.minHullClass) problems.push(`${acc.name} needs hull class ${acc.minHullClass}+.`)
     if (acc.requires && !accLoad.some(a => a.acc.id === acc.requires)) problems.push(`${acc.name} requires ${getAccessory(acc.requires)?.name ?? acc.requires}.`)
   }
 
   return {
-    mode: 'BUILD', hull, movement, crew, mounts, breakdown,
-    hullClass: hull?.hullClass,
+    mode: 'BUILD', hull, movement, mounts, breakdown,
+    crew: ridersSeparate ? getCrewRating('REGULAR') : crew,
+    ridersSeparate,
+    hullClass: hull ? (Math.min(6, hull.hullClass + (accLoad.some(a => a.acc.id === 'ARM') ? 1 : 0)) as VehicleArmourClass) : undefined,
     family: hull?.family,
     total: breakdown.reduce((s, l) => s + l.pts, 0),
     mainGunUsed, mainGunSpace, auxUsed, auxSpaces, linked, problems,
